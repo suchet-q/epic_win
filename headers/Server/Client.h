@@ -1,24 +1,31 @@
-//
-// Client.h for airtype in /home/michel_b//epic_win
-// 
-// Made by geoffrey michelini
-// Login   <michel_b@epitech.net>
-// 
-// Started on  Tue Oct 29 20:08:52 2013 geoffrey michelini
-// Last update Tue Oct 29 20:19:08 2013 geoffrey michelini
-//
+#pragma once
+#include	<iostream>
+#include	<string>
 
-
-#ifndef			__CLIENT_H__
-# define		__CLIENT_H__
-
-class			Client
+enum		Weapons
 {
-private:
-  MetaSocket		_socketTCP;
-
-public:
-  MetaSocket	const	&getSocketTCP();
+	MISSIL,
+	LASER
 };
 
-#endif
+typedef struct	s_infos_client
+{
+	int		life;
+	bool	host;
+	char	nick_name[16];
+	Weapons	weapon;
+	bool	bonus;
+	int		score;
+	int		hightScore;
+}				t_infos_client;
+
+class Client
+{
+private:
+	int		_id;
+	t_infos_client	_infosClient;
+public:
+	Client();
+	~Client();
+};
+

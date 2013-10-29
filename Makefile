@@ -5,16 +5,17 @@
 ## Login   <michel_b@epitech.net>
 ## 
 ## Started on  Mon Oct 28 18:55:47 2013 geoffrey michelini
-## Last update Mon Oct 28 19:52:50 2013 geoffrey michelini
+## Last update Tue Oct 29 22:14:28 2013 geoffrey michelini
 ##
 
 
-NAME_SERVER=	airtype
+NAME_SERVER=	R-type
 
 NAME_CLIENT=	client
 
 SRC_SERVER=	sources/Server/main.cpp					\
 		sources/Server/Server.cpp				\
+		sources/Server/Lexer.cpp				\
 		sources/Abstraction/Linux/LoadLibLinux.cpp		\
 		sources/Abstraction/Linux/SocketLinux.cpp
 SRC_CLIENT=

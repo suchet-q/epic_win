@@ -1,9 +1,9 @@
 #pragma once
 
 #ifdef	_WIN32
-# include "SocketWindows.h"
+# include "Windows/SocketWindows.h"
 #else
-# include "SocketLinux.h"
+# include "Linux/SocketLinux.h"
 #endif
 
 template<class T =

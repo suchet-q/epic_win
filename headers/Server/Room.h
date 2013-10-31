@@ -5,6 +5,9 @@
 
 class Room
 {
+private:
+	int		_id;
+	
 public:
 	Room();
 	~Room();

@@ -19,6 +19,11 @@ SocketLinux::~SocketLinux()
     close(this->_socket);
 }
 
+int					SocketLinux::getSocket() const
+{
+	return (this->_socket);
+}
+
 struct sockaddr_in	*SocketLinux::getSockaddr() const
 {
   return (const_cast<struct sockaddr_in *>(&this->_sin));

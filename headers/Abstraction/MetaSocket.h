@@ -27,6 +27,11 @@ public:
 
 	~MetaSocket(void){}
 
+	int					getSocket() const
+	{
+		return (this->_socket.getSocket());
+	}
+	
 	struct sockaddr_in	*getSockaddr() const
 	{
 		return (this->_socket.getSockaddr());

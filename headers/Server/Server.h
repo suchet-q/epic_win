@@ -5,28 +5,39 @@
 // Login   <michel_b@epitech.net>
 // 
 // Started on  Mon Oct 28 18:21:08 2013 geoffrey michelini
-// Last update Tue Oct 29 22:11:03 2013 geoffrey michelini
+// Last update Fri Nov  1 01:59:46 2013 geoffrey michelini
 //
 
 #ifndef			__SERVER_H__
 # define		__SERVER_H__
 
+# include		<sys/select.h>
 # include		<iostream>
 # include		<string>
 # include		<list>
+# include		<array>
 
+# include		"MetaSelect.h"
 # include		"MetaSocket.h"
+# include		"Client.h"
 # include		"StructCommands.h"
 
 class			Server
 {
 private:
-  MetaSocket<>			_socket;
+  std::list<Client *>	_clientList;
+  MetaSocket<>		_socket;
+  MetaSelect<>		_select;
+  struct timeval	*_tv;
+  fd_set		_fdWrite;
+  fd_set		_fdRead;
+  std::array<bool, 255>	_idArray;
 
 public:
   Server();
   ~Server();
 
+  void			addClient(MetaSocket<> *);
   bool			initSocket(int port);
   bool			loop();
 

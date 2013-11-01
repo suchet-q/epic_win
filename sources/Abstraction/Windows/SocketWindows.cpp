@@ -9,6 +9,11 @@ SocketWindows::~SocketWindows(void)
 		closesocket(this->_socket);
 }
 
+int					SocketWindows::getSocket() const
+{
+	return (static_cast<int>(this->_socket));
+}
+
 struct sockaddr_in	*SocketWindows::getSockaddr() const
 {
 	return (sockaddr_in *)&(this->_sin);

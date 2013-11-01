@@ -28,6 +28,7 @@ public:
 	SocketWindows(void);
 	virtual ~SocketWindows(void);
 
+	int			getSocket() const;
 	struct sockaddr_in *getSockaddr() const;
 	bool		isClosed() const;
 	void		setSocket(SOCKET &);

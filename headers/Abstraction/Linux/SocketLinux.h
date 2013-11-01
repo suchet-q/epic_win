@@ -39,6 +39,7 @@ public:
   SocketLinux();
   ~SocketLinux();
 
+  int					getSocket() const;
   struct sockaddr_in	*getSockaddr() const;
   bool			isClosed() const;
   void			setSocket(int);

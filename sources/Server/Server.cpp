@@ -5,14 +5,28 @@
 // Login   <michel_b@epitech.net>
 // 
 // Started on  Tue Oct 29 20:23:01 2013 geoffrey michelini
-// Last update Tue Oct 29 22:11:29 2013 geoffrey michelini
+// Last update Fri Nov  1 02:05:41 2013 geoffrey michelini
 //
 
 # include		"Server.h"
 
-Server::Server() {}
+Server::Server()
+{
+  for (int i = 0; i < 255; ++i)
+    _idArray[i] = false; 
+}
 
 Server::~Server() {}
+
+void			Server::addClient(MetaSocket<> *socket)
+{
+  int			id;
+
+  for (int i = 0; i < 255; ++i)
+    if (!_idArray[i]) 
+      id = i;
+  _clientList.push_back(new Client(id, socket));
+}
 
 bool			Server::initSocket(int port)
 {
@@ -25,7 +39,28 @@ bool			Server::initSocket(int port)
 
 bool			Server::loop()
 {
-  
+  _select.fdZero(&_fdWrite);
+  _select.fdZero(&_fdRead);
+  _select.fdSet(_socket, &_fdRead);
+  for (std::list<Client *>::iterator it = _clientList.begin();
+       it != _clientList.end(); ++it) {
+    _select.fdSet(*(*it)->getSocket(), &_fdRead);
+    if (!(*it)->getWriteBuffer().empty())
+      _select.fdSet(*(*it)->getSocket(), &_fdWrite);
+  }
+  _select.Select(&_fdRead, &_fdWrite, 500);
+  if (_select.fdIsset(_socket, &_fdRead))
+    addClient(_socket.Accept());
+  for (std::list<Client *>::iterator it = _clientList.begin();
+       it != _clientList.end(); ++it) {
+    if (!(*it)->getWriteBuffer().empty() && _select.fdIsset(*(*it)->getSocket(), &_fdWrite))
+      (*it)->sendCommand();
+    if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
+	&& (*it)->recvCommand())
+      std::cerr << "Deco Client" << std::endl;
+//      decoClient(*it);
+  }
+  loop();
 }
 
 void			Server::execPND(void *command, int size)

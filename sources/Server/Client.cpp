@@ -1,21 +1,52 @@
 #include "Client.h"
 
 
-Client::Client(int id)
+Client::Client(int id, MetaSocket<> *socket)
 {
-	this->_id = id;
-	this->_host = false;
-	this->_infosClient.life = 0;
-	this->_infosClient.weapon = MISSIL;
-	this->_infosClient.bonus = false;
-	this->_infosClient.score = 0;
-	this->_infosClient.hightScore = 0;
-	for (int i = 0; i <= 16; ++i)
-		this->_nickName[i] = '\0';
+  this->_socket = socket;
+  this->_id = id;
+  this->_host = false;
+  this->_infosClient.life = 0;
+  this->_infosClient.weapon = MISSIL;
+  this->_infosClient.bonus = false;
+  this->_infosClient.score = 0;
+  this->_infosClient.hightScore = 0;
+  for (int i = 0; i <= 16; ++i)
+    this->_nickName[i] = '\0';
 }
 
 
 Client::~Client() {}
+
+oMetaSocket<>	*Client::getSocket() {
+  return _socket;
+}
+
+std::list<std::pair<void *, unsigned int> >	&Client::getWriteBuffer() {
+  return _writeBuffer;
+}
+
+std::list<std::pair<void *, unsigned int> >	&Client::getReadBuffer() {
+ return _readBuffer;
+}
+
+int		Client::sendCommand()
+{
+  if (_socket->Send(_writeBuffer.back().first(),
+		    _writeBuffer.back().second()) <= 0)
+    return (-1);
+  _writeBuffer.pop_back();
+  return (0);
+}
+
+int		Client::recvCommand()
+{
+  if (_socket->Recv(_readBuffer.back().first(),
+		    _readBuffer.back().second()) <= 0)
+    return (-1);
+  _readBuffer.pop_back();
+  return (0);
+}
 
 int		Client::getID()
 {

@@ -1,4 +1,4 @@
-#include "Windows/SocketWindows.h"
+#include "SocketWindows.h"
 
 
 SocketWindows::SocketWindows(void) : _socket(INVALID_SOCKET), _ifClosed(true), _type(NONE) {}
@@ -7,11 +7,6 @@ SocketWindows::~SocketWindows(void)
 {
 	if (!this->_ifClosed)
 		closesocket(this->_socket);
-}
-
-int					SocketWindows::getSocket() const
-{
-	return (static_cast<int>(this->_socket));
 }
 
 struct sockaddr_in	*SocketWindows::getSockaddr() const

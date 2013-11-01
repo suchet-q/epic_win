@@ -17,45 +17,57 @@ Client::Client(int id, MetaSocket<> *socket)
 
 Client::~Client() {}
 
-oMetaSocket<>	*Client::getSocket()
+void			Client::addMsgSend(void *command, int size)
 {
-  return (this->_socket);
+	std::pair<void *, unsigned int> *tmp = new std::pair<void *, unsigned int>;
+
+	tmp->first = command;
+	tmp->second = size;
+	this->_writeBuffer.push_back(*tmp);
 }
 
-std::list<std::pair<void *, unsigned int> >	&Client::getWriteBuffer()
+MetaSocket<>	*Client::getSocket() const
 {
-  return (this->_writeBuffer);
+	return (this->_socket);
 }
 
-std::list<std::pair<void *, unsigned int> >	&Client::getReadBuffer()
+std::list<std::pair<void *, unsigned int> >	*Client::getWriteBuffer() const
 {
- return (this->_readBuffer);
+	return (const_cast<std::list<std::pair<void *, unsigned int> > *>(&this->_writeBuffer));
+}
+
+std::list<std::pair<void *, unsigned int> >	*Client::getReadBuffer() const
+{
+	return (const_cast<std::list<std::pair<void *, unsigned int> > *>(&this->_readBuffer));
 }
 
 int		Client::sendCommand()
 {
-  if (_socket->Send(this->_writeBuffer.back().first(),
-		    this->_writeBuffer.back().second()) <= 0)
-    return (-1);
-  this->_writeBuffer.pop_back();
-  return (0);
+	if (this->_socket->Send(this->_writeBuffer.front().first,
+		    this->_writeBuffer.front().second) <= 0)
+		return (-1);
+	this->_writeBuffer.pop_front();
+	return (0);
 }
 
 int		Client::recvCommand()
 {
-  if (this->_socket->Recv(this->_readBuffer.back().first(),
-		    this->_readBuffer.back().second()) <= 0)
-    return (-1);
-  this->_readBuffer.pop_back();
-  return (0);
+	std::pair<void *, unsigned int> *tmp = new std::pair<void *, unsigned int>;
+	int width = 0;
+
+	if (width = this->_socket->Recv(tmp->first, 300) <= 0)
+		return (-1);
+	tmp->second = width;
+	this->_readBuffer.push_back(*tmp);
+	return (0);
 }
 
-int		Client::getID()
+int		Client::getID() const
 {
 	return (this->_id);
 }
 
-bool	Client::getHost()
+bool	Client::getHost() const
 {
 	return (this->_host);
 }
@@ -65,7 +77,7 @@ void	Client::setHost(bool host)
 	this->_host = host;
 }
 
-char const	&Client::getNickName()
+char const	&Client::getNickName() const
 {
 	return (*this->_nickName);
 }
@@ -79,7 +91,7 @@ bool	Client::setNickName(const char *nickName)
 	return (true);
 }
 
-t_infos_game	&Client::getInfosClient()
+t_infos_game	*Client::getInfosClient() const
 {
-	return (this->_infosClient);
+	return (const_cast<t_infos_game *>(&this->_infosClient));
 }

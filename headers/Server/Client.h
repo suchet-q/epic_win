@@ -36,16 +36,17 @@ public:
   Client(int, MetaSocket<> *);
   ~Client();
 
-  std::list<std::pair<void *, unsigned int> >	&getWriteBuffer();
-  std::list<std::pair<void *, unsigned int> >	&getReadBuffer();
+  std::list<std::pair<void *, unsigned int> >	*getWriteBuffer() const;
+  std::list<std::pair<void *, unsigned int> >	*getReadBuffer() const;
+  void		addMsgSend(void *, int);
   int		sendCommand();
   int		recvCommand();
-  MetaSocket<>	*getSocket();
-  int		getID();
-  bool		getHost();
+  MetaSocket<>	*getSocket() const;
+  int		getID() const;
+  bool		getHost() const;
   void		setHost(bool);
   bool		setNickName(const char *);
-  char	const	&getNickName();
-  t_infos_game	&getInfosClient();
+  char	const	&getNickName() const;
+  t_infos_game	*getInfosClient() const;
 };
 

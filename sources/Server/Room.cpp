@@ -9,3 +9,52 @@ Room::Room()
 Room::~Room()
 {
 }
+
+void		Room::sendMsg(void *command)
+{
+	for (std::list<Client *>::iterator it = this->_clients.begin();
+			it != this->_clients.end(); ++it)
+		(*it)->addMsgSend(command, sizeof(command));
+}
+
+void		Room::setID(int id)
+{
+	this->_id = id;
+}
+
+int			Room::getID() const
+{
+	return (this->_id);
+}
+
+void		Room::setHost(Client const *client)
+{
+	this->_host = const_cast<Client *>(client);
+}
+
+Client	const *Room::getHost() const
+{
+	return (const_cast<Client *>(this->_host));
+}
+
+void		Room::addClient(Client *client)
+{
+	this->_clients.push_back(client);
+}
+
+Client		*Room::delClient(int id)
+{
+	for (std::list<Client *>::iterator it = this->_clients.begin();
+			it != this->_clients.end(); ++it)
+		if ((*it)->getID() == id)
+		{
+			it = this->_clients.erase(it);
+			return ((*it));
+		}
+	return (NULL);
+}
+
+std::list<Client *>	*Room::getClient() const
+{
+	return (const_cast<std::list<Client *> *>(&this->_clients));
+}

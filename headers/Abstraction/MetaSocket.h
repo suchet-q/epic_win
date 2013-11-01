@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef	_WIN32
-# include "Windows/SocketWindows.h"
+# include "SocketWindows.h"
 #else
 # include "Linux/SocketLinux.h"
 #endif
@@ -27,11 +27,6 @@ public:
 
 	~MetaSocket(void){}
 
-	int					getSocket() const
-	{
-		return (this->_socket.getSocket());
-	}
-	
 	struct sockaddr_in	*getSockaddr() const
 	{
 		return (this->_socket.getSockaddr());
@@ -78,7 +73,7 @@ public:
 
 	int		Send(const void *to_send, int size)
 	{
-		return this->_socket.Send(to_send, size);
+		return this->_socket.Send(const_cast<void *>(to_send), size);
 	}
 
 	int sendTo(void *to_send, int size, struct sockaddr_in *dest)

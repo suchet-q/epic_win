@@ -1,6 +1,5 @@
 #include "Client.h"
 
-
 Client::Client(int id, MetaSocket<> *socket)
 {
   this->_socket = socket;
@@ -18,33 +17,36 @@ Client::Client(int id, MetaSocket<> *socket)
 
 Client::~Client() {}
 
-oMetaSocket<>	*Client::getSocket() {
-  return _socket;
+oMetaSocket<>	*Client::getSocket()
+{
+  return (this->_socket);
 }
 
-std::list<std::pair<void *, unsigned int> >	&Client::getWriteBuffer() {
-  return _writeBuffer;
+std::list<std::pair<void *, unsigned int> >	&Client::getWriteBuffer()
+{
+  return (this->_writeBuffer);
 }
 
-std::list<std::pair<void *, unsigned int> >	&Client::getReadBuffer() {
- return _readBuffer;
+std::list<std::pair<void *, unsigned int> >	&Client::getReadBuffer()
+{
+ return (this->_readBuffer);
 }
 
 int		Client::sendCommand()
 {
-  if (_socket->Send(_writeBuffer.back().first(),
-		    _writeBuffer.back().second()) <= 0)
+  if (_socket->Send(this->_writeBuffer.back().first(),
+		    this->_writeBuffer.back().second()) <= 0)
     return (-1);
-  _writeBuffer.pop_back();
+  this->_writeBuffer.pop_back();
   return (0);
 }
 
 int		Client::recvCommand()
 {
-  if (_socket->Recv(_readBuffer.back().first(),
-		    _readBuffer.back().second()) <= 0)
+  if (this->_socket->Recv(this->_readBuffer.back().first(),
+		    this->_readBuffer.back().second()) <= 0)
     return (-1);
-  _readBuffer.pop_back();
+  this->_readBuffer.pop_back();
   return (0);
 }
 

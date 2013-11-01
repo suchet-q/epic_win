@@ -3,7 +3,7 @@
 Server::Server()
 {
   for (int i = 0; i < 255; ++i)
-   this->_idArray[i] = false; 
+   _idArray[i] = false; 
 }
 
 Server::~Server() {}
@@ -12,43 +12,58 @@ void			Server::addClient(MetaSocket<> *socket)
 {
   int			id;
 
+  if (socket == NULL)
+    return ;
   for (int i = 0; i < 255; ++i)
-    if (!this->_idArray[i]) 
+    if (!_idArray[i]) 
       id = i;
-  this->_clientList.push_back(new Client(id, socket));
+  _clientList.push_back(new Client(id, socket));
+}
+
+void			Server::decoClient(std::list<Client *>::iterator &it)
+{
+  delete (*it)->getSocket();
+  it = _clientList.erase(it);
 }
 
 bool			Server::initSocket(int port)
 {
-  if (!this->_socket.init(TCP)
-      || !this->_socket.Bind("127.0.0.1", port)
-      || !this->_socket.Listen(42))
+  if (!_socket.init(TCP)
+      || !_socket.Bind("127.0.0.1", port)
+      || !_socket.Listen(42))
     return false;
   return true;
 }
 
 bool			Server::loop()
 {
-  this->_select.fdZero(&this->_fdWrite);
-  this->_select.fdZero(&this->_fdRead);
-  this->_select.fdSet(this->_socket, &this->_fdRead);
-  for (std::list<Client *>::iterator it = this->_clientList.begin();
-       it != this->_clientList.end(); ++it) {
-    this->_select.fdSet(*(*it)->getSocket(), &this->_fdRead);
-    if (!(*it)->getWriteBuffer().empty())
-      this->_select.fdSet(*(*it)->getSocket(), &this->_fdWrite);
+  bool			error = false;
+
+  while (!error) {
+    _select.fdZero(&_fdWrite);
+    _select.fdZero(&_fdRead);
+    _select.fdSet(_socket, &_fdRead);
+    for (std::list<Client *>::iterator it = _clientList.begin();
+	 it != _clientList.end(); ++it) {
+      _select.fdSet(*(*it)->getSocket(), &_fdRead);
+      if (!(*it)->getWriteBuffer()->empty())
+	_select.fdSet(*(*it)->getSocket(), &_fdWrite);
+    }
+    if (_select.Select(&_fdRead, &_fdWrite, 3000)) {
+      if (_select.fdIsset(_socket, &_fdRead))
+	addClient(_socket.Accept());
+      for (std::list<Client *>::iterator it = _clientList.begin();
+	   it != _clientList.end(); ++it) {
+	if (!(*it)->getWriteBuffer()->empty()
+	    && _select.fdIsset(*(*it)->getSocket(), &_fdWrite))
+	  (*it)->sendCommand();
+	if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
+	    && (*it)->recvCommand())
+	  decoClient(it);
+      }
+    }
+    else
+      error = true;
   }
-  this->_select.Select(&this->_fdRead, &this->_fdWrite, 500);
-  if (this->_select.fdIsset(this->_socket, &this->_fdRead))
-    addClient(this->_socket.Accept());
-  for (std::list<Client *>::iterator it = this->_clientList.begin();
-       it != this->_clientList.end(); ++it) {
-    if (!(*it)->getWriteBuffer().empty() && this->_select.fdIsset(*(*it)->getSocket(), &_fdWrite))
-      (*it)->sendCommand();
-    if (this->_select.fdIsset(*(*it)->getSocket(), &this->_fdRead)
-	&& (*it)->recvCommand())
-      std::cerr << "Deco Client" << std::endl;
-//      decoClient(*it);
-  }
-  loop();
+  return true;
 }

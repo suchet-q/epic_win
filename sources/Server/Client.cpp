@@ -77,18 +77,14 @@ void	Client::setHost(bool host)
 	this->_host = host;
 }
 
-char const	&Client::getNickName() const
+std::string const	&Client::getNickName() const
 {
-	return (*this->_nickName);
+	return (this->_nickName);
 }
 
-bool	Client::setNickName(const char *nickName)
+void	Client::setNickName(const char *nickName)
 {
-	if (strlen(nickName) > 16)
-		return (false);
-	for (unsigned int i = 0; i <= strlen(nickName); ++i)
-		this->_nickName[i] = nickName[i];
-	return (true);
+  this->_nickName = nickName;
 }
 
 t_infos_game	*Client::getInfosClient() const

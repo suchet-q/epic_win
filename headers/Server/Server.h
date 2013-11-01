@@ -27,6 +27,7 @@ public:
   ~Server();
 
   void			addClient(MetaSocket<> *);
+  void			decoClient(std::list<Client *>::iterator &it);
   bool			initSocket(int port);
   bool			loop();
 };

@@ -26,7 +26,7 @@ class		Client
 private:
   int		_id;
   bool		_host;
-  char		_nickName[16];
+  std::string	_nickName;
   t_infos_game	_infosClient;
   MetaSocket<>	*_socket;
   std::list<std::pair<void *, unsigned int> >	_writeBuffer;
@@ -45,8 +45,8 @@ public:
   int		getID() const;
   bool		getHost() const;
   void		setHost(bool);
-  bool		setNickName(const char *);
-  char	const	&getNickName() const;
+  void		setNickName(const char *);
+  std::string const	&getNickName() const;
   t_infos_game	*getInfosClient() const;
 };
 

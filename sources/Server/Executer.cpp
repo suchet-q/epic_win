@@ -1,17 +1,21 @@
 #include "Executer.h"
 
-
 Executer::Executer()
 {
 }
-
 
 Executer::~Executer()
 {
 }
 
+void			Executer::setResource(Resource *resource)
+{
+	this->_resource = resource;
+}
+
 void			Executer::execPND(void *command, int size)
 {
+	
 	/*envoie ID unique du nouveau client*/
 }
 

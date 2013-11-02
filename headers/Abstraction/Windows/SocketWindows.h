@@ -27,7 +27,7 @@ class	SocketWindows
 public:
 	SocketWindows(void);
 	virtual ~SocketWindows(void);
-
+	int		getSocket() const;
 	struct sockaddr_in *getSockaddr() const;
 	bool		isClosed() const;
 	void		setSocket(SOCKET &);
@@ -46,7 +46,7 @@ public:
 
 	bool		Close();
 	int			Recv(void *buff, int size);
-	int			Send(void *to_send, int size);
+	int			Send(const void *to_send, int size);
 	int			sendTo(void *to_send, int size, struct sockaddr_in *dest);
 	int			recvFrom(void *buff, int size, struct sockaddr_in *sender);
 };

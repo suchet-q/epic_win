@@ -9,6 +9,11 @@ SocketWindows::~SocketWindows(void)
 		closesocket(this->_socket);
 }
 
+int		SocketWindows::getSocket() const
+{
+	return (this->_socket);
+}
+
 struct sockaddr_in	*SocketWindows::getSockaddr() const
 {
 	return (sockaddr_in *)&(this->_sin);
@@ -196,18 +201,19 @@ int		SocketWindows::Recv(void *buffer, int size)
 	return readed;
 }
 
-int			SocketWindows::Send(void *to_send, int size)
+int			SocketWindows::Send(const void *to_send, int size)
 {
 	WSABUF buff;
 	unsigned long int		lpNumberOfBitSent;
 
 	buff.len = size;
-	buff.buf = reinterpret_cast<char *>(to_send);
+	buff.buf = reinterpret_cast<char *>(const_cast<void *>(to_send));
 
 	if (WSASend(this->_socket, &buff, 1, &lpNumberOfBitSent, NULL, NULL, NULL))
 		return (-1);
 	return lpNumberOfBitSent;
 }
+
 
 int	SocketWindows::sendTo(void *to_send, int size, struct sockaddr_in *dest)
 {

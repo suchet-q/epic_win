@@ -5,7 +5,7 @@
 ## Login   <michel_b@epitech.net>
 ## 
 ## Started on  Mon Oct 28 18:55:47 2013 geoffrey michelini
-## Last update Fri Nov  1 18:24:05 2013 geoffrey michelini
+## Last update Sat Nov  2 01:48:11 2013 geoffrey michelini
 ##
 
 
@@ -19,6 +19,8 @@ SRC_SERVER=	sources/Server/main.cpp					\
 		sources/Server/Client.cpp				\
 		sources/Server/Room.cpp					\
 		sources/Server/Executer.cpp				\
+		sources/Server/Network.cpp				\
+		sources/Server/Resource.cpp				\
 		sources/Abstraction/Linux/LoadLibLinux.cpp		\
 		sources/Abstraction/Linux/SocketLinux.cpp		\
 		sources/Abstraction/Linux/SelectLinux.cpp

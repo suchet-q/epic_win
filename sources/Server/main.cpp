@@ -5,7 +5,7 @@
 // Login   <michel_b@epitech.net>
 // 
 // Started on  Tue Oct 29 21:28:45 2013 geoffrey michelini
-// Last update Fri Nov  1 18:37:40 2013 geoffrey michelini
+// Last update Fri Nov  1 22:46:27 2013 geoffrey michelini
 //
 
 #include	<sstream>
@@ -23,7 +23,7 @@ int		main(int ac, char **av)
   }
   buffer.str(av[1]);
   buffer >> port;
-  if (!server.initSocket(port)
+  if (!server.init(port)
       || !server.loop())
     return (-1);
   return (0);

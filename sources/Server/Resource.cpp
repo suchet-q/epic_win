@@ -15,7 +15,7 @@ void		Resource::addClient(int id, MetaSocket<> *socket)
 	this->_clients.push_back(new Client(id, socket));
 }
 
-std::list<Client *> const	&Resource::getClients()
+std::list<Client *>	&Resource::getClients()
 {
 	return (this->_clients);
 }
@@ -33,7 +33,7 @@ void		Resource::createRoom(Client *client)
 	this->_rooms.push_back(new Room(client->getID(), client));
 }
 
-std::list<Room *> const		&Resource::getRooms()
+std::list<Room *> const		&Resource::getRooms() const
 {
 	return (this->_rooms);
 }

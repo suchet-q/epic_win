@@ -12,74 +12,89 @@ Client::Client(int id, MetaSocket<> *socket)
   this->_infosClient.hightScore = 0;
   for (int i = 0; i <= 16; ++i)
     this->_nickName[i] = '\0';
+  for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
+    this->_buffer.cmd[i] = -1;
+  this->_buffer.size = 0;
 }
-
 
 Client::~Client() {}
 
 void			Client::addMsgSend(void *command, int size)
 {
-	std::pair<void *, unsigned int> *tmp = new std::pair<void *, unsigned int>;
-
-	tmp->first = command;
-	tmp->second = size;
-	this->_writeBuffer.push_back(*tmp);
 }
 
 MetaSocket<>	*Client::getSocket() const
 {
-	return (this->_socket);
+  return (this->_socket);
 }
 
-std::list<std::pair<void *, unsigned int> >	*Client::getWriteBuffer() const
+std::list<t_cmd>	*Client::getWriteBuffer() const
 {
-	return (const_cast<std::list<std::pair<void *, unsigned int> > *>(&this->_writeBuffer));
+  return (const_cast<std::list<t_cmd> *>(&this->_writeBuffer));
 }
 
-std::list<std::pair<void *, unsigned int> >	*Client::getReadBuffer() const
+std::list<t_cmd>	*Client::getReadBuffer() const
 {
-	return (const_cast<std::list<std::pair<void *, unsigned int> > *>(&this->_readBuffer));
+  return (const_cast<std::list<t_cmd> *>(&this->_readBuffer));
 }
 
-int		Client::sendCommand()
+void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsigned int> &cmdSize)
 {
-	if (this->_socket->Send(this->_writeBuffer.front().first,
-		    this->_writeBuffer.front().second) <= 0)
-		return (-1);
-	this->_writeBuffer.pop_front();
-	return (0);
-}
+  char		*buff = reinterpret_cast<char *>(buffer);
 
-int		Client::recvCommand()
-{
-	std::pair<void *, unsigned int> *tmp = new std::pair<void *, unsigned int>;
-	int width = 0;
-
-	if (width = this->_socket->Recv(tmp->first, 300) <= 0)
-		return (-1);
-	tmp->second = width;
-	this->_readBuffer.push_back(*tmp);
-	return (0);
+  if (this->_buffer.size > 0)
+    {
+      if (cmdSize[this->_buffer.cmd[0]] - this->_buffer.size < size)
+	{
+	  memcpy(&this->_buffer.cmd[size - 1], buff, size);
+	  this->_buffer.size += size;
+	}
+      else
+	{
+	  memcpy(&this->_buffer.cmd[size - 1], buff, cmdSize[this->_buffer.cmd[0]] - this->_buffer.size);
+	  this->_buffer.size = cmdSize[this->_buffer.cmd[0]];
+	  this->_readBuffer.push_back(this->_buffer);
+	  for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
+	    this->_buffer.cmd[i] = -1;
+	  this->_buffer.size = 0;
+	}
+    }
+  for (int i = 0; i < size; ++i) {
+    if (cmdSize[buff[i]] <= (size - 1) - i)
+      {
+	memcpy(this->_buffer.cmd, &buff[i], cmdSize[buff[i]]);
+	this->_buffer.size = cmdSize[buff[i]];
+	this->_readBuffer.push_back(this->_buffer);
+	i += cmdSize[buff[i]];
+	this->_buffer.size = 0;
+      }
+    else
+      {
+	memcpy(this->_buffer.cmd, &buff[i], (size - 1) - i);
+	this->_buffer.size = (size - 1) - i;
+	i = size - 1;
+      }
+  }
 }
 
 int		Client::getID() const
 {
-	return (this->_id);
+  return (this->_id);
 }
 
 bool	Client::getHost() const
 {
-	return (this->_host);
+  return (this->_host);
 }
 
 void	Client::setHost(bool host)
 {
-	this->_host = host;
+  this->_host = host;
 }
 
 std::string const	&Client::getNickName() const
 {
-	return (this->_nickName);
+  return (this->_nickName);
 }
 
 void	Client::setNickName(const char *nickName)
@@ -89,5 +104,5 @@ void	Client::setNickName(const char *nickName)
 
 t_infos_game	*Client::getInfosClient() const
 {
-	return (const_cast<t_infos_game *>(&this->_infosClient));
+  return (const_cast<t_infos_game *>(&this->_infosClient));
 }

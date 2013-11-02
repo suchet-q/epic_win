@@ -1,10 +1,15 @@
 #include "Room.h"
 
 
+Room::Room(int id, Client *client)
+{
+  this->_id = id;
+  this->_host = client;
+}
+
 Room::Room()
 {
 }
-
 
 Room::~Room()
 {

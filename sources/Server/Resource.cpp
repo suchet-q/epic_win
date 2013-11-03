@@ -20,7 +20,7 @@ std::list<Client *>	&Resource::getClients()
 	return (this->_clients);
 }
 
-void		Resource::createRoom(Client *client)
+bool		Resource::createRoom(Client *client)
 {
 	int		id = -1;
 
@@ -30,10 +30,15 @@ void		Resource::createRoom(Client *client)
 			id = i;
 			this->_idRooms[i] = true;
 		}
-	this->_rooms.push_back(new Room(client->getID(), client));
+	if (id != -1)
+	{
+		this->_rooms.push_back(new Room(client->getID(), client));
+		return (true);
+	}
+	return (false);
 }
 
-std::list<Room *> const		&Resource::getRooms() const
+std::list<Room *>		&Resource::getRooms()
 {
 	return (this->_rooms);
 }

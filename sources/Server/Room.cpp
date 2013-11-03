@@ -42,9 +42,14 @@ Client	const *Room::getHost() const
 	return (const_cast<Client *>(this->_host));
 }
 
-void		Room::addClient(Client *client)
+bool		Room::addClient(Client *client)
 {
-	this->_clients.push_back(client);
+	if (this->_clients.size() < 4)
+	{
+		this->_clients.push_back(client);
+		return (true);		
+	}
+	return (false);
 }
 
 Client		*Room::delClient(int id)

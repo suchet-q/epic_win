@@ -20,8 +20,8 @@ public:
   /*	std::list<Game *> const &getGame();*/
   void				addClient(int, MetaSocket<> *);
   std::list<Client *>		&getClients();
-  void				createRoom(Client *);
-  std::list<Room *> const	&getRooms() const;
+  bool				createRoom(Client *);
+  std::list<Room *>	&getRooms();
   void				createGame(int);
 };
 

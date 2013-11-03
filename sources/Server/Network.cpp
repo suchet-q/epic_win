@@ -77,6 +77,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList)
 	&& recvCommandTCP(*it))
       decoClient(clientList, it);
   }
+	return (true);
 }
 
 bool			Network::recvCommandTCP(Client *client)

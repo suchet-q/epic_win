@@ -1,16 +1,17 @@
 #pragma once
 
-# include		<list>
-# include		<map>
-# include		<array>
+#include		<list>
+#include		<map>
+#include		<array>
 
-# include		"MetaSocket.h"
-# include		"MetaSelect.h"
-# include		"Client.h"
+#include		"MetaSocket.h"
+#include		"MetaSelect.h"
+#include		"Client.h"
 
-# define		CONTINUE	(0)
-# define		DECO_CLIENT	(-1)
-# define		NEW_CLIENT	(1)
+#define		CONTINUE	(0)
+//#define		DECO_CLIENT	(-1)
+#define		NEW_CLIENT	(-2)
+#define		ERROR		(-1)
 
 class			Network
 {

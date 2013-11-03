@@ -31,7 +31,7 @@ typedef struct			s_nbl_server
 /*reciv*/
 typedef	struct			s_nbl_client
 {
-	unsigned char		id_commmand;
+	unsigned char		id_command;
 }						t_nbl_client;
 
 

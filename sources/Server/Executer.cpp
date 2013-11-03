@@ -2,10 +2,25 @@
 
 Executer::Executer()
 {
+	this->_func = new exec[8];
+	this->_func[0] = &Executer::execNBP;
+	this->_func[1] = &Executer::execNBL;
+	this->_func[2] = &Executer::execJNL;
+	this->_func[3] = &Executer::execCRL;
+	this->_func[4] = &Executer::execSTL;
+	this->_func[5] = &Executer::execMSG;
+	this->_func[6] = &Executer::execNMP;
+	this->_func[7] = &Executer::execLVL;
 }
 
 Executer::~Executer()
 {
+}
+
+bool			Executer::executCommand(Client *client, t_cmd const &command)
+{
+
+	return ((this->*_func[command.cmd[0]])(client, command));
 }
 
 void			Executer::setResource(Resource *resource)
@@ -13,69 +28,214 @@ void			Executer::setResource(Resource *resource)
 	this->_resource = resource;
 }
 
-void			Executer::execPND(void *command, int size)
+bool			Executer::execNBP(Client *client, t_cmd const &command)
 {
-	
-	/*envoie ID unique du nouveau client*/
+	t_nbp_client	nbp;
+	t_nbp_server	answer;
+	t_cmd			cmd;
+
+	memcpy(&nbp, command.cmd, sizeof(t_nbp_client));
+	answer.id_command = nbp.id_command;
+	answer.nb_players = this->_resource->getClients().size();
+	memcpy(cmd.cmd, &answer, sizeof(t_nbp_server));
+	cmd.size = sizeof(t_nbp_server);
+	client->getWriteBuffer()->push_back(cmd);
+	return (true);
 }
 
-void			Executer::execNBP(void *command, int size)
+bool			Executer::execNBL(Client *client, t_cmd const &command)
 {
-	t_nbp_client	*nbp;
-
-	nbp = reinterpret_cast<t_nbp_client *>(command);
+	t_nbl_client	nbl;
+	t_nbl_server	tmp;
+	t_cmd		awnser;
+  
+	memcpy(&nbl, command.cmd, sizeof(t_nbl_client));
+	for (std::list<Room *>::const_iterator it = _resource->getRooms().begin();
+		it != _resource->getRooms().end(); ++it)
+	{
+		tmp.id_command = nbl.id_command;
+		tmp.id_lobby = (*it)->getID();
+		tmp.lobby_nb_players = (*it)->getClient()->size();
+		memcpy(awnser.cmd, &tmp, sizeof(t_nbl_server));
+		awnser.size = sizeof(t_nbl_server);
+		client->getWriteBuffer()->push_back(awnser);
+	}
+	return (true);
 }
 
-void			Executer::execNBL(void *command, int size)
+bool			Executer::execJNL(Client *client, t_cmd const &command)
 {
-	t_nbl_client	*nbl;
+	t_jnl_client	jnl;
+	std::list<Room *>::iterator it = this->_resource->getRooms().begin();
+	t_jnl_server	answer;
+	t_cmd			cmd;
 
-	nbl = reinterpret_cast<t_nbl_client *>(command);
+	memcpy(&jnl, command.cmd, sizeof(t_jnl_client));
+	for (; it != this->_resource->getRooms().end(); ++it)
+	{
+		if ((*it)->getID() == jnl.id_lobby)
+		{
+			if ((*it)->addClient(client) == false)
+			{
+				answer.id_command = jnl.id_command;
+				answer.reponse = 0;
+				memcpy(cmd.cmd, &answer, sizeof(t_jnl_server));
+				cmd.size = sizeof(t_jnl_server);
+				client->getWriteBuffer()->push_back(cmd);
+				return (false);
+			}
+			answer.id_command = jnl.id_command;
+			answer.reponse = 1;
+			memcpy(cmd.cmd, &answer, sizeof(t_jnl_server));
+			cmd.size = sizeof(t_jnl_server);
+			client->getWriteBuffer()->push_back(cmd);
+			return (true);
+		}
+	}
+	return (false);
 }
 
-void			Executer::execJNL(void *command, int size)
+bool			Executer::execCRL(Client *client, t_cmd const &command)
 {
-	t_jnl_client	*jnl;
-
-	jnl = reinterpret_cast<t_jnl_client *>(command);
+	t_crl_client	crl;
+	t_crl_server	tmp;
+	t_cmd		awnser;
+  
+	memcpy(&crl, command.cmd, sizeof(t_crl_client));
+	tmp.id_command = crl.id_command;
+	if (!_resource->createRoom(client))
+		tmp.id_lobby = 0;
+	else
+		tmp.id_lobby = _resource->getRooms().back()->getID();
+	memcpy(awnser.cmd, &tmp, sizeof(t_crl_server));
+	awnser.size = sizeof(t_crl_server);
+	client->getWriteBuffer()->push_back(awnser);
+	return true;
 }
 
-void			Executer::execCRL(void *command, int size)
+bool			Executer::execSTL(Client *client, t_cmd const &command)
 {
-	t_crl_client	*crl;
+	t_stl_client	stl;
+	std::list<Room *>::iterator it = this->_resource->getRooms().begin();
+	t_stl_server	answer;
+	t_cmd			cmd;
+	bool			succeed = false;
 
-	crl = reinterpret_cast<t_crl_client *>(command);
+	/*lauch game if succeed, succeed = true*/
+	memcpy(&stl, command.cmd, sizeof(t_jnl_client));
+	for (; it != this->_resource->getRooms().end(); ++it)
+	{
+		if ((*it)->getID() == stl.id_lobby)
+		{
+			std::list<Client *>::iterator itc = (*it)->getClient()->begin();
+			answer.id_command = stl.id_command;
+			if (succeed == true)
+				answer.response = 1;
+			else
+				answer.response = 0;
+			memcpy(cmd.cmd, &answer, sizeof(t_stl_server));
+			cmd.size = sizeof(t_stl_server);
+			for (; itc != (*it)->getClient()->end(); ++itc)
+			{
+				(*itc)->getWriteBuffer()->push_back(cmd);
+			}
+			if (succeed == true)
+			{
+				it = this->_resource->getRooms().erase(it);
+				return (true);
+			}
+			else
+				return (false);
+		}
+	}
+	return (false);
 }
 
-void			Executer::execPLJ(void *command, int size)
+bool			Executer::execMSG(Client *client, t_cmd const &command)
 {
-	/*indique au client qu'un nouveau player a rejoint le lobby*/
+	std::list<Room *>::const_iterator it;
+	t_msg_client	msg;
+	t_msg_server	tmp;
+	t_cmd		awnser;
+  
+	memcpy(&msg, command.cmd, sizeof(t_msg_client));
+	tmp.id_command = msg.id_command;
+	tmp.id_client = msg.id_client;
+	memcpy(tmp.msg, msg.msg, 256 * sizeof(char));
+	memcpy(awnser.cmd, &tmp, sizeof(t_msg_server));
+	awnser.size = sizeof(t_msg_server);
+	for (it = _resource->getRooms().begin();
+		it != _resource->getRooms().end() && (*it)->getID() != msg.id_lobby; ++it);
+	if ((*it)->getID() == msg.id_lobby)
+		for (std::list<Client *>::const_iterator itc = _resource->getClients().begin();
+			itc != _resource->getClients().end(); ++itc)
+				(*itc)->getWriteBuffer()->push_back(awnser);
+	return true;
 }
 
-void			Executer::execSTL(void *command, int size)
+bool			Executer::execNMP(Client *client, t_cmd const &command)
 {
-	t_stl_client	*stl;
+	t_nmp_client	nmp;
 
-	stl = reinterpret_cast<t_stl_client *>(command);
+	std::list<Client *>::iterator it = this->_resource->getClients().begin();
+
+	memcpy(&nmp, command.cmd, sizeof(t_jnl_client));
+	for (; it != this->_resource->getClients().end(); ++it)
+	{
+		if ((*it)->getID() == nmp.id_client)
+		{
+			(*it)->setNickName(nmp.nick_name);
+			return (true);
+		}
+	}
+	return (true);
 }
 
-void			Executer::execMSG(void *command, int size)
+bool			Executer::execLVL(Client *client, t_cmd const &command)
 {
-	t_msg_client	*msg;
-
-	msg = reinterpret_cast<t_msg_client *>(command);
-}
-
-void			Executer::execNMP(void *command, int size)
-{
-	t_nmp_client	*nmp;
-
-	nmp = reinterpret_cast<t_nmp_client *>(command);
-}
-
-void			Executer::execLVL(void *command, int size)
-{
-	t_lvl_client	*lvl;
-
-	lvl = reinterpret_cast<t_lvl_client *>(command);
+	std::list<Room *>::iterator	it;
+	std::list<Client *>::iterator	itc;
+	t_lvl_client	lvl;
+	t_lvl_server	tmp;
+	t_cmd		awnser;
+  
+	memcpy(&lvl, command.cmd, sizeof(t_lvl_client));
+	tmp.id_command = lvl.id_command;
+	tmp.id_client = lvl.id_client;
+	memcpy(awnser.cmd, &tmp, sizeof(t_lvl_server));
+	awnser.size = sizeof(t_lvl_server);
+	for (it = _resource->getRooms().begin();
+		it != _resource->getRooms().end() && (*it)->getID() != lvl.id_lobby; ++it);
+	if ((*it)->getID() == lvl.id_lobby)
+	{
+		for (itc = (*it)->getClient()->begin();
+			itc != (*it)->getClient()->end() && (*itc)->getID() != lvl.id_client; ++itc);
+		if ((*itc)->getID() == lvl.id_client)
+		{
+			if ((*itc) == (*it)->getHost())
+			{
+				for (std::list<Client *>::iterator itc_c = (*it)->getClient()->begin();
+					itc_c != (*it)->getClient()->end(); ++itc_c)
+				{
+					tmp.id_client = (*itc_c)->getID();
+					memcpy(awnser.cmd, &tmp, sizeof(t_lvl_server));
+					awnser.size = sizeof(t_lvl_server);
+					(*itc_c)->getWriteBuffer()->push_back(awnser);
+					itc_c = (*it)->getClient()->erase(itc_c);
+				}
+				it = _resource->getRooms().erase(it);
+			}
+			else
+			{
+				for (std::list<Client *>::iterator itc_c = (*it)->getClient()->begin();
+					itc_c != (*it)->getClient()->end(); ++itc_c)
+				{
+					(*itc_c)->getWriteBuffer()->push_back(awnser);
+					if ((*itc_c)->getID() == lvl.id_client)
+						itc_c = (*it)->getClient()->erase(itc_c);
+				}
+			}
+		}
+	}
+	return true;
 }

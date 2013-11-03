@@ -19,7 +19,7 @@ public:
 	int			getID() const;
 	void		setHost(Client const *);
 	Client	const *getHost() const;
-	void		addClient(Client *);
+	bool		addClient(Client *);
 	Client		*delClient(int);
 	std::list<Client *>	*getClient() const;
 };

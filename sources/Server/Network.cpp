@@ -29,22 +29,29 @@ bool			Network::initSocket(int port)
 void			Network::addClient(MetaSocket<> *socket,
 					   std::list<Client *> &clientList)
 {
+  bool			accepted = false;
+
+  std::cout << "adding client"<< std::endl;
   if (socket == NULL)
     return ;
-  for (int id = 0; id < 255 && !_idArray[id]; ++id)
+  for (int id = 0; id < 255 && !accepted; ++id)
     if (!_idArray[id]) {
       clientList.push_back(new Client(id, socket));
       _idArray[id] = true;
+      accepted = true;
     }
+  std::cout << "client " << clientList.back()->getID() << " added" << std::endl;
 }
 
 void			Network::decoClient(std::list<Client *> &clientList,
 					    std::list<Client *>::iterator &it)
 {
   _idArray[(*it)->getID()] = false;
+  std::cout << "deleting client " << (*it)->getID() << std::endl;
   delete (*it)->getSocket();
   delete *it;
   it = clientList.erase(it);
+  std::cout << "client deleted" << std::endl;
 }
 
 void			Network::initSelect(std::list<Client *> const &clientList)
@@ -84,7 +91,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList)
 	&& recvCommandTCP(*it))
       decoClient(clientList, it);
   }
-	return (true);
+  return (true);
 }
 
 bool			Network::recvCommandTCP(Client *client)

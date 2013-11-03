@@ -15,13 +15,6 @@ Room::~Room()
 {
 }
 
-void		Room::sendMsg(void *command)
-{
-	for (std::list<Client *>::iterator it = this->_clients.begin();
-			it != this->_clients.end(); ++it)
-		(*it)->addMsgSend(command, sizeof(command));
-}
-
 void		Room::setID(int id)
 {
 	this->_id = id;

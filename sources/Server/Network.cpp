@@ -4,6 +4,15 @@ Network::Network()
 {
   for (int i = 0; i < 255; ++i)
     _idArray[i] = false; 
+
+  _commandsSize[1] = 1;
+  _commandsSize[2] = 1;
+  _commandsSize[3] = 3;
+  _commandsSize[4] = 2;
+  _commandsSize[6] = 2;
+  _commandsSize[7] = 259;
+  _commandsSize[8] = 18;
+  _commandsSize[9] = 3;
 }
 
 Network::~Network() {}
@@ -20,11 +29,9 @@ bool			Network::initSocket(int port)
 void			Network::addClient(MetaSocket<> *socket,
 					   std::list<Client *> &clientList)
 {
-  int			id = 0;
-
   if (socket == NULL)
     return ;
-  while (id < 255 && !_idArray[id])
+  for (int id = 0; id < 255 && !_idArray[id]; ++id)
     if (!_idArray[id]) {
       clientList.push_back(new Client(id, socket));
       _idArray[id] = true;

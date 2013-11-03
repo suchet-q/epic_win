@@ -10,6 +10,7 @@
 
 class		Resource
 {
+  std::array<bool, 255>		_idArray;
   std::list<Client *>	_clients;
   std::list<Room *>	_rooms;
   /*	std::list<Game *>	_games;*/
@@ -17,11 +18,11 @@ class		Resource
 public:
   Resource();
   ~Resource();
+
   /*	std::list<Game *> const &getGame();*/
-  void				addClient(int, MetaSocket<> *);
   std::list<Client *>		&getClients();
   bool				createRoom(Client *);
-  std::list<Room *>	&getRooms();
+  std::list<Room *>		&getRooms();
   void				createGame(int);
 };
 

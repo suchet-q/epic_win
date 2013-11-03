@@ -19,10 +19,6 @@ Client::Client(int id, MetaSocket<> *socket)
 
 Client::~Client() {}
 
-void			Client::addMsgSend(void *command, int size)
-{
-}
-
 MetaSocket<>	*Client::getSocket() const
 {
   return (this->_socket);

@@ -3,17 +3,12 @@
 
 Resource::Resource()
 {
-	for (int i = 0; i < 255; ++i)
-		this->_idRooms[i] = false; 
+  for (int i = 0; i < 255; ++i)
+    this->_idRooms[i] = false; 
 }
 
 
 Resource::~Resource() {}
-
-void		Resource::addClient(int id, MetaSocket<> *socket)
-{
-	this->_clients.push_back(new Client(id, socket));
-}
 
 std::list<Client *>	&Resource::getClients()
 {
@@ -22,25 +17,18 @@ std::list<Client *>	&Resource::getClients()
 
 bool		Resource::createRoom(Client *client)
 {
-	int		id = -1;
-
-	for (int i = 0; i < 255 && id != -1; ++i)
-		if (!this->_idRooms[i])
-		{
-			id = i;
-			this->_idRooms[i] = true;
-		}
-	if (id != -1)
-	{
-		this->_rooms.push_back(new Room(client->getID(), client));
-		return (true);
-	}
-	return (false);
+  for (int id = 1; id < 255 && !_idRooms[id]; ++id)
+    if (!_idRooms[id]) {
+      this->_rooms.push_back(new Room(id, client));
+      _idRooms[id] = true;
+      return true;
+    }
+  return false;
 }
 
 std::list<Room *>		&Resource::getRooms()
 {
-	return (this->_rooms);
+  return (this->_rooms);
 }
 
 void		Resource::createGame(int idClient)

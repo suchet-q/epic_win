@@ -50,7 +50,6 @@ public:
   std::list<t_cmd>	*getWriteBuffer() const;
   std::list<t_cmd>	*getReadBuffer() const;
   void		parseCommand(void *, unsigned int, std::map<char, unsigned int> &);
-  void		addMsgSend(void *, int);
   MetaSocket<>*	getSocket() const;
   int		getID() const;
   bool		getHost() const;

@@ -9,7 +9,6 @@
 #include		"Client.h"
 
 #define		CONTINUE	(0)
-//#define		DECO_CLIENT	(-1)
 #define		NEW_CLIENT	(-2)
 #define		ERROR		(-1)
 

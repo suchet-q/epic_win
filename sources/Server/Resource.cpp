@@ -17,10 +17,11 @@ std::list<Client *>	&Resource::getClients()
 
 bool		Resource::createRoom(Client *client)
 {
-  for (int id = 1; id < 255 && !_idRooms[id]; ++id)
-    if (!_idRooms[id]) {
+  for (int id = 1; id < 255 && !this->_idRooms[id]; ++id)
+    if (!this->_idRooms[id])
+	{
       this->_rooms.push_back(new Room(id, client));
-      _idRooms[id] = true;
+      this->_idRooms[id] = true;
       return true;
     }
   return false;

@@ -29,15 +29,23 @@ bool			Network::initSocket(int port)
 void			Network::addClient(MetaSocket<> *socket,
 					   std::list<Client *> &clientList)
 {
-  bool			accepted = false;
+
+	bool			accepted = false;
+	t_pnb_server	res;
+	t_cmd			cmd;
 
   std::cout << "adding client"<< std::endl;
   if (socket == NULL)
     return ;
   for (int id = 0; id < 255 && !accepted; ++id)
     if (!_idArray[id]) {
-      clientList.push_back(new Client(id, socket));
-      _idArray[id] = true;
+		res.id_client = id;
+		res.id_command = 0;
+		memcpy(cmd.cmd, &res, sizeof(res));
+		cmd.size = sizeof(res);
+		clientList.push_back(new Client(id, socket));
+		clientList.back()->getWriteBuffer()->push_back(cmd);
+		_idArray[id] = true;
       accepted = true;
     }
   std::cout << "client " << clientList.back()->getID() << " added" << std::endl;
@@ -99,15 +107,19 @@ bool			Network::recvCommandTCP(Client *client)
   char			tmp[512];
   int			width = 0;
 
-  if (width = client->getSocket()->Recv(reinterpret_cast<void *>(tmp), 512) <= 0)
+  if ((width = client->getSocket()->Recv(reinterpret_cast<void *>(tmp), 512)) <= 0)
     return (-1);
-  client->parseCommand(reinterpret_cast<void *>(tmp), width, _commandsSize);
+  std::cout << "width = " << width << std::endl;
+  client->parseCommand(reinterpret_cast<void *>(tmp), static_cast<unsigned int>(width), _commandsSize);
   return (0);
 }
 
 bool			Network::sendCommandTCP(Client *client)
 {
-  if (client->getSocket()->Send(client->getWriteBuffer()->front().cmd,
+	std::cout << "Sending command" << std::endl;
+  std::cout << client->getWriteBuffer()->size() << std::endl;
+
+	if (client->getSocket()->Send(client->getWriteBuffer()->front().cmd,
 				client->getWriteBuffer()->front().size) <= 0)
     return false;
   client->getWriteBuffer()->pop_front();

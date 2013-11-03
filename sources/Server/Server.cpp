@@ -8,6 +8,7 @@ bool			Server::init(int port)
 {
   if (!this->_network.initSocket(port))
     return false;
+  this->_executer.setResource(&this->_resources);
   return true;
 }
 
@@ -27,8 +28,10 @@ bool			Server::loop()
 		{
 			if (!(*it)->getReadBuffer()->empty())
 			{
+				std::cout << "je vais excuter la commande toi meme tu sais" << std::endl;
 				if (!this->_executer.executCommand((*it), (*it)->getReadBuffer()->front()))
 					error = true;
+				(*it)->getReadBuffer()->pop_front();
 			}
 		}
 	}

@@ -5,6 +5,7 @@
 #include		<array>
 
 #include		"MetaSocket.h"
+#include		"StructCommands.h"
 #include		"MetaSelect.h"
 #include		"Client.h"
 

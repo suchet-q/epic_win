@@ -10,11 +10,10 @@ Client::Client(int id, MetaSocket<> *socket)
   this->_infosClient.bonus = false;
   this->_infosClient.score = 0;
   this->_infosClient.hightScore = 0;
-  for (int i = 0; i <= 16; ++i)
-    this->_nickName[i] = '\0';
   for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
     this->_buffer.cmd[i] = -1;
   this->_buffer.size = 0;
+  this->_nickName = "unknown";
 }
 
 Client::~Client() {}
@@ -42,12 +41,12 @@ void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsig
     {
       if (cmdSize[this->_buffer.cmd[0]] - this->_buffer.size < size)
 	{
-	  memcpy(&this->_buffer.cmd[size - 1], buff, size);
+	  memcpy(&this->_buffer.cmd[size], buff, size);
 	  this->_buffer.size += size;
 	}
       else
 	{
-	  memcpy(&this->_buffer.cmd[size - 1], buff, cmdSize[this->_buffer.cmd[0]] - this->_buffer.size);
+	  memcpy(&this->_buffer.cmd[size], buff, cmdSize[this->_buffer.cmd[0]] - this->_buffer.size);
 	  this->_buffer.size = cmdSize[this->_buffer.cmd[0]];
 	  this->_readBuffer.push_back(this->_buffer);
 	  for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
@@ -56,10 +55,11 @@ void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsig
 	}
     }
   for (int i = 0; i < size; ++i) {
-    if (cmdSize[buff[i]] <= (size - 1) - i)
+    if (cmdSize[buff[i]] <= size - i)
       {
 	memcpy(this->_buffer.cmd, &buff[i], cmdSize[buff[i]]);
 	this->_buffer.size = cmdSize[buff[i]];
+	std::cout << "je fou une commande dans le buffer read" << std::endl;
 	this->_readBuffer.push_back(this->_buffer);
 	i += cmdSize[buff[i]];
 	this->_buffer.size = 0;
@@ -67,7 +67,7 @@ void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsig
     else
       {
 	memcpy(this->_buffer.cmd, &buff[i], (size - 1) - i);
-	this->_buffer.size = (size - 1) - i;
+	this->_buffer.size =  size- i;
 	i = size - 1;
       }
   }

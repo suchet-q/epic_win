@@ -4,7 +4,7 @@
 Resource::Resource()
 {
   for (int i = 0; i < 255; ++i)
-    this->_idRooms[i] = false; 
+    this->_idRooms[i] = false;
 }
 
 
@@ -20,9 +20,10 @@ bool		Resource::createRoom(Client *client)
   for (int id = 1; id < 255; ++id)
     if (!this->_idRooms[id])
       {
-	this->_rooms.push_back(new Room(id, client));
-	this->_idRooms[id] = true;
-	return true;
+		this->_rooms.push_back(new Room(id, client));
+		this->_idRooms[id] = true;
+		std::cout << "id de la room créé " << id << std::endl;
+		return true;
       }
   return false;
 }

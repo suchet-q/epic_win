@@ -1,11 +1,11 @@
 #pragma once
 
 /*send*/
-typedef	struct			s_pnd_server
+typedef	struct			s_pnb_server
 {
 	unsigned char		id_command;
 	unsigned char		id_client;
-}						t_pnd_server;
+}						t_pnb_server;
 
 
 /*send*/

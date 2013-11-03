@@ -6,21 +6,22 @@ Server::~Server() {}
 
 bool			Server::init(int port)
 {
-  if (!_network.initSocket(port))
+  if (!this->_network.initSocket(port))
     return false;
   return true;
 }
 
 bool			Server::loop()
 {
-  bool			error = false;
+	bool			error = false;
 
-  while (!error) {
-    _network.initSelect(_resources.getClients());
-    if (_network.Select(500))
-      _network.manageSocket(_resources.getClients());
-    else
-      error = true;
-  }
-  return true;
+	while (!error)
+	{
+		this->_network.initSelect(_resources.getClients());
+		if (this->_network.Select(500))
+			this->_network.manageSocket(this->_resources.getClients());
+		else
+			error = true;
+	}
+	return true;
 }

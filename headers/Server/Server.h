@@ -1,6 +1,4 @@
 #pragma once
-
-#include		<sys/select.h>
 #include		<iostream>
 #include		<string>
 #include		<list>

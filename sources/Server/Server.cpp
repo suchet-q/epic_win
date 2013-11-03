@@ -17,11 +17,20 @@ bool			Server::loop()
 
 	while (!error)
 	{
-		this->_network.initSelect(_resources.getClients());
+		this->_network.initSelect(this->_resources.getClients());
 		if (this->_network.Select(500))
 			this->_network.manageSocket(this->_resources.getClients());
 		else
 			error = true;
+		for (std::list<Client *>::iterator it = this->_resources.getClients().begin();
+				it != this->_resources.getClients().end(); ++it)
+		{
+			if (!(*it)->getReadBuffer()->empty())
+			{
+				if (!this->_executer.executCommand((*it), (*it)->getReadBuffer()->front()))
+					error = true;
+			}
+		}
 	}
 	return true;
 }

@@ -115,15 +115,20 @@ bool			Executer::execJNL(Client *client, t_cmd const &command)
 		plj.id_client = (*it)->getHost()->getID();
 		memcpy(plj.nick_name, (*it)->getHost()->getNickName().c_str(),
 	    (*it)->getHost()->getNickName().size());
+		if ((*it)->getHost()->getNickName().size() < 16)
+			plj.nick_name[(*it)->getHost()->getNickName().size()] = 0;
 		memcpy(answer.cmd, &plj, sizeof(t_plj_server));
 		client->getWriteBuffer()->push_back(answer);
 
 		for (std::list<Client *>::const_iterator itc = (*it)->getClient()->begin();
 			itc != (*it)->getClient()->end() && (*itc) != (*it)->getHost(); ++itc)
 		{
+			std::cout << "coucou" << std::endl;
 				plj.id_client = (*itc)->getID();
 				memcpy(plj.nick_name, (*it)->getHost()->getNickName().c_str(),
 				(*itc)->getNickName().size());
+				if ((*itc)->getNickName().size() < 16)
+					plj.nick_name[(*itc)->getNickName().size()] = 0;
 				memcpy(answer.cmd, &plj, sizeof(t_plj_server));
 				client->getWriteBuffer()->push_back(answer);
 		}

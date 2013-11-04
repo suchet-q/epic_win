@@ -97,7 +97,11 @@ bool			Network::manageSocket(std::list<Client *> &clientList)
 
     if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
 	&& recvCommandTCP(*it))
-      decoClient(clientList, it);
+	{
+		decoClient(clientList, it);
+		if (it == clientList.end())
+			break;
+	}
   }
   return (true);
 }

@@ -22,6 +22,7 @@ public:
   /*	std::list<Game *> const &getGame();*/
   std::list<Client *>		&getClients();
   bool				createRoom(Client *);
+  std::list<Room *>::iterator &deleteRoom(std::list<Room *>::iterator &);
   std::list<Room *>		&getRooms();
   void				createGame(int);
 };

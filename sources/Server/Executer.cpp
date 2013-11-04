@@ -71,7 +71,8 @@ bool			Executer::execJNL(Client *client, t_cmd const &command)
 	t_cmd			cmd;
 
 	memcpy(&jnl, command.cmd, sizeof(t_jnl_client));
-	for (std::list<Room *>::iterator it = this->_resource->getRooms().begin(); it != this->_resource->getRooms().end(); ++it)
+	for (std::list<Room *>::iterator it = this->_resource->getRooms().begin();
+			it != this->_resource->getRooms().end(); ++it)
 	{
 		if ((*it)->getID() == jnl.id_lobby)
 		{
@@ -115,12 +116,17 @@ bool			Executer::execCRL(Client *client, t_cmd const &command)
 		if (client->getNickName().size() < 16)
 			plj.nick_name[client->getNickName().size()] = '\0';
 		success = true;
+		std::cout << "je vais ajouter" << std::endl;
+		_resource->getRooms().back()->addClient(client);
+		_resource->getRooms().back()->setHost(client);
+		std::cout << "jai ajoute" << std::endl;
 	}
 	std::cout << "tmp.id_lobby = " << (int)tmp.id_lobby << std::endl;
 	memcpy(awnser.cmd, &tmp, sizeof(t_crl_server));
 	awnser.size = sizeof(t_crl_server);
 	client->getWriteBuffer()->push_back(awnser);
-	if (success) {
+	if (success)
+	{
 		memcpy(awnser.cmd, &plj, sizeof(t_plj_server));
 		awnser.size = sizeof(t_plj_server);
 		client->getWriteBuffer()->push_back(awnser);
@@ -210,13 +216,21 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 	tmp.id_client = lvl.id_client;
 	memcpy(awnser.cmd, &tmp, sizeof(t_lvl_server));
 	awnser.size = sizeof(t_lvl_server);
+	std::cout << "step 1" << std::endl;
 	for (it = _resource->getRooms().begin();
 		it != _resource->getRooms().end() && (*it)->getID() != lvl.id_lobby; ++it);
+	std::cout << "step 2" << std::endl;
 	if ((*it)->getID() == lvl.id_lobby)
 	{
-		for (itc = (*it)->getClient()->begin();
+ 		for (itc = (*it)->getClient()->begin();
 			itc != (*it)->getClient()->end() && (*itc)->getID() != lvl.id_client; ++itc);
-		if ((*itc)->getID() == lvl.id_client)
+
+		for (std::list<Client *>::iterator itx = (*it)->getClient()->begin();
+			itx != (*it)->getClient()->end(); ++itx) {
+				std::cout << "prout" << std::endl;
+		}
+
+		if (itc != (*it)->getClient()->end())
 		{
 			if ((*itc) == (*it)->getHost())
 			{
@@ -228,11 +242,14 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 					awnser.size = sizeof(t_lvl_server);
 					(*itc_c)->getWriteBuffer()->push_back(awnser);
 					itc_c = (*it)->getClient()->erase(itc_c);
+					if (itc_c == (*it)->getClient()->end())
+						break;
 				}
-				it = _resource->getRooms().erase(it);
+				it = _resource->deleteRoom(it);
 			}
 			else
 			{
+				std::cout << "step 6" << std::endl;
 				for (std::list<Client *>::iterator itc_c = (*it)->getClient()->begin();
 					itc_c != (*it)->getClient()->end(); ++itc_c)
 				{
@@ -243,5 +260,6 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 			}
 		}
 	}
+	std::cout << "return "<< std::endl;
 	return true;
 }

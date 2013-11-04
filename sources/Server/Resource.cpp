@@ -28,6 +28,13 @@ bool		Resource::createRoom(Client *client)
   return false;
 }
 
+std::list<Room *>::iterator &Resource::deleteRoom(std::list<Room *>::iterator &it)
+{
+	this->_idRooms[(*it)->getID()] = false;
+	it = this->_rooms.erase(it);
+	return (it);
+}
+
 std::list<Room *>		&Resource::getRooms()
 {
   return (this->_rooms);

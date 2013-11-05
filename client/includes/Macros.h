@@ -18,3 +18,9 @@
 #define		CMD_MSG		7
 #define		CMD_NMP		8
 #define		CMD_LVL		9
+#define		CMD_AFF		10
+#define		CMD_SCR		11
+#define		CMD_LIF		12
+#define		CMD_EVT		13
+#define		CMD_INP		14
+#define		CMD_IDT		15

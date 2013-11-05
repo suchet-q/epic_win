@@ -114,3 +114,43 @@ typedef	struct			s_lvl_client
 	unsigned char		id_lobby;
 	unsigned char		id_client;
 }						t_lvl_client;
+
+typedef struct			s_aff_server
+{
+	unsigned char		id_cmd;
+	unsigned char		type;
+	unsigned short		id_obj;
+	unsigned short		x;
+	unsigned short		y;
+}						t_aff_server;
+
+typedef struct			s_scr_server
+{
+	unsigned char		id_cmd;
+	unsigned short		score;
+}						t_scr_server;
+
+typedef struct			s_lif_server
+{
+	unsigned char		id_cmd;
+	unsigned char		life;
+}						t_lif_server;
+
+typedef struct			s_evt_server
+{
+	unsigned char		id_cmd;
+	unsigned char		event;
+}						t_evt_server;
+
+typedef struct			s_inp_client
+{
+	unsigned char		id_cmd;
+	unsigned char		id_client;
+	unsigned short		input;
+}						t_inp_client;
+
+typedef struct			s_idt_client
+{
+	unsigned char		id_cmd;
+	unsigned char		id_client;
+}						t_idt_client;

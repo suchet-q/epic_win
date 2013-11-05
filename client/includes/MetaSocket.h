@@ -89,4 +89,16 @@ public:
 	{
 		return (this->_socket.recvFrom(buff, size, sender));
 	}
+	struct sockaddr_in*	getServerSockaddr(char *ip, unsigned int port)
+	{
+        struct addrinfo hints, *res;
+		std::stringstream		ss;
+
+		ss << port;
+        memset(&hints, 0, sizeof hints);
+        hints.ai_family = AF_INET;                                                                                                                                               
+        hints.ai_socktype = SOCK_DGRAM;                                                                                                                                                                         
+        getaddrinfo(ip, ss.str(), &hints, &res);
+        return (res->ai_addr);
+	}
 };

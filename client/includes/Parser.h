@@ -29,6 +29,10 @@ class Parser
 	void		parseMSG(void *, int);
 	void		parseNMP(void *, int);
 	void		parseLVL(void *, int);
+	void		parseAFF(void *, int);
+	void		parseSCR(void *, int);
+	void		parseLIF(void *, int);
+	void		parseEVT(void *, int);
 public:
 	Parser();
 	~Parser();
@@ -42,5 +46,7 @@ public:
 	void		addNMP(unsigned char, std::string const &);
 	void		addMSG(unsigned char, unsigned char, std::string const &);
 	void		addLVL(unsigned char, unsigned char);
+	void		addINP(unsigned char, unsigned short);
+	void		addIDT(unsigned char);
 };
 

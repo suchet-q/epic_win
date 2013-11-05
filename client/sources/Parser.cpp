@@ -12,6 +12,10 @@ Parser::Parser(void)
 	this->_functions[CMD_MSG] = &Parser::parseMSG;
 	this->_functions[CMD_LVL] = &Parser::parseLVL;
 	this->_functions[CMD_NMP] = &Parser::parseNMP;
+	this->_functions[CMD_AFF] = &Parser::parseAFF;
+	this->_functions[CMD_SCR] = &Parser::parseSCR;
+	this->_functions[CMD_LIF] = &Parser::parseLIF;
+	this->_functions[CMD_EVT] = &Parser::parseEVT;
 
 	this->_castArray[CMD_PNB] = sizeof(t_pnb_server);
 	this->_castArray[CMD_NBP] = sizeof(t_nbp_server);
@@ -23,6 +27,10 @@ Parser::Parser(void)
 	this->_castArray[CMD_MSG] = sizeof(t_msg_server);
 	this->_castArray[CMD_LVL] = sizeof(t_lvl_server);
 	this->_castArray[CMD_NMP] = sizeof(t_nmp_server);
+	this->_castArray[CMD_AFF] = sizeof(t_aff_server);
+	this->_castArray[CMD_SCR] = sizeof(t_scr_server);
+	this->_castArray[CMD_LIF] = sizeof(t_lif_server);
+	this->_castArray[CMD_EVT] = sizeof(t_evt_server);
 
 	this->_cmdSize = 0;
 }
@@ -74,6 +82,73 @@ void		Parser::parse(void* command, int size)
 			(this->*this->_functions[cmd[0]])(cmd, cmd_size);
 	}
 	
+}
+
+void		Parser::parseAFF(void *command, int size)
+{
+	t_aff_server					cmd;
+	std::list<boost::any>			args;
+	std::list<cFunctor>::iterator	it;
+
+	std::cout << "Executing AFF on " << size << " bytes" << std::endl;
+	if (size == sizeof(t_aff_server) && this->_callbacks.find(CMD_AFF) != this->_callbacks.end())
+	{
+		memcpy(&cmd, command, size);
+		args.push_back(cmd.type);
+		args.push_back(cmd.id_obj);
+		args.push_back(cmd.x);
+		args.push_back(cmd.y);
+		for (it = this->_callbacks[CMD_AFF].begin(); it != this->_callbacks[CMD_AFF].end(); ++it)
+			(*it)(args);
+	}
+}
+
+void		Parser::parseSCR(void *command, int size)
+{
+	t_scr_server					cmd;
+	std::list<boost::any>			args;
+	std::list<cFunctor>::iterator	it;
+
+	std::cout << "Executing SCR on " << size << " bytes" << std::endl;
+	if (size == sizeof(t_scr_server) && this->_callbacks.find(CMD_SCR) != this->_callbacks.end())
+	{
+		memcpy(&cmd, command, size);
+		args.push_back(cmd.score);
+		for (it = this->_callbacks[CMD_SCR].begin(); it != this->_callbacks[CMD_SCR].end(); ++it)
+			(*it)(args);
+	}
+}
+
+void		Parser::parseLIF(void *command, int size)
+{
+	t_lif_server					cmd;
+	std::list<boost::any>			args;
+	std::list<cFunctor>::iterator	it;
+
+	std::cout << "Executing LIF on " << size << " bytes" << std::endl;
+	if (size == sizeof(t_lif_server) && this->_callbacks.find(CMD_LIF) != this->_callbacks.end())
+	{
+		memcpy(&cmd, command, size);
+		args.push_back(cmd.life);
+		for (it = this->_callbacks[CMD_LIF].begin(); it != this->_callbacks[CMD_LIF].end(); ++it)
+			(*it)(args);
+	}
+}
+
+void		Parser::parseEVT(void *command, int size)
+{
+	t_evt_server					cmd;
+	std::list<boost::any>			args;
+	std::list<cFunctor>::iterator	it;
+
+	std::cout << "Executing EVT on " << size << " bytes" << std::endl;
+	if (size == sizeof(t_evt_server) && this->_callbacks.find(CMD_EVT) != this->_callbacks.end())
+	{
+		memcpy(&cmd, command, size);
+		args.push_back(cmd.event);
+		for (it = this->_callbacks[CMD_EVT].begin(); it != this->_callbacks[CMD_EVT].end(); ++it)
+			(*it)(args);
+	}
 }
 
 void		Parser::parsePNB(void *command, int size)
@@ -350,4 +425,27 @@ void		Parser::addLVL(unsigned char idClient, unsigned char idLobby)
 	cmd->id_client = idClient;
 	cmd->id_lobby = idLobby;
 	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_lvl_client)));
+}
+
+void		Parser::addINP(unsigned char idClient, unsigned short input)
+{
+	t_inp_client	*cmd;
+
+	std::cout << "Queued INP" << std::endl;
+	cmd = new t_inp_client;
+	cmd->id_cmd = CMD_INP;
+	cmd->id_client = idClient;
+	cmd->input = input;
+	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_inp_client)));
+}
+
+void		Parser::addIDT(unsigned char idClient)
+{
+	t_idt_client	*cmd;
+
+	std::cout << "Queued IDT" << std::endl;
+	cmd = new t_idt_client;
+	cmd->id_cmd = CMD_IDT;
+	cmd->id_client = idClient;
+	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_inp_client)));
 }

@@ -3,16 +3,18 @@
 GameSocket::GameSocket(void)
 {
 	this->_tcpRunning = false;
+	this->_udpRunning = false;
 }
 
 GameSocket::~GameSocket(void)
 {
 }
 
-void			GameSocket::setValues(std::string const &ip, int port)
+void			GameSocket::setValues(std::string const &ip, int port, int udpPort)
 {
 	this->_ip = ip;
 	this->_port = port;
+	this->_udpPort = udpPort;
 }
 
 bool			GameSocket::connectTCP()
@@ -24,6 +26,26 @@ bool			GameSocket::connectTCP()
 			this->_tcpRunning = true;
 	}
 	return (this->_tcpRunning);
+}
+
+bool			GameSocket::connectUDP()
+{
+	if (!(this->_udpRunning))
+	{
+		this->_socket.init(UDP);
+		if (this->_socket.Bind(const_cast<char *>(this->_ip.c_str()), this->_udpPort))
+			this->_udpRunning = true;
+	}
+	return (this->_udpRunning);
+}
+
+void			GameSocket::disconnectUDP()
+{
+	if (this->_udpRunning)
+	{
+		this->_socket.Close();
+		this->_udpRunning = false;
+	}
 }
 
 void			GameSocket::disconnectTCP()

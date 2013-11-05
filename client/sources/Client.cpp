@@ -19,7 +19,7 @@ bool		Client::launch(std::string const &ip, int port)
 		std::cerr << "[Client::launch] - Couldn't open render window" << std::endl;
 		return (false);
 	}
-	this->_socket.setValues(ip, port);
+	this->_socket.setValues(ip, port, 4242);
 	menu.loadResources(&(this->_win), this->_parser);
 	if (!(this->_socket.connectTCP()))
 	  {

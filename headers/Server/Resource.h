@@ -10,7 +10,6 @@
 
 class		Resource
 {
-  std::array<bool, 255>		_idArray;
   std::list<Client *>	_clients;
   std::list<Room *>	_rooms;
   /*	std::list<Game *>	_games;*/

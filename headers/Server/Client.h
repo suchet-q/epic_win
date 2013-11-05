@@ -10,6 +10,13 @@
 
 # define	GREATEST_COMMAND_SIZE	(259)
 
+enum		Status
+{
+	CONNECTED,
+	TO_LEAVE,
+	TO_DECO
+};
+
 enum		Weapons
 {
   MISSIL,
@@ -36,6 +43,7 @@ class		Client
 private:
   int		_id;
   bool		_host;
+  Status	_status;
   std::string	_nickName;
   t_infos_game	_infosClient;
   MetaSocket<>	*_socket;
@@ -47,6 +55,8 @@ public:
   Client(int, MetaSocket<> *);
   ~Client();
 
+  Status			getStatus() const;
+  void				setStatus(Status);
   std::list<t_cmd>	*getWriteBuffer() const;
   std::list<t_cmd>	*getReadBuffer() const;
   void		parseCommand(void *, unsigned int, std::map<char, unsigned int> &);

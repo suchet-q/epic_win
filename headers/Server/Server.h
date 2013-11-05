@@ -22,5 +22,6 @@ public:
   ~Server();
 
   bool			init(int);
+  void			checkDecoClient(std::list<Client *> &to_deco);
   bool			loop();
 };

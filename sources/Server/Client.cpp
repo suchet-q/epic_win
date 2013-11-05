@@ -18,6 +18,16 @@ Client::Client(int id, MetaSocket<> *socket)
 
 Client::~Client() {}
 
+Status			Client::getStatus() const
+{
+	return (this->_status);
+}
+
+void			Client::setStatus(Status status)
+{
+	this->_status = status;
+}
+
 MetaSocket<>	*Client::getSocket() const
 {
   return (this->_socket);

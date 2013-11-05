@@ -46,20 +46,17 @@ void			Network::addClient(MetaSocket<> *socket,
 		clientList.push_back(new Client(id, socket));
 		clientList.back()->getWriteBuffer()->push_back(cmd);
 		_idArray[id] = true;
+		clientList.back()->setStatus(CONNECTED);
       accepted = true;
     }
   std::cout << "client " << clientList.back()->getID() << " added" << std::endl;
 }
 
 void			Network::decoClient(std::list<Client *> &clientList,
-					    std::list<Client *>::iterator &it)
-{
-  _idArray[(*it)->getID()] = false;
-  std::cout << "deleting client " << (*it)->getID() << std::endl;
-  delete (*it)->getSocket();
-  delete *it;
-  it = clientList.erase(it);
-  std::cout << "client deleted" << std::endl;
+					    std::list<Client *>::iterator &it, std::list<Client *> &to_disconnect)
+{	
+	 _idArray[(*it)->getID()] = false;
+	 to_disconnect.push_back((*it));
 }
 
 void			Network::initSelect(std::list<Client *> const &clientList)
@@ -83,7 +80,7 @@ bool			Network::Select(unsigned int timeval)
   return true;
 }
 
-bool			Network::manageSocket(std::list<Client *> &clientList)
+bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *> &to_disconnect)
 {
   if (_select.fdIsset(_socket, &_fdRead))
     addClient(_socket.Accept(), clientList);
@@ -98,7 +95,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList)
     if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
 	&& recvCommandTCP(*it))
 	{
-		decoClient(clientList, it);
+		decoClient(clientList, it, to_disconnect);
 		if (it == clientList.end())
 			break;
 	}
@@ -122,7 +119,8 @@ bool			Network::sendCommandTCP(Client *client)
 {
 	std::cout << "Sending command" << std::endl;
   std::cout << client->getWriteBuffer()->size() << std::endl;
-
+  if (client->getStatus() == TO_LEAVE)
+		client->setStatus(TO_DECO);
 	if (client->getSocket()->Send(client->getWriteBuffer()->front().cmd,
 				client->getWriteBuffer()->front().size) <= 0)
     return false;

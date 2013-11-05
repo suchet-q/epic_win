@@ -8,6 +8,7 @@
 #include		"StructCommands.h"
 #include		"MetaSelect.h"
 #include		"Client.h"
+#include		"Resource.h"
 
 #define		CONTINUE	(0)
 #define		NEW_CLIENT	(-2)
@@ -33,8 +34,8 @@ public:
 
   bool			initSocket(int);
   void			addClient(MetaSocket<>*, std::list<Client*>&);
-  void			decoClient(std::list<Client*>&, std::list<Client*>::iterator&);
+  void			decoClient(std::list<Client*>&, std::list<Client*>::iterator&, std::list<Client *> &to_disconnect);
   void			initSelect(std::list<Client*> const&);
   bool			Select(unsigned int);
-  bool			manageSocket(std::list<Client *>&);
+  bool			manageSocket(std::list<Client *>&, std::list<Client *> &to_disconnect);
 };

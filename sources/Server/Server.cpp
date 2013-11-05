@@ -46,13 +46,13 @@ void			Server::checkDecoClient(std::list<Client *> &to_deco)
 		it = clientList.erase(it);
 		std::cout << "client deleted" << std::endl;*/
 	}
+	to_deco.clear();
 }
 
 bool			Server::loop()
 {
 	bool			error = false;
 	std::list<Client *>	buff;
-	bool			end_for;
 
 	while (!error)
 	{
@@ -61,10 +61,9 @@ bool			Server::loop()
 			this->_network.manageSocket(this->_resources.getClients(), buff);
 		else
 			error = true;
-		end_for = false;
 		this->checkDecoClient(buff);
 		for (std::list<Client *>::iterator it = this->_resources.getClients().begin();
-				!end_for && it != this->_resources.getClients().end(); ++it)
+				it != this->_resources.getClients().end(); ++it)
 		{
 			if ((*it)->getStatus() == TO_DECO)
 			{
@@ -74,7 +73,7 @@ bool			Server::loop()
 				it = this->_resources.getClients().erase(it);
 				std::cout << "client deleted" << std::endl;
 				if (it == this->_resources.getClients().end())
-					end_for = true;
+					break;
 			}
 			else if (!(*it)->getReadBuffer()->empty())
 			{

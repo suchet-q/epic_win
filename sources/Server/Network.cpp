@@ -55,7 +55,7 @@ void			Network::addClient(MetaSocket<> *socket,
 void			Network::decoClient(std::list<Client *> &clientList,
 					    std::list<Client *>::iterator &it, std::list<Client *> &to_disconnect)
 {	
-	 _idArray[(*it)->getID()] = false;
+//	 _idArray[(*it)->getID()] = false;
 	 to_disconnect.push_back((*it));
 }
 

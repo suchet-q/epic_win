@@ -13,6 +13,12 @@ Network::Network()
   _commandsSize[7] = 259;
   _commandsSize[8] = 18;
   _commandsSize[9] = 3;
+  _commandsSize[10] = 8;
+  _commandsSize[11] = 3;
+  _commandsSize[12] = 2;
+  _commandsSize[13] = 2;
+  _commandsSize[14] = 4;
+  _commandsSize[15] = 2;
 }
 
 Network::~Network() {}

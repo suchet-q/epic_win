@@ -23,14 +23,21 @@ enum		Weapons
   LASER
 };
 
-struct		t_infos_game
+enum		StatusInGame
+{
+	READY,
+	DECO
+};
+
+typedef struct	s_infos_client
 {
   int		life;
   Weapons	weapon;
   bool		bonus;
   int		score;
   int		hightScore;
-};
+  StatusInGame	status;	
+}				t_infos_client;
 
 struct		t_cmd
 {
@@ -45,7 +52,7 @@ private:
   bool		_host;
   Status	_status;
   std::string	_nickName;
-  t_infos_game	_infosClient;
+  t_infos_client	*_infosClient;
   MetaSocket<>	*_socket;
   t_cmd		_buffer;
   std::list<t_cmd>	_writeBuffer;
@@ -54,7 +61,6 @@ private:
 public:
   Client(int, MetaSocket<> *);
   ~Client();
-
   Status			getStatus() const;
   void				setStatus(Status);
   std::list<t_cmd>	*getWriteBuffer() const;
@@ -66,5 +72,6 @@ public:
   void		setHost(bool);
   void		setNickName(const char *);
   std::string const	&getNickName() const;
-  t_infos_game	*getInfosClient() const;
+  t_infos_client	*getInfosClient() const;
+  void			setInfosClient();
 };

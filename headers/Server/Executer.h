@@ -24,10 +24,4 @@ public:
 	bool			execMSG(Client *client, t_cmd const &);
 	bool			execNMP(Client *client, t_cmd const &);
 	bool			execLVL(Client *client, t_cmd const &);
-	bool			execAFF(Client *client, t_cmd const &);
-	bool			execSCR(Client *client, t_cmd const &);
-	bool			execLIF(Client *client, t_cmd const &);
-	bool			execEVT(Client *client, t_cmd const &);
-	bool			execINP(Client *client, t_cmd const &);
-	bool			execIDT(Client *client, t_cmd const &);
 };

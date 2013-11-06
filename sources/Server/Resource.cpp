@@ -5,6 +5,8 @@ Resource::Resource()
 {
   for (int i = 0; i < 255; ++i)
     this->_idRooms[i] = false;
+  for (int i = 0; i < 255; ++i)
+    this->_idGames[i] = false;
 }
 
 
@@ -15,6 +17,21 @@ std::list<Client *>	&Resource::getClients()
 	return (this->_clients);
 }
 
+bool				Resource::checkIfGameIsPossible()
+{
+	for (int id = 1; id < 255; ++id)
+		if (!this->_idGames[id])
+			return true;
+	return false;
+}
+
+std::list<Game *>::iterator &Resource::deleteGame(std::list<Game *>::iterator &it)
+{
+	this->_idGames[(*it)->getID()] = false;
+	it = this->_games.erase(it);
+	return (it);
+}
+
 bool		Resource::createRoom(Client *client)
 {
   for (int id = 1; id < 255; ++id)
@@ -22,7 +39,6 @@ bool		Resource::createRoom(Client *client)
       {
 		this->_rooms.push_back(new Room(id, client));
 		this->_idRooms[id] = true;
-		std::cout << "id de la room créé " << id << std::endl;
 		return true;
       }
   return false;
@@ -40,22 +56,31 @@ std::list<Room *>		&Resource::getRooms()
   return (this->_rooms);
 }
 
-void		Resource::createGame(int idClient)
+bool		Resource::createGame(std::list<Client *> *clients)
 {
-	int		find = false;
-
-	for (std::list<Room *>::iterator it = this->_rooms.begin();
-			it != this->_rooms.end() && find == false; ++it)
-		if ((*it)->getHost()->getID() == idClient)
-			{
-				it = this->_rooms.erase(it);
-				find = true;
-			}
-	/*cretae thread + rajoute dans la list des game*/
+	for (int id = 1; id < 255; ++id)
+		if (!this->_idGames[id])
+		{
+			this->_games.push_back(new Game(id, clients));
+			this->_idGames[id] = true;
+			return (true);
+		}
+	/*create thread*/
+	return (false);
 }
 
-/*std::list<Game *> const &Resource::getGame()
+std::list<Client *> *Resource::getInGameClients()
+{
+	return (&this->_inGame);
+}
+
+std::list<Client *> *Resource::getNotInGameClients()
+{
+	return (&this->_notInGame);
+}
+
+std::list<Game *>	&Resource::getGame()
 {
 	return (this->_games);
-}*/
+}
 

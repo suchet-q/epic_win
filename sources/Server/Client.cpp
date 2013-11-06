@@ -5,11 +5,7 @@ Client::Client(int id, MetaSocket<> *socket)
   this->_socket = socket;
   this->_id = id;
   this->_host = false;
-  this->_infosClient.life = 0;
-  this->_infosClient.weapon = MISSIL;
-  this->_infosClient.bonus = false;
-  this->_infosClient.score = 0;
-  this->_infosClient.hightScore = 0;
+  this->_infosClient = NULL;
   for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
     this->_buffer.cmd[i] = -1;
   this->_buffer.size = 0;
@@ -17,6 +13,18 @@ Client::Client(int id, MetaSocket<> *socket)
 }
 
 Client::~Client() {}
+
+/*ne pas oublie de delete infos_client quand la gameet fini*/
+void			Client::setInfosClient()
+{
+	this->_infosClient = new t_infos_client;
+	this->_infosClient->life = 3;
+	this->_infosClient->weapon = MISSIL;
+	this->_infosClient->bonus = false;
+	this->_infosClient->score = 0;
+	this->_infosClient->hightScore = 0;
+	this->_infosClient->status = READY;
+}
 
 Status			Client::getStatus() const
 {
@@ -64,7 +72,7 @@ void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsig
 	  this->_buffer.size = 0;
 	}
     }
-  for (int i = 0; i < size; ++i) {
+  for (unsigned int i = 0; i < size; ++i) {
     if (cmdSize[buff[i]] <= size - i)
       {
 	memcpy(this->_buffer.cmd, &buff[i], cmdSize[buff[i]]);
@@ -108,7 +116,7 @@ void	Client::setNickName(const char *nickName)
   this->_nickName = nickName;
 }
 
-t_infos_game	*Client::getInfosClient() const
+t_infos_client	*Client::getInfosClient() const
 {
-  return (const_cast<t_infos_game *>(&this->_infosClient));
+  return (const_cast<t_infos_client *>(this->_infosClient));
 }

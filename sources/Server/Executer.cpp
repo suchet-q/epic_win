@@ -11,6 +11,12 @@ Executer::Executer()
 	this->_func[7] = &Executer::execMSG;
 	this->_func[8] = &Executer::execNMP;
 	this->_func[9] = &Executer::execLVL;
+	this->_func[10] = &Executer::execAFF;
+	this->_func[11] = &Executer::execSCR;
+	this->_func[12] = &Executer::execLIF;
+	this->_func[13] = &Executer::execEVT;
+	this->_func[14] = &Executer::execINP;
+	this->_func[15] = &Executer::execIDT;
 }
 
 Executer::~Executer()
@@ -185,6 +191,7 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 	t_cmd			cmd;
 	bool			succeed = false;
 
+	/*lauch game if succeed, succeed = true*/
 	succeed = this->_resource->checkIfGameIsPossible();
 	memcpy(&stl, command.cmd, sizeof(t_jnl_client));
 	for (; it != this->_resource->getRooms().end(); ++it)
@@ -206,7 +213,8 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 			if (succeed == true)
 			{
 				this->_resource->createGame((*it)->getClient());
-//				*this->_resource->getInGameClients() = *this->_resource->getInGameClients() + *((*it)->getClient());
+//		*this->_resource->getInGameClients() = *this->_resource->getInGameClients() + *((*it)->getClient());
+
 				it = this->_resource->getRooms().erase(it);
 				return (true);
 			}
@@ -299,4 +307,75 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 		}
 	}
 	return true;
+}
+
+bool			Executer::execAFF(Client *client, t_cmd const &command)
+{
+	t_aff_server	aff;
+	t_cmd			final;
+
+	aff.id_cmd = 10;
+	aff.id_obj = 0;
+	aff.type = 0;
+	aff.x = 0;
+	aff.y = 0;
+	memcpy(final.cmd, &aff, sizeof(t_aff_server));
+	final.size = sizeof(t_aff_server);
+	client->getWriteBuffer()->push_back(final);
+	return (true);
+}
+
+bool			Executer::execSCR(Client *client, t_cmd const &command)
+{
+	t_scr_server	scr;
+	t_cmd			final;
+
+	scr.id_cmd = 11;
+	scr.score = 1337;
+	memcpy(final.cmd, &scr, sizeof(t_scr_server));
+	final.size = sizeof(t_scr_server);
+	client->getWriteBuffer()->push_back(final);
+	return (true);
+}
+
+bool			Executer::execLIF(Client *client, t_cmd const &command)
+{
+	t_lif_server	lif;
+	t_cmd			final;
+
+	lif.id_cmd = 12;
+	lif.life = 100;
+	memcpy(final.cmd, &lif, sizeof(t_lif_server));
+	final.size = sizeof(t_lif_server);
+	client->getWriteBuffer()->push_back(final);
+	return (true);
+}
+
+bool			Executer::execEVT(Client *client, t_cmd const &command)
+{
+	t_evt_server	evt;
+	t_cmd			final;
+
+	evt.id_cmd = 13;
+	evt.event = 0;
+	memcpy(final.cmd, &evt, sizeof(t_evt_server));
+	final.size = sizeof(t_evt_server);
+	client->getWriteBuffer()->push_back(final);
+	return (true);
+}
+
+bool			Executer::execINP(Client *client, t_cmd const &command)
+{
+	t_inp_client	inp;
+
+	memcpy(&inp, command.cmd, sizeof(t_inp_client));
+	return (true);
+}
+
+bool			Executer::execIDT(Client *client, t_cmd const &command)
+{
+	t_idt_client	idt;
+
+	memcpy(&idt, command.cmd, sizeof(t_idt_client));
+	return (true);
 }

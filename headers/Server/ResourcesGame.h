@@ -7,12 +7,12 @@
 class ResourcesGame
 {
 private:
-	std::list<Client *>	*_clients;
+	std::list<Client *>	_clients;
 public:
 	ResourcesGame(std::list<Client *> *);
 	ResourcesGame();
 	~ResourcesGame();
 	std::list<Client *>		&getClients();
-	void		setListClients(std::list<Client *> *);
+	void		setListClients(std::list<Client *> &);
 };
 

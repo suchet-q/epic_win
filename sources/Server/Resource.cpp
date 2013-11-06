@@ -58,14 +58,20 @@ std::list<Room *>		&Resource::getRooms()
 
 bool		Resource::createGame(std::list<Client *> *clients)
 {
+	MetaThreader<Game, void>		*th;
+	Game							*game;
+	
 	for (int id = 1; id < 255; ++id)
 		if (!this->_idGames[id])
 		{
-			this->_games.push_back(new Game(id, clients));
+			game = new Game(id, clients);
+			th = new MetaThreader<Game, void>;
+			game->setThread(th);
+			th->start(&Game::startGame, game, NULL);
+			this->_games.push_back(game);
 			this->_idGames[id] = true;
 			return (true);
 		}
-	/*create thread*/
 	return (false);
 }
 

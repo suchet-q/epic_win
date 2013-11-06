@@ -7,7 +7,7 @@
 #include	"Room.h"
 #include	"MetaSocket.h"
 #include	"Game.h"
-/*#include	"MateThread.h"*/
+#include	"MetaThreader.hpp"
 
 class		Resource
 {
@@ -22,15 +22,15 @@ public:
   Resource();
   ~Resource();
 
-  std::list<Game *>		&getGame();
-  std::list<Game *>::iterator &deleteGame(std::list<Game *>::iterator &);
-  std::list<Client *>		&getClients();
-  bool				createRoom(Client *);
-  std::list<Room *>::iterator &deleteRoom(std::list<Room *>::iterator &);
-  std::list<Room *>		&getRooms();
-  bool				checkIfGameIsPossible();
-  bool				createGame(std::list<Client *> *);
-  std::list<Client *> *getInGameClients();
-  std::list<Client *> *getNotInGameClients();
+  std::list<Game *>				&getGame();
+  std::list<Game *>::iterator	&deleteGame(std::list<Game *>::iterator &);
+  std::list<Client *>			&getClients();
+  bool							createRoom(Client *);
+  std::list<Room *>::iterator	&deleteRoom(std::list<Room *>::iterator &);
+  std::list<Room *>				&getRooms();
+  bool							checkIfGameIsPossible();
+  bool							createGame(std::list<Client *> *);
+  std::list<Client *> *			getInGameClients();
+  std::list<Client *> *			getNotInGameClients();
 };
 

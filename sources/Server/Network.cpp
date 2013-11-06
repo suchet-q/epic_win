@@ -32,6 +32,14 @@ bool			Network::initSocket(int port)
   return true;
 }
 
+bool			Network::initSocketUDP(int port)
+{
+	if (!this->_socket.init(UDP)
+		|| !this->_socket.Bind("127.0.0.1", port))
+		return (false);
+	return (true);
+}
+
 void			Network::addClient(MetaSocket<> *socket,
 					   std::list<Client *> &clientList)
 {
@@ -115,10 +123,10 @@ bool			Network::recvCommandTCP(Client *client)
   int			width = 0;
 
   if ((width = client->getSocket()->Recv(reinterpret_cast<void *>(tmp), 512)) <= 0)
-    return (-1);
+    return (false);
   std::cout << "width = " << width << std::endl;
   client->parseCommand(reinterpret_cast<void *>(tmp), static_cast<unsigned int>(width), _commandsSize);
-  return (0);
+  return (true);
 }
 
 bool			Network::sendCommandTCP(Client *client)
@@ -134,4 +142,42 @@ bool			Network::sendCommandTCP(Client *client)
   return true;
 }
 
+bool			Network::recvCommandUDP(Client *client)
+{
+	char		tmp[512];
 
+	this->_udpSocket.recvFrom(&tmp, 512, client->getSockAddr());
+	return true;
+}
+
+bool			Network::sendCommandUDP(Client *client)
+{
+	this->_udpSocket.sendTo(client->getWriteBufferUDP(), 8192, client->getSockAddr());
+	return true;
+}
+
+void			Network::initSelectUDP() 
+{
+	_select.fdZero(&_fdWrite);
+	_select.fdZero(&_fdRead);
+	_select.fdSet(_udpSocket, &_fdRead);
+}
+
+bool			Network::manageSocketUDP(std::list<Client *> &clientList) 
+{
+
+  for (std::list<Client *>::iterator it = clientList.begin();
+       it != clientList.end(); ++it) {
+    if (_select.fdIsset(this->_udpSocket, &_fdRead)
+	&& recvCommandUDP(*it))
+	{
+		/*decoClient(clientList, it, to_disconnect);
+		if (it == clientList.end())
+			break;*/
+	}
+	if ((*it)->getWriteBufferUDP()[0] != 0)
+      sendCommandUDP(*it);
+	
+  }
+  return (true);
+}

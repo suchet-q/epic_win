@@ -14,6 +14,7 @@ Game::~Game() {}
 bool		Game::startGame()
 {
 	/*identification verifier nchanger status dans infos client puis lancer la game*/
+	/*appel de methode init etc... et la loop de la game*/
 	return (true);
 }
 

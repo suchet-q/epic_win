@@ -9,8 +9,39 @@ bool			Server::init(int port)
   if (!this->_network.initSocket(port))
     return false;
   this->_executer.setResource(&this->_resources);
+  for (int i = 0; i < 255; ++i)
+	_idArray[i] = false; 
   return true;
 }
+
+void			Server::addClient(MetaSocket<> *sockClient)
+{
+	Client		*newClient;
+	t_pnb_server	res;
+	t_cmd			cmd;
+	bool			accepted = false;
+
+	if (sockClient == NULL)
+	    return ;
+	for (int id = 0; id < 255 && !accepted; ++id)
+		if (!_idArray[id]) {
+			res.id_client = id;
+			res.id_command = 0;
+			memcpy(cmd.cmd, &res, sizeof(res));
+			cmd.size = sizeof(res);
+			newClient = new Client(id, sockClient);
+			newClient->getWriteBuffer()->push_back(cmd);
+			newClient->setStatus(CONNECTED);
+			this->_resources.getClients().push_back(newClient);
+			_idArray[id] = true;
+		    accepted = true;
+	    }
+}
+
+//void			decoClient(std::list<Client *>::iterator &to_del)
+//{
+//
+//}
 
 void			Server::checkDecoClient(std::list<Client *> &to_deco)
 {
@@ -34,12 +65,13 @@ void			Server::checkDecoClient(std::list<Client *> &to_deco)
 			lvl.id_client = (*it)->getID();
 			memcpy(cmd.cmd, &lvl, sizeof(lvl));
 			cmd.size = sizeof(lvl);
-			(*it)->getWriteBuffer()->clear();
 			this->_executer.execLVL((*it), cmd);
-			(*it)->setStatus(TO_LEAVE);
+			(*it)->getWriteBuffer()->clear();
+			(*it)->setStatus(TO_DECO);
 		}
 		else
 			(*it)->setStatus(TO_DECO);
+		_idArray[(*it)->getID()] = false;
 /*		std::cout << "deleting client " << (*it)->getID() << std::endl;
 		delete (*it)->getSocket();
 		delete *it;
@@ -52,16 +84,24 @@ void			Server::checkDecoClient(std::list<Client *> &to_deco)
 bool			Server::loop()
 {
 	bool			error = false;
-	std::list<Client *>	buff;
+	std::list<Client *>	to_deco;
+	MetaSocket<>	*added = NULL;
 
 	while (!error)
 	{
 		this->_network.initSelect(this->_resources.getClients());
 		if (this->_network.Select(500))
-			this->_network.manageSocket(this->_resources.getClients(), buff);
+			this->_network.manageSocket(this->_resources.getClients(), to_deco, &added);
 		else
 			error = true;
-		this->checkDecoClient(buff);
+		if (added != NULL)
+		{
+			std::cout << "adding client" << std::endl;
+			this->addClient(added);
+			std::cout << "client added" << std::endl;
+
+		}
+		this->checkDecoClient(to_deco);
 		for (std::list<Client *>::iterator it = this->_resources.getClients().begin();
 				it != this->_resources.getClients().end(); ++it)
 		{
@@ -83,6 +123,7 @@ bool			Server::loop()
 				(*it)->getReadBuffer()->pop_front();
 			}
 		}
+				added = NULL;
 	}
 	return true;
 }

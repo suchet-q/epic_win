@@ -2,9 +2,6 @@
 
 Network::Network()
 {
-  for (int i = 0; i < 255; ++i)
-    _idArray[i] = false; 
-
   _commandsSize[1] = 1;
   _commandsSize[2] = 1;
   _commandsSize[3] = 3;
@@ -36,7 +33,7 @@ void			Network::addClient(MetaSocket<> *socket,
 					   std::list<Client *> &clientList)
 {
 
-	bool			accepted = false;
+/*	bool			accepted = false;
 	t_pnb_server	res;
 	t_cmd			cmd;
 
@@ -55,15 +52,9 @@ void			Network::addClient(MetaSocket<> *socket,
 		clientList.back()->setStatus(CONNECTED);
       accepted = true;
     }
-  std::cout << "client " << clientList.back()->getID() << " added" << std::endl;
+  std::cout << "client " << clientList.back()->getID() << " added" << std::endl;*/
 }
 
-void			Network::decoClient(std::list<Client *> &clientList,
-					    std::list<Client *>::iterator &it, std::list<Client *> &to_disconnect)
-{	
-	 _idArray[(*it)->getID()] = false;
-	 to_disconnect.push_back((*it));
-}
 
 void			Network::initSelect(std::list<Client *> const &clientList)
 {
@@ -86,10 +77,14 @@ bool			Network::Select(unsigned int timeval)
   return true;
 }
 
-bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *> &to_disconnect)
+bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *> &to_disconnect, MetaSocket<> **added)
 {
   if (_select.fdIsset(_socket, &_fdRead))
-    addClient(_socket.Accept(), clientList);
+  {
+	std::cout << "doing Accept()" << std::endl; 
+    *added = _socket.Accept();
+	std::cout << (void *)added << std::endl;
+  } 
 
   for (std::list<Client *>::iterator it = clientList.begin();
        it != clientList.end(); ++it) {
@@ -99,9 +94,9 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *
       sendCommandTCP(*it);
 
     if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
-	&& recvCommandTCP(*it))
+	&& !recvCommandTCP(*it))
 	{
-		decoClient(clientList, it, to_disconnect);
+		to_disconnect.push_back(*it);
 		if (it == clientList.end())
 			break;
 	}
@@ -127,7 +122,7 @@ bool			Network::sendCommandTCP(Client *client)
   std::cout << client->getWriteBuffer()->size() << std::endl;
   if (client->getStatus() == TO_LEAVE)
 		client->setStatus(TO_DECO);
-	if (client->getSocket()->Send(client->getWriteBuffer()->front().cmd,
+  if (client->getSocket()->Send(client->getWriteBuffer()->front().cmd,
 				client->getWriteBuffer()->front().size) <= 0)
     return false;
   client->getWriteBuffer()->pop_front();

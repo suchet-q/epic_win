@@ -12,6 +12,7 @@
 
 enum		Status
 {
+	DEFAULT,
 	CONNECTED,
 	TO_LEAVE,
 	TO_DECO
@@ -36,7 +37,7 @@ typedef struct	s_infos_client
   bool		bonus;
   int		score;
   int		hightScore;
-  StatusInGame	status;	
+  StatusInGame	status;
 }				t_infos_client;
 
 struct		t_cmd

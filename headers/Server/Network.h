@@ -14,7 +14,6 @@ class			Network
 {
 private:
   std::map<char, unsigned int>	_commandsSize;
-  std::array<bool, 255>		_idArray;
   MetaSelect<>			_select;
   MetaSocket<>			_socket;
   fd_set			_fdWrite;
@@ -30,8 +29,7 @@ public:
 
   bool			initSocket(int);
   void			addClient(MetaSocket<>*, std::list<Client*>&);
-  void			decoClient(std::list<Client*>&, std::list<Client*>::iterator&, std::list<Client *> &to_disconnect);
   void			initSelect(std::list<Client*> const&);
   bool			Select(unsigned int);
-  bool			manageSocket(std::list<Client *>&, std::list<Client *> &to_disconnect);
+  bool			manageSocket(std::list<Client *>&, std::list<Client *> &to_disconnect, MetaSocket<> **);
 };

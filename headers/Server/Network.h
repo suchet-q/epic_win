@@ -12,7 +12,7 @@
 
 #define		CONTINUE	(0)
 #define		NEW_CLIENT	(-2)
-
+#define		ERROR		(-1)
 
 class			Network
 {
@@ -21,14 +21,11 @@ private:
   std::array<bool, 255>		_idArray;
   MetaSelect<>			_select;
   MetaSocket<>			_socket;
-  MetaSocket<>			_udpSocket;
   fd_set			_fdWrite;
   fd_set			_fdRead;
 
   bool			recvCommandTCP(Client*);
   bool			sendCommandTCP(Client*);
-  bool			sendCommandUDP(Client*);
-  bool			recvCommandUDP(Client*);
   void*			myMemncpy(void const*, unsigned int size) const;
 
 public:
@@ -41,8 +38,4 @@ public:
   void			initSelect(std::list<Client*> const&);
   bool			Select(unsigned int);
   bool			manageSocket(std::list<Client *>&, std::list<Client *> &to_disconnect);
-
-  bool			initSocketUDP(int);
-  void			initSelectUDP();
-  bool			manageSocketUDP(std::list<Client *> &);
 };

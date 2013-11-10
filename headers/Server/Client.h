@@ -9,8 +9,6 @@
 # include	"MetaSocket.h"
 
 # define	GREATEST_COMMAND_SIZE	(259)
-# define	GREATEST_COMMAND_SIZE_UDP_PROTOCOL	(8)
-
 
 enum		Status
 {
@@ -43,51 +41,37 @@ typedef struct	s_infos_client
 
 struct		t_cmd
 {
-  char			cmd[GREATEST_COMMAND_SIZE];
+  char		cmd[GREATEST_COMMAND_SIZE];
   unsigned int	size;
-};
-
-struct		t_cmd_udp
-{
-  char					cmd[GREATEST_COMMAND_SIZE_UDP_PROTOCOL];
-  unsigned int			size;
 };
 
 class		Client
 {
 private:
-  int					_id;
-  bool					_host;
-  Status				_status;
-  std::string			_nickName;
-  t_infos_client*		_infosClient;
-  MetaSocket<>*			_socket;
-  t_cmd					_buffer;
-  t_cmd_udp				_bufferUDP;
-  std::list<t_cmd_udp>	_readBufferUDP;
-  char					_writeBufferUDP[8192];
-  std::list<t_cmd>		_writeBuffer;
-  std::list<t_cmd>		_readBuffer;
-  struct sockaddr_in	_sin;
+  int		_id;
+  bool		_host;
+  Status	_status;
+  std::string	_nickName;
+  t_infos_client	*_infosClient;
+  MetaSocket<>	*_socket;
+  t_cmd		_buffer;
+  std::list<t_cmd>	_writeBuffer;
+  std::list<t_cmd>	_readBuffer;
 
 public:
   Client(int, MetaSocket<> *);
   ~Client();
-  struct sockaddr_in*	getSockAddr();
-  Status				getStatus() const;
-  void					setStatus(Status);
-  std::list<t_cmd>*		getWriteBuffer() const;
-  char*					getWriteBufferUDP();
-  std::list<t_cmd_udp>*	getReadBufferUDP();
-  std::list<t_cmd>*		getReadBuffer() const;
-  void					parseCommand(void *, unsigned int, std::map<char, unsigned int> &);
-  void					parseCommandUDP(void *, unsigned int, std::map<char, unsigned int> &);
-  MetaSocket<>*			getSocket() const;
-  int					getID() const;
-  bool					getHost() const;
-  void					setHost(bool);
-  void					setNickName(const char *);
-  std::string const	&	getNickName() const;
-  t_infos_client*		getInfosClient() const;
-  void					setInfosClient();
+  Status			getStatus() const;
+  void				setStatus(Status);
+  std::list<t_cmd>	*getWriteBuffer() const;
+  std::list<t_cmd>	*getReadBuffer() const;
+  void		parseCommand(void *, unsigned int, std::map<char, unsigned int> &);
+  MetaSocket<>*	getSocket() const;
+  int		getID() const;
+  bool		getHost() const;
+  void		setHost(bool);
+  void		setNickName(const char *);
+  std::string const	&getNickName() const;
+  t_infos_client	*getInfosClient() const;
+  void			setInfosClient();
 };

@@ -61,7 +61,7 @@ void			Network::addClient(MetaSocket<> *socket,
 void			Network::decoClient(std::list<Client *> &clientList,
 					    std::list<Client *>::iterator &it, std::list<Client *> &to_disconnect)
 {	
-//	 _idArray[(*it)->getID()] = false;
+	 _idArray[(*it)->getID()] = false;
 	 to_disconnect.push_back((*it));
 }
 
@@ -115,10 +115,10 @@ bool			Network::recvCommandTCP(Client *client)
   int			width = 0;
 
   if ((width = client->getSocket()->Recv(reinterpret_cast<void *>(tmp), 512)) <= 0)
-    return (-1);
+    return (false);
   std::cout << "width = " << width << std::endl;
   client->parseCommand(reinterpret_cast<void *>(tmp), static_cast<unsigned int>(width), _commandsSize);
-  return (0);
+  return (true);
 }
 
 bool			Network::sendCommandTCP(Client *client)

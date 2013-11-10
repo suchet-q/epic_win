@@ -10,10 +10,6 @@
 #include		"Client.h"
 #include		"Resource.h"
 
-#define		CONTINUE	(0)
-#define		NEW_CLIENT	(-2)
-#define		ERROR		(-1)
-
 class			Network
 {
 private:

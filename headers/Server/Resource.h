@@ -14,14 +14,13 @@ class		Resource
   std::list<Client *>	_clients;
   std::list<Client *>	_inGame;
   std::list<Client *>	_notInGame;
-  std::list<Room *>	_rooms;
-  std::list<Game *>	_games;
+  std::list<Room *>		_rooms;
+  std::list<Game *>		_games;
   std::array<bool, 255>	_idRooms;
   std::array<bool, 255> _idGames;
 public:
   Resource();
   ~Resource();
-
   std::list<Game *>		&getGame();
   std::list<Game *>::iterator &deleteGame(std::list<Game *>::iterator &);
   std::list<Client *>		&getClients();

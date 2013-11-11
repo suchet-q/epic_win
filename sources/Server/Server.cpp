@@ -22,9 +22,13 @@ void			Server::addClient(MetaSocket<> *sockClient)
 	bool			accepted = false;
 
 	if (sockClient == NULL)
+	{
+		std::cout << "Error Accept()" << std::endl;
 	    return ;
+	}
 	for (int id = 0; id < 255 && !accepted; ++id)
 		if (!_idArray[id]) {
+			std::cout << "adding client " <<  id << std::endl;
 			res.id_client = id;
 			res.id_command = 0;
 			memcpy(cmd.cmd, &res, sizeof(res));
@@ -35,13 +39,20 @@ void			Server::addClient(MetaSocket<> *sockClient)
 			this->_resources.getClients().push_back(newClient);
 			_idArray[id] = true;
 		    accepted = true;
-	    }
+			std::cout << "client " << id << " added" << std::endl;
+		}
+	if (!accepted)
+		std::cout << "No more slot available for new client" << std::endl;
 }
 
-//void			decoClient(std::list<Client *>::iterator &to_del)
-//{
-//
-//}
+void			Server::decoClient(std::list<Client *>::iterator &it)
+{
+	std::cout << "deleting client " << (*it)->getID() << std::endl;
+	delete (*it)->getSocket();
+	delete *it;
+	it = this->_resources.getClients().erase(it);
+	std::cout << "client deleted" << std::endl;
+}
 
 void			Server::checkDecoClient(std::list<Client *> &to_deco)
 {
@@ -72,11 +83,6 @@ void			Server::checkDecoClient(std::list<Client *> &to_deco)
 		else
 			(*it)->setStatus(TO_DECO);
 		_idArray[(*it)->getID()] = false;
-/*		std::cout << "deleting client " << (*it)->getID() << std::endl;
-		delete (*it)->getSocket();
-		delete *it;
-		it = clientList.erase(it);
-		std::cout << "client deleted" << std::endl;*/
 	}
 	to_deco.clear();
 }
@@ -85,33 +91,24 @@ bool			Server::loop()
 {
 	bool			error = false;
 	std::list<Client *>	to_deco;
-	MetaSocket<>	*added = NULL;
+	MetaSocket<>	*added;
 
 	while (!error)
 	{
+		added = NULL;
 		this->_network.initSelect(this->_resources.getClients());
 		if (this->_network.Select(500))
 			this->_network.manageSocket(this->_resources.getClients(), to_deco, &added);
 		else
 			error = true;
 		if (added != NULL)
-		{
-			std::cout << "adding client" << std::endl;
 			this->addClient(added);
-			std::cout << "client added" << std::endl;
-
-		}
 		this->checkDecoClient(to_deco);
-		for (std::list<Client *>::iterator it = this->_resources.getClients().begin();
-				it != this->_resources.getClients().end(); ++it)
+		for (std::list<Client *>::iterator it = this->_resources.getClients().begin(); it != this->_resources.getClients().end(); ++it)
 		{
 			if ((*it)->getStatus() == TO_DECO)
 			{
-				std::cout << "deleting client " << (*it)->getID() << std::endl;
-				delete (*it)->getSocket();
-				delete *it;
-				it = this->_resources.getClients().erase(it);
-				std::cout << "client deleted" << std::endl;
+				this->decoClient(it);
 				if (it == this->_resources.getClients().end())
 					break;
 			}
@@ -123,7 +120,6 @@ bool			Server::loop()
 				(*it)->getReadBuffer()->pop_front();
 			}
 		}
-				added = NULL;
 	}
 	return true;
 }

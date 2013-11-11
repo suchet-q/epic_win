@@ -21,14 +21,12 @@ private:
 
   bool			recvCommandTCP(Client*);
   bool			sendCommandTCP(Client*);
-  void*			myMemncpy(void const*, unsigned int size) const;
 
 public:
   Network();
   ~Network();
 
   bool			initSocket(int);
-  void			addClient(MetaSocket<>*, std::list<Client*>&);
   void			initSelect(std::list<Client*> const&);
   bool			Select(unsigned int);
   bool			manageSocket(std::list<Client *>&, std::list<Client *> &to_disconnect, MetaSocket<> **);

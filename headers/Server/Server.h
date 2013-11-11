@@ -24,7 +24,7 @@ public:
 
   bool			init(int);
   void			addClient(MetaSocket<> *);
-//  void			decoClient(std::list<Client *>::iterator&);
+  void			decoClient(std::list<Client *>::iterator&);
   void			checkDecoClient(std::list<Client *> &to_deco);
   bool			loop();
 };

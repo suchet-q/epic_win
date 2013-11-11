@@ -29,33 +29,6 @@ bool			Network::initSocket(int port)
   return true;
 }
 
-void			Network::addClient(MetaSocket<> *socket,
-					   std::list<Client *> &clientList)
-{
-
-/*	bool			accepted = false;
-	t_pnb_server	res;
-	t_cmd			cmd;
-
-  std::cout << "adding client"<< std::endl;
-  if (socket == NULL)
-    return ;
-  for (int id = 0; id < 255 && !accepted; ++id)
-    if (!_idArray[id]) {
-		res.id_client = id;
-		res.id_command = 0;
-		memcpy(cmd.cmd, &res, sizeof(res));
-		cmd.size = sizeof(res);
-		clientList.push_back(new Client(id, socket));
-		clientList.back()->getWriteBuffer()->push_back(cmd);
-		_idArray[id] = true;
-		clientList.back()->setStatus(CONNECTED);
-      accepted = true;
-    }
-  std::cout << "client " << clientList.back()->getID() << " added" << std::endl;*/
-}
-
-
 void			Network::initSelect(std::list<Client *> const &clientList)
 {
   _select.fdZero(&_fdWrite);
@@ -80,11 +53,7 @@ bool			Network::Select(unsigned int timeval)
 bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *> &to_disconnect, MetaSocket<> **added)
 {
   if (_select.fdIsset(_socket, &_fdRead))
-  {
-	std::cout << "doing Accept()" << std::endl; 
     *added = _socket.Accept();
-	std::cout << (void *)added << std::endl;
-  } 
 
   for (std::list<Client *>::iterator it = clientList.begin();
        it != clientList.end(); ++it) {
@@ -95,11 +64,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *
 
     if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
 	&& !recvCommandTCP(*it))
-	{
 		to_disconnect.push_back(*it);
-		if (it == clientList.end())
-			break;
-	}
   }
   return (true);
 }

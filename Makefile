@@ -5,7 +5,7 @@
 ## Login   <michel_b@epitech.net>
 ## 
 ## Started on  Mon Oct 28 18:55:47 2013 geoffrey michelini
-## Last update Sat Nov  2 01:48:11 2013 geoffrey michelini
+## Last update Tue Nov 12 00:13:50 2013 geoffrey michelini
 ##
 
 
@@ -21,6 +21,11 @@ SRC_SERVER=	sources/Server/main.cpp					\
 		sources/Server/Executer.cpp				\
 		sources/Server/Network.cpp				\
 		sources/Server/Resource.cpp				\
+		sources/Server/Game.cpp					\
+		sources/Server/ResourcesGame.cpp			\
+		sources/Server/Entity.cpp				\
+		sources/Server/Ship.cpp					\
+		sources/Server/Shot.cpp					\
 		sources/Abstraction/Linux/LoadLibLinux.cpp		\
 		sources/Abstraction/Linux/SocketLinux.cpp		\
 		sources/Abstraction/Linux/SelectLinux.cpp
@@ -33,7 +38,7 @@ OBJ_CLIENT=	$(SRC_CLIENT:.cpp=.o)
 CPP=		g++
 
 CXXFLAGS=	-I./headers/Abstraction -I./headers/Server -I./headers/Client -I./headers/Graphic	\
-		-ldl -std=c++0x
+		-ldl -std=c++0x -Wall -Wextra
 
 all:		$(NAME_SERVER)	\
 		$(NAME_CLIENT)

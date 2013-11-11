@@ -193,6 +193,8 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 
 	/*lauch game if succeed, succeed = true*/
 	succeed = this->_resource->checkIfGameIsPossible();
+//	answer.response = 1;
+//	answer.id_command = command.cmd[0];
 	memcpy(&stl, command.cmd, sizeof(t_jnl_client));
 	for (; it != this->_resource->getRooms().end(); ++it)
 	{
@@ -208,6 +210,7 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 			cmd.size = sizeof(t_stl_server);
 			for (; itc != (*it)->getClient()->end(); ++itc)
 			{
+				std::cout << "j'envoi au client la réponse qui start la game" << std::endl;
 				(*itc)->getWriteBuffer()->push_back(cmd);
 			}
 			if (succeed == true)

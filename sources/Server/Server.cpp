@@ -37,6 +37,7 @@ void			Server::addClient(MetaSocket<> *sockClient)
 			newClient->getWriteBuffer()->push_back(cmd);
 			newClient->setStatus(CONNECTED);
 			this->_resources.getClients().push_back(newClient);
+			this->_resources.getNotInGameClients().push_back(newClient);
 			_idArray[id] = true;
 		    accepted = true;
 			std::cout << "client " << id << " added" << std::endl;

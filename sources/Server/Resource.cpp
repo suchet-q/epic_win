@@ -69,14 +69,14 @@ bool		Resource::createGame(std::list<Client *> *clients)
 	return (false);
 }
 
-std::list<Client *> *Resource::getInGameClients()
+std::list<Client *> &Resource::getInGameClients()
 {
-	return (&this->_inGame);
+	return (this->_inGame);
 }
 
-std::list<Client *> *Resource::getNotInGameClients()
+std::list<Client *> &Resource::getNotInGameClients()
 {
-	return (&this->_notInGame);
+	return (this->_notInGame);
 }
 
 std::list<Game *>	&Resource::getGame()

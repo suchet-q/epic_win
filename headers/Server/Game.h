@@ -19,6 +19,5 @@ public:
 	int		getID();
 	void	setResources(ResourcesGame *);
 	ResourcesGame	&getResources();
-	void	waitClient();
 };
 

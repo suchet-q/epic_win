@@ -29,7 +29,7 @@ public:
   std::list<Room *>		&getRooms();
   bool				checkIfGameIsPossible();
   bool				createGame(std::list<Client *> *);
-  std::list<Client *> *getInGameClients();
-  std::list<Client *> *getNotInGameClients();
+  std::list<Client *> &getInGameClients();
+  std::list<Client *> &getNotInGameClients();
 };
 

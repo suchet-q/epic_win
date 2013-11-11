@@ -12,7 +12,6 @@
 
 enum		Status
 {
-	DEFAULT,
 	CONNECTED,
 	TO_LEAVE,
 	TO_DECO
@@ -26,6 +25,7 @@ enum		Weapons
 
 enum		StatusInGame
 {
+	NOTREADY,
 	READY,
 	DECO
 };
@@ -38,6 +38,7 @@ typedef struct	s_infos_client
   int		score;
   int		hightScore;
   StatusInGame	status;
+  struct sockaddr_in	addrClient;
 }				t_infos_client;
 
 struct		t_cmd

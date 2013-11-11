@@ -10,7 +10,6 @@ Client::Client(int id, MetaSocket<> *socket)
     this->_buffer.cmd[i] = -1;
   this->_buffer.size = 0;
   this->_nickName = "unknown";
-  this->_status = DEFAULT;
 }
 
 Client::~Client() {}

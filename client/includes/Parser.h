@@ -43,6 +43,7 @@ public:
 	void		addNBP();
 	void		addJNL(unsigned char, unsigned char);
 	void		addCRL(unsigned char);
+	void		addSTL(int);
 	void		addNMP(unsigned char, std::string const &);
 	void		addMSG(unsigned char, unsigned char, std::string const &);
 	void		addLVL(unsigned char, unsigned char);

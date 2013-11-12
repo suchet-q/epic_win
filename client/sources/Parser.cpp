@@ -341,7 +341,7 @@ void		Parser::addNBL()
 
 	std::cout << "Queued NBL" << std::endl;
 	cmd = new t_nbl_client;
-	cmd->id_commmand = CMD_NBL;
+	cmd->id_command = CMD_NBL;
 	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_nbl_client)));
 }
 
@@ -353,6 +353,18 @@ void		Parser::addNBP()
 	cmd = new t_nbp_client;
 	cmd->id_command = CMD_NBP;
 	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_nbp_client)));
+}
+
+void		Parser::addSTL(int idLobby)
+{
+	t_stl_client	*cmd;
+
+	std::cout << "Queued STL" << std::endl;
+	cmd = new t_stl_client;
+	cmd->id_command = CMD_STL;
+	cmd->id_lobby = idLobby;
+	this->_queued.push_back(std::pair<void *, int>(cmd, sizeof(t_stl_client)));
+
 }
 
 void		Parser::addJNL(unsigned char idClient, unsigned char idLobby)

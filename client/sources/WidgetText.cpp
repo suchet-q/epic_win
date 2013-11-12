@@ -52,6 +52,11 @@ void		WidgetText::update(float elapsed, RenderWindow &win, int sheetNb)
 	win.drawText(this->_text);
 }
 
+void		WidgetText::setCenter(int x, int y)
+{
+	this->_text.SetCenter(x, y);
+}
+
 void		WidgetText::setText(const std::string &text)
 {
 	this->_text.SetText(text);

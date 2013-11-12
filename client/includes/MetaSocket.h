@@ -3,7 +3,7 @@
 #ifdef	_WIN32
 # include "SocketWindows.h"
 #else
-# include "SocketLinux.h"
+# include "Linux/SocketLinux.h"
 #endif
 
 template<class T =
@@ -92,13 +92,13 @@ public:
 	struct sockaddr_in*	getServerSockaddr(char *ip, unsigned int port)
 	{
         struct addrinfo hints, *res;
-		std::stringstream		ss;
-
-		ss << port;
+	std::stringstream		ss;
+	
+	ss << port;
         memset(&hints, 0, sizeof hints);
         hints.ai_family = AF_INET;                                                                                                                                               
         hints.ai_socktype = SOCK_DGRAM;                                                                                                                                                                         
-        getaddrinfo(ip, ss.str(), &hints, &res);
+        getaddrinfo(ip, ss.str().c_str(), &hints, &res);
         return (res->ai_addr);
 	}
 };

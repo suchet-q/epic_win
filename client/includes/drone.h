@@ -18,7 +18,6 @@ class Drone : public Entity
   unsigned int	_FrameTime;
   int		_X;
   int		_Y;
-  Explosion	*_Explosion;
   int		_Etat;
   int		_Size;
   int		_Old;

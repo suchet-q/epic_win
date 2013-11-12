@@ -25,7 +25,6 @@ class Explosion;
 
 class Entity
 {
-private:
  protected:
   Explosion	*_Explosion;
   unsigned char _Type;

@@ -4,6 +4,7 @@
 GameMenu::GameMenu(void)
 {
 	this->_totalLobbies = 0;
+	this->_finished = false;
 }
 
 
@@ -77,6 +78,17 @@ void		GameMenu::loadImages()
 	this->_widgets.push_back(logo);
 	this->_widgets.push_back(transition);
 	this->_widgets.push_back(fullLogo);
+}
+
+bool		GameMenu::finished()
+{
+	return (this->_finished);
+}
+
+boost::any		GameMenu::setFinished(std::list<boost::any> args)
+{
+	this->_finished = true;
+	return (0);
 }
 
 void		GameMenu::loadButtons(RenderWindow *win)
@@ -703,6 +715,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 	start->setAnimations(anims);
 	start->addActualSheet(3);
 	start->setCallback("animationFinished", start, &WidgetButton::setClickable);
+	start->setCallback("click", this, &GameMenu::startGame);
 
 	anims.clear();
 	pos.clear();
@@ -785,7 +798,7 @@ void		GameMenu::loadResources(RenderWindow *win, Parser &parser)
 	parser.addCallback(CMD_CRL, boost::bind(&GameMenu::joinLobby, this, _1));
 	parser.addCallback(CMD_CRL, boost::bind(&GameMenu::setLobbyId, this, _1));
 	parser.addCallback(CMD_PLJ, boost::bind(&GameMenu::addPlayer, this, _1));
-	//parser.addCallback(CMD_STL, boost::bind(&GameMenu::addPlayer, this, _1));  /* TODO START LOBBY */
+	parser.addCallback(CMD_STL, boost::bind(&GameMenu::setFinished, this, _1));
 	parser.addCallback(CMD_LVL, boost::bind(&GameMenu::leaveLobby, this, _1));
 	parser.addCallback(CMD_MSG, boost::bind(&GameMenu::addMsg, this, _1));
 	this->_parser = &parser;
@@ -998,6 +1011,11 @@ void	GameMenu::clearPlayers()
 {
 	this->_playersList.clear();
 	this->refreshPlayers();
+}
+
+void	GameMenu::startGame()
+{
+	this->_parser->addSTL(this->_lobbyId);
 }
 
 void		GameMenu::sendMsg()

@@ -26,5 +26,6 @@ public:
 	void			resetWidget();
 	sf::FloatRect	getRect();
 	int				getSize();
+	void			setCenter(int, int);
 };
 

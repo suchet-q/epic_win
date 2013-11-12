@@ -26,6 +26,7 @@ bool		RenderWindow::openWindow(int x, int y, const std::string & name)
 	{
 		if ((this->_win = new sf::RenderWindow(sf::VideoMode(x, y, 32), name, sf::Style::Close | sf::Style::Titlebar)) == NULL)
 			return (false);
+		this->_win->SetPosition(448, 156);
 		return (true);
 	}
 	return (false);

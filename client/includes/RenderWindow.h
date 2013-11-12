@@ -8,6 +8,7 @@
 
 class RenderWindow
 {
+protected:
 	sf::RenderWindow *	_win;
 	std::string			_nickname;
 	std::string			_msg;
@@ -15,16 +16,16 @@ class RenderWindow
 	bool				_getMsg;
 public:
 	RenderWindow(void);
-	~RenderWindow(void);
+	virtual ~RenderWindow(void);
 
-	bool		openWindow(int, int, const std::string &);
-	bool		isRunning();
-	void		closeWindow();
-	void		handleEvents();
-	void		clearWindow();
-	void		refreshWindow();
-	void		drawSprite(sf::Sprite &);
-	void		drawText(sf::String &);
+	virtual bool		openWindow(int, int, const std::string &);
+	virtual bool		isRunning();
+	virtual void		closeWindow();
+	virtual void		handleEvents();
+	virtual void		clearWindow();
+	virtual void		refreshWindow();
+	virtual void		drawSprite(sf::Sprite &);
+	virtual void		drawText(sf::String &);
 	const sf::Input&	getInput();
 	std::string	getNickname();
 	std::string	getMsg();

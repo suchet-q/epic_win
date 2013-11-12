@@ -43,6 +43,7 @@ class GameMenu
 	Parser					*_parser;
 	RenderWindow			*_win;
 	int						_sheetNb;
+	bool					_finished;
 
 	void					loadText(RenderWindow *);
 	void					loadImages();
@@ -52,6 +53,7 @@ public:
 	GameMenu(void);
 	~GameMenu(void);
 
+	void		startGame();
 	void		sendMsg();
 	void		refreshPlayers();
 	void		refreshLobbies();
@@ -74,5 +76,7 @@ public:
 	void		setNickname();
 	void		leaveLobby();
 	void		askNbPlayers();
+	bool		finished();
+	boost::any		setFinished(std::list<boost::any> args);
 };
 

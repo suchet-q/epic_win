@@ -1,6 +1,7 @@
 #pragma once
 #include	"StructCommands.h"
 #include	"Resource.h"
+#include	"Client.h"
 
 class	Executer;
 

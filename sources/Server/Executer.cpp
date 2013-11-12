@@ -210,12 +210,12 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 			cmd.size = sizeof(t_stl_server);
 			for (; itc != (*it)->getClient()->end(); ++itc)
 			{
-				std::cout << "j'envoi au client la réponse qui start la game" << std::endl;
-				(*itc)->getWriteBuffer()->push_back(cmd);
+				//std::cout << "j'envoi au client la réponse qui start la game" << std::endl;
+				//(*itc)->getWriteBuffer()->push_back(cmd);
 			}
 			if (succeed == true)
 			{
-				this->_resource->createGame((*it)->getClient());
+				this->_resource->createGame(*(*it)->getClient());
 //		*this->_resource->getInGameClients() = *this->_resource->getInGameClients() + *((*it)->getClient());
 
 				it = this->_resource->getRooms().erase(it);

@@ -1,7 +1,7 @@
 #include "ResourcesGame.h"
 
 
-ResourcesGame::ResourcesGame(std::list<Client *> *clients)
+ResourcesGame::ResourcesGame(std::list<Client *> &clients)
 {
 	this->_clients = clients;
 }
@@ -12,10 +12,10 @@ ResourcesGame::~ResourcesGame() {}
 
 std::list<Client *>		&ResourcesGame::getClients()
 {
-	return (*this->_clients);
+	return (this->_clients);
 }
 
-void		ResourcesGame::setListClients(std::list<Client *> *clients)
+void		ResourcesGame::setListClients(std::list<Client *> &clients)
 {
 	this->_clients = clients;
 }

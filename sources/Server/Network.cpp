@@ -16,6 +16,7 @@ Network::Network()
   _commandsSize[13] = 2;
   _commandsSize[14] = 4;
   _commandsSize[15] = 2;
+  _buffer.size = 0;
 }
 
 Network::~Network() {}
@@ -29,18 +30,30 @@ bool			Network::initSocket(int port)
   return true;
 }
 
-void			Network::initSelect(std::list<Client *> const &clientList)
+void			Network::initSelect(std::list<Client *> const &clientList, std::list<Game *> &gameList)
 {
   _select.fdZero(&_fdWrite);
   _select.fdZero(&_fdRead);
   _select.fdSet(_socket, &_fdRead);
+
   for (std::list<Client *>::const_iterator it = clientList.begin();
-       it != clientList.end(); ++it) {
+       it != clientList.end(); ++it)
+  {
+	  if ((*it)->getGame())
+			(**((*it)->getGame()))->lockClient();
     _select.fdSet(*(*it)->getSocket(), &_fdRead);
     if (!(*it)->getWriteBuffer()->empty())
       _select.fdSet(*(*it)->getSocket(), &_fdWrite);
+	  if ((*it)->getGame())
+		(**((*it)->getGame()))->unlockClient();
   }
 
+  for (std::list<Game *>::iterator it = gameList.begin(); it != gameList.end(); ++it)
+  {
+	  (*it)->lockSocket();
+	  _select.fdSet((*it)->getSocket(), &_fdRead);
+	  (*it)->unlockAttribut();
+  }
 }
 
 bool			Network::Select(unsigned int timeval)
@@ -50,13 +63,16 @@ bool			Network::Select(unsigned int timeval)
   return true;
 }
 
-bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *> &to_disconnect, MetaSocket<> **added)
+bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> &gameList, std::list<Client *> &to_disconnect, MetaSocket<> **added)
 {
   if (_select.fdIsset(_socket, &_fdRead))
     *added = _socket.Accept();
 
   for (std::list<Client *>::iterator it = clientList.begin();
-       it != clientList.end(); ++it) {
+       it != clientList.end(); ++it) 
+  {
+	 if ((*it)->getGame())
+		(**((*it)->getGame()))->lockClient();
 
     if (!(*it)->getWriteBuffer()->empty()
 	&& _select.fdIsset(*(*it)->getSocket(), &_fdWrite))
@@ -65,9 +81,79 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Client *
     if (_select.fdIsset(*(*it)->getSocket(), &_fdRead)
 	&& !recvCommandTCP(*it))
 		to_disconnect.push_back(*it);
+
+	if ((*it)->getGame())
+		(**((*it)->getGame()))->unlockClient();
   }
+
+  /*for (std::list<Game *>::iterator it = gameList.begin(); it != gameList.end(); ++it)
+  {
+	  if ((*it)->getIsInit())
+	  {
+		  (*it)->lockSocket();
+
+		  if (this->_select.fdIsset())
+		  {
+			  this->recvFromUDP(*it);
+		  }
+		  (*it)->unlockSocket();
+	  }
+  }*/
+
   return (true);
 }
+
+/*bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in $sin, Game *game)
+{
+	
+}
+
+bool			Network::recvFromUDP(Game *game)
+{
+	unsigned int size;
+	struct sockaddr_in	sin;
+	char		buff[512];
+
+	memset(buff, -1, 512);
+
+	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
+		return false;
+  if (this->_buffer.size > 0)
+    {
+      if (_commandsSize[this->_buffer.cmd[0]] - this->_buffer.size < size)
+	{
+	  memcpy(&this->_buffer.cmd[size], buff, size);
+	  this->_buffer.size += size;
+	}
+      else
+	{
+	  memcpy(&this->_buffer.cmd[size], buff, _commandsSize[this->_buffer.cmd[0]] - this->_buffer.size);
+	  this->_buffer.size = _commandsSize[this->_buffer.cmd[0]];
+//	  push_back in right client queue;
+	  for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
+	    this->_buffer.cmd[i] = -1;
+	  this->_buffer.size = 0;
+	}
+    }
+  for (unsigned int i = 0; i < size; ++i) {
+    if (_commandsSize[buff[i]] <= size - i)
+      {
+	memcpy(this->_buffer.cmd, &buff[i], _commandsSize[buff[i]]);
+	this->_buffer.size = _commandsSize[buff[i]];
+	std::cout << "je fou une commande dans le buffer read" << std::endl;
+	// push back in right client queue 
+	i += _commandsSize[buff[i]];
+	this->_buffer.size = 0;
+      }
+    else
+      {
+	memcpy(this->_buffer.cmd, &buff[i], (size - 1) - i);
+	this->_buffer.size =  size- i;
+	i = size - 1;
+      }
+  }
+  return true;
+}*/
 
 bool			Network::recvCommandTCP(Client *client)
 {

@@ -78,6 +78,7 @@ typedef	struct			s_stl_server
 {
 	unsigned char		id_command;
 	unsigned char		response;
+	unsigned int		port;
 }						t_stl_server;
 /*reciv*/
 typedef	struct			s_stl_client

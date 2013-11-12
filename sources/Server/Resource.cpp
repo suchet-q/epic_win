@@ -56,16 +56,24 @@ std::list<Room *>		&Resource::getRooms()
   return (this->_rooms);
 }
 
-bool		Resource::createGame(std::list<Client *> *clients)
+bool		Resource::createGame(std::list<Client *> &clients)
 {
+	Game				*game;
 	for (int id = 1; id < 255; ++id)
 		if (!this->_idGames[id])
 		{
-			this->_games.push_back(new Game(id, clients));
+			game = new Game(id, clients);
+			this->_games.push_front(game);
+			std::cout << "Setting game iterator for all clients..." << std::endl;
+			for (std::list<Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
+			{
+				(*it)->setGame(&this->_games.begin());
+			}
+			std::cout << "Game iterator set for all clients" << std::endl;
 			this->_idGames[id] = true;
+			game->launchThread(NULL);
 			return (true);
 		}
-	/*create thread*/
 	return (false);
 }
 

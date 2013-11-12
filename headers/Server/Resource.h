@@ -28,7 +28,7 @@ public:
   std::list<Room *>::iterator &deleteRoom(std::list<Room *>::iterator &);
   std::list<Room *>		&getRooms();
   bool				checkIfGameIsPossible();
-  bool				createGame(std::list<Client *> *);
+  bool				createGame(std::list<Client *> &);
   std::list<Client *> &getInGameClients();
   std::list<Client *> &getNotInGameClients();
 };

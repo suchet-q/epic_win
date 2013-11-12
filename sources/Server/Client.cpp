@@ -2,6 +2,7 @@
 
 Client::Client(int id, MetaSocket<> *socket)
 {
+  this->_game = NULL;
   this->_socket = socket;
   this->_id = id;
   this->_host = false;
@@ -14,6 +15,16 @@ Client::Client(int id, MetaSocket<> *socket)
 }
 
 Client::~Client() {}
+
+std::list<Game *>::iterator *Client::getGame()
+{
+	return this->_game;
+}
+
+void				Client::setGame(std::list<Game *>::iterator *game)
+{
+	this->_game = game;
+}
 
 /*ne pas oublie de delete infos_client quand la gameet fini*/
 void			Client::setInfosClient()

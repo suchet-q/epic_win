@@ -46,12 +46,19 @@ void			Server::addClient(MetaSocket<> *sockClient)
 		std::cout << "No more slot available for new client" << std::endl;
 }
 
-void			Server::decoClient(std::list<Client *>::iterator &it)
+void			Server::decoNotInGameClient(std::list<Client *>::iterator &it)
 {
+	for (std::list<Client *>::iterator it2 = this->_resources.getClients().begin(); it2 != this->_resources.getClients().end(); ++it2)
+		if (*it2 == *it)
+		{
+			it2 = this->_resources.getClients().erase(it2);
+			if (it2 == this->_resources.getClients().end())
+				break;
+		}
 	std::cout << "deleting client " << (*it)->getID() << std::endl;
 	delete (*it)->getSocket();
 	delete *it;
-	it = this->_resources.getClients().erase(it);
+	it = this->_resources.getNotInGameClients().erase(it);
 	std::cout << "client deleted" << std::endl;
 }
 
@@ -105,12 +112,12 @@ bool			Server::loop()
 		if (added != NULL)
 			this->addClient(added);
 		this->checkDecoClient(to_deco);
-		for (std::list<Client *>::iterator it = this->_resources.getClients().begin(); it != this->_resources.getClients().end(); ++it)
+		for (std::list<Client *>::iterator it = this->_resources.getNotInGameClients().begin(); it != this->_resources.getNotInGameClients().end(); ++it)
 		{
 			if ((*it)->getStatus() == TO_DECO)
 			{
-				this->decoClient(it);
-				if (it == this->_resources.getClients().end())
+				this->decoNotInGameClient(it);
+				if (it == this->_resources.getNotInGameClients().end())
 					break;
 			}
 			else if (!(*it)->getReadBuffer()->empty())
@@ -121,6 +128,7 @@ bool			Server::loop()
 				(*it)->getReadBuffer()->pop_front();
 			}
 		}
+
 	}
 	return true;
 }

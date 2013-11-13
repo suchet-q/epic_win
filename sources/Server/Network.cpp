@@ -119,7 +119,7 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 		}
 	}
 	game->unlockClient();
-	if (!end);
+	if (!end)
 		std::cout << "No client number" << (int)cmd.cmd[1] << " in the game " << game->getID() << std::endl;
 	return end;
 }

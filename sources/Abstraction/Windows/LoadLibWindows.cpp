@@ -17,7 +17,7 @@ void		LoadLibWindows::loadLibrary(char const *name)
 
 void		*LoadLibWindows::getLib(char const *name)
 {
-	return (GetProcAddress(this->modul, name));
+	return (GetProcAddress(this->_modul, name));
 }
 
 bool		LoadLibWindows::closeLib()

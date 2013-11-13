@@ -5,12 +5,14 @@
 ** Login   <suchet_q@epitech.net>
 ** 
 ** Started on  Sat Oct 12 14:35:56 2013 quentin suchet
-** Last update Tue Nov  5 05:22:13 2013 gaetan blery
+// Last update Wed Nov 13 03:59:43 2013 geoffrey michelini
 */
 
 #pragma once
 
 #include <iostream>
+#include <sstream>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>

@@ -3,7 +3,7 @@
 #ifdef	_WIN32
 # include "SocketWindows.h"
 #else
-# include "Linux/SocketLinux.h"
+# include "SocketLinux.h"
 #endif
 
 template<class T =

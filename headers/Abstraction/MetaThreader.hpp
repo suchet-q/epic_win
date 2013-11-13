@@ -11,9 +11,9 @@
 #pragma once
 
 #ifdef _WIN32
-# include "ThreaderWindows.hpp"
+# include "Windows/ThreaderWindows.hpp"
 #else
-# include "ThreaderLinux.hpp"
+# include "Linux/ThreaderLinux.hpp"
 #endif
 
 template<typename I, typename V, typename T = 

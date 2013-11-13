@@ -1,9 +1,9 @@
 #pragma once
 
 #ifdef _WIN32
-# include "MutexWindows.h"
+# include "Windows/MutexWindows.h"
 #else
-# include "MutexLinux.h"
+# include "Linux/MutexLinux.h"
 #endif
 
 template<class T =

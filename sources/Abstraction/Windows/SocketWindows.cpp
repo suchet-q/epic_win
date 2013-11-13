@@ -1,4 +1,4 @@
-#include "SocketWindows.h"
+#include "Windows/SocketWindows.h"
 
 
 SocketWindows::SocketWindows(void) : _socket(INVALID_SOCKET), _ifClosed(true), _type(NONE) {}

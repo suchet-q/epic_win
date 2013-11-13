@@ -5,13 +5,14 @@
 ## Login   <blery_g@epitech.net>
 ## 
 ## Started on  Tue Nov  5 04:51:21 2013 gaetan blery
-## Last update Tue Nov  5 18:39:56 2013 mathieu heuzey
+## Last update Wed Nov 13 03:51:02 2013 geoffrey michelini
 ##
 
 NAME=	r-type
 
 SRC=	sources/AWidget.cpp \
 	sources/Client.cpp \
+	sources/ErrorWindow.cpp \
 	sources/GameMenu.cpp \
 	sources/GameSocket.cpp \
 	sources/main.cpp \

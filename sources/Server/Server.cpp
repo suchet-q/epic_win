@@ -110,7 +110,10 @@ bool			Server::loop()
 			this->_network.manageSocket(this->_resources.getClients(), this->_resources.getGame(), to_deco, &added);
 		}
 		else
+		{
+			std::cout << "eh oui maggle, le select capu" << std::endl;
 			error = true;
+		}
 		if (added != NULL)
 			this->addClient(added);
 		if (!to_deco.empty())
@@ -135,5 +138,6 @@ bool			Server::loop()
 		}
 
 	}
+	system("pause");
 	return true;
 }

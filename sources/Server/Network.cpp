@@ -50,9 +50,12 @@ void			Network::initSelect(std::list<Client *> const &clientList, std::list<Game
 
   for (std::list<Game *>::iterator it = gameList.begin(); it != gameList.end(); ++it)
   {
-	  (*it)->lockSocket();
-	  _select.fdSet((*it)->getSocket(), &_fdRead);
-	  (*it)->unlockAttribut();
+	  if ((*it)->getIsInit())
+	  {
+		 (*it)->lockSocket();
+	     _select.fdSet((*it)->getSocket(), &_fdRead);
+		 (*it)->unlockAttribut();
+	  }
   }
 }
 
@@ -119,7 +122,7 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 		}
 	}
 	game->unlockClient();
-	if (!end);
+	if (!end)
 		std::cout << "No client number" << (int)cmd.cmd[1] << " in the game " << game->getID() << std::endl;
 	return end;
 }

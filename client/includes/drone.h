@@ -18,6 +18,7 @@ class Drone : public Entity
   unsigned int	_FrameTime;
   int		_X;
   int		_Y;
+  Explosion	*_Explosion;
   int		_Etat;
   int		_Size;
   int		_Old;
@@ -41,4 +42,5 @@ class Drone : public Entity
   sf::Sprite	&FirstState(int x, int y, int);
   sf::Sprite	&CheckSize(int, int, int);
   unsigned char getType();
+  int		getEtat();
 };

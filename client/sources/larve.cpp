@@ -183,3 +183,8 @@ unsigned char Larve::getType()
 {
   return (this->_Type);
 }
+
+int	Larve::getEtat()
+{
+  return (this->_Etat);
+}

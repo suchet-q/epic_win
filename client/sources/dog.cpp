@@ -179,3 +179,8 @@ unsigned char Dog::getType()
 {
   return (this->_Type);
 }
+
+int	Dog::getEtat()
+{
+  return (this->_Etat);
+}

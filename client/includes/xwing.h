@@ -42,4 +42,5 @@ class Xwing : public Entity
   sf::Sprite	&FirstState(int x, int y, int);
   sf::Sprite	&CheckSize(int, int, int);
   unsigned char getType();
+  int		getEtat();
 };

@@ -5,7 +5,7 @@
 // Login   <heuzey_m@epitech.net>
 // 
 // Started on  Sat Oct 26 23:30:25 2013 mathieu heuzey
-// Last update Mon Nov 11 15:34:26 2013 mathieu heuzey
+// Last update Tue Nov 12 03:17:51 2013 mathieu heuzey
 //
 
 #include "ship.h"
@@ -24,6 +24,9 @@ Ship::Ship(int x, int y, int team, int id)
   this->_Type = 1;
   this->_Id = id;
   this->_Old = 1;
+  this->_X = x;
+  this->_Y = y;
+  this->_Inputs = NOTHING;
 }
 
 bool		Ship::SpriteAlive()
@@ -38,15 +41,15 @@ Ship::~Ship()
 
 }
 
-void	Ship::SetSprite()
+bool	Ship::SetSprite()
 {
   if (this->_TmpImg.LoadFromFile("./sprites/r-typesheet42.png"))
     {
       this->_ShipSprite.SetImage(this->_TmpImg);
-      std::cout << "Image loaded" << std::endl;
+      return (true);
     }
   else
-    std::cout << "errore while loading the image" << std::endl;
+    return (false);
 }
 
 sf::Image	Ship::GetImg()
@@ -57,6 +60,8 @@ sf::Image	Ship::GetImg()
 sf::Sprite	Ship::GetSprite(int x, int y, Inputs inp, int time, Move move)
 {
   this->_EllapsedTime += time;
+  if (move == DEAD)
+    this->_Old = 0;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
       this->CheckInputs(inp);
@@ -232,4 +237,24 @@ unsigned char Ship::getType()
 int		Ship::getId()
 {
   return (this->_Id);
+}
+
+int		Ship::getX()
+{
+  return (this->_X);
+}
+
+int		Ship::getY()
+{
+  return (this->_Y);
+}
+
+Inputs		Ship::getInput()
+{
+  return (this->_Inputs);
+}
+
+void		Ship::setInput(Inputs inp)
+{
+  this->_Inputs = inp;
 }

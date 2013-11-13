@@ -25,10 +25,12 @@ class Explosion;
 
 class Entity
 {
+private:
  protected:
   Explosion	*_Explosion;
-  unsigned char _Type;
   int		_Id;
+  int		_Etat;
+  unsigned char _Type;
 
 public:
 
@@ -47,4 +49,5 @@ public:
   virtual sf::Sprite	&FirstState(int x, int y, int) = 0;
   virtual sf::Sprite	&CheckSize(int, int, int) = 0;
   virtual unsigned char getType() = 0;
+  virtual int		getEtat() = 0;
 };

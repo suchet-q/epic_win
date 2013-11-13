@@ -787,10 +787,8 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 	this->_widgets.push_back(juda);
 }
 
-void		GameMenu::loadResources(RenderWindow *win, Parser &parser)
-{	
-	this->_sheets.setSheetPointer(&(this->_sheetNb));
-	this->_sheets.setActualSheet(0);
+void		GameMenu::initParser(Parser &parser)
+{
 	parser.addCallback(CMD_PNB, boost::bind(&GameMenu::setPlayerId, this, _1));
 	parser.addCallback(CMD_NBP, boost::bind(&GameMenu::setTotalPlayers, this, _1));
 	parser.addCallback(CMD_NBL, boost::bind(&GameMenu::addLobby, this, _1));
@@ -802,10 +800,17 @@ void		GameMenu::loadResources(RenderWindow *win, Parser &parser)
 	parser.addCallback(CMD_LVL, boost::bind(&GameMenu::leaveLobby, this, _1));
 	parser.addCallback(CMD_MSG, boost::bind(&GameMenu::addMsg, this, _1));
 	this->_parser = &parser;
+}
+
+int		GameMenu::loadResources(RenderWindow *win)
+{
+	this->_sheets.setSheetPointer(&(this->_sheetNb));
+	this->_sheets.setActualSheet(0);
 	this->_win = win;
 	this->loadImages();
 	this->loadButtons(win);
 	this->refreshLobbies();
+	return (0);
 }
 
 void		GameMenu::askNbPlayers()

@@ -42,4 +42,5 @@ class Balls : public Entity
   sf::Sprite	&CheckSize(int, int, int);
   bool		SpriteAlive();
   unsigned char getType();
+  int		getEtat();
 };

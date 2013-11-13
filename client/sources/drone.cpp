@@ -183,3 +183,8 @@ unsigned char Drone::getType()
 {
   return (this->_Type);
 }
+
+int	Drone::getEtat()
+{
+  return (this->_Etat);
+}

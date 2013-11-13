@@ -182,3 +182,8 @@ unsigned char Alien::getType()
 {
   return (this->_Type);
 }
+
+int	Alien::getEtat()
+{
+  return (this->_Etat);
+}

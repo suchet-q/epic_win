@@ -183,3 +183,8 @@ unsigned char Balls::getType()
 {
   return (this->_Type);
 }
+
+int	Balls::getEtat()
+{
+  return (this->_Etat);
+}

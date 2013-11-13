@@ -181,3 +181,8 @@ unsigned char Metroid::getType()
 {
   return (this->_Type);
 }
+
+int	Metroid::getEtat()
+{
+  return (this->_Etat);
+}

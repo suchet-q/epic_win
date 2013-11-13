@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{72593597-FCD7-4440-86A9-9285EB392161}</ProjectGuid>
+    <RootNamespace>epic_win</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)\headers\Server\;$(SolutionDir)\headers\Abstraction\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\sources\Abstraction\Windows\LoadLibWindows.cpp" />
+    <ClCompile Include="..\sources\Abstraction\Windows\MutexWindows.cpp" />
+    <ClCompile Include="..\sources\Abstraction\Windows\SelectWindows.cpp" />
+    <ClCompile Include="..\sources\Abstraction\Windows\SocketWindows.cpp" />
+    <ClCompile Include="..\sources\Server\Client.cpp" />
+    <ClCompile Include="..\sources\Server\Entity.cpp" />
+    <ClCompile Include="..\sources\Server\Executer.cpp" />
+    <ClCompile Include="..\sources\Server\Game.cpp" />
+    <ClCompile Include="..\sources\Server\InfosClient.cpp" />
+    <ClCompile Include="..\sources\Server\Lexer.cpp" />
+    <ClCompile Include="..\sources\Server\main.cpp" />
+    <ClCompile Include="..\sources\Server\Network.cpp" />
+    <ClCompile Include="..\sources\Server\Resource.cpp" />
+    <ClCompile Include="..\sources\Server\ResourcesGame.cpp" />
+    <ClCompile Include="..\sources\Server\Room.cpp" />
+    <ClCompile Include="..\sources\Server\Server.cpp" />
+    <ClCompile Include="..\sources\Server\Ship.cpp" />
+    <ClCompile Include="..\sources\Server\Shot.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\headers\Abstraction\LoadLib.h" />
+    <ClInclude Include="..\headers\Abstraction\MetaMutex.h" />
+    <ClInclude Include="..\headers\Abstraction\MetaSelect.h" />
+    <ClInclude Include="..\headers\Abstraction\MetaSocket.h" />
+    <ClInclude Include="..\headers\Abstraction\MetaThreader.hpp" />
+    <ClInclude Include="..\headers\Abstraction\Windows\LoadLibWindows.h" />
+    <ClInclude Include="..\headers\Abstraction\Windows\MutexWindows.h" />
+    <ClInclude Include="..\headers\Abstraction\Windows\SelectWindows.h" />
+    <ClInclude Include="..\headers\Abstraction\Windows\SocketWindows.h" />
+    <ClInclude Include="..\headers\Abstraction\Windows\ThreaderWindows.hpp" />
+    <ClInclude Include="..\headers\Abstraction\Windows\WindowsInclude.h" />
+    <ClInclude Include="..\headers\Server\Client.h" />
+    <ClInclude Include="..\headers\Server\Coord.hpp" />
+    <ClInclude Include="..\headers\Server\Entity.h" />
+    <ClInclude Include="..\headers\Server\Executer.h" />
+    <ClInclude Include="..\headers\Server\Game.h" />
+    <ClInclude Include="..\headers\Server\InfosClient.h" />
+    <ClInclude Include="..\headers\Server\Lexer.h" />
+    <ClInclude Include="..\headers\Server\Network.h" />
+    <ClInclude Include="..\headers\Server\Pool.hpp" />
+    <ClInclude Include="..\headers\Server\Resource.h" />
+    <ClInclude Include="..\headers\Server\ResourcesGame.h" />
+    <ClInclude Include="..\headers\Server\Room.h" />
+    <ClInclude Include="..\headers\Server\Server.h" />
+    <ClInclude Include="..\headers\Server\Ship.h" />
+    <ClInclude Include="..\headers\Server\Shot.h" />
+    <ClInclude Include="..\headers\Server\StructCommands.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

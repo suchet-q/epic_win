@@ -216,8 +216,14 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 			if (succeed == true)
 			{
 				this->_resource->createGame(*(*it)->getClient());
-//		*this->_resource->getInGameClients() = *this->_resource->getInGameClients() + *((*it)->getClient());
+				//remove des clients dans la list des clients notInGame
+				for (std::list<Client *>::iterator itclient = (*it)->getClient()->begin(); itclient != (*it)->getClient()->end(); ++itclient)
+					this->_resource->getNotInGameClients().remove(*itclient);
 
+				// insert des clients dans la list des clients InGame
+				this->_resource->getInGameClients().splice(this->_resource->getInGameClients().end(), *((*it)->getClient()));// = *this->_resource->getInGameClients() + *;
+
+				// suppression de la room
 				it = this->_resource->getRooms().erase(it);
 				return (true);
 			}

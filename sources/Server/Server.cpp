@@ -48,17 +48,38 @@ void			Server::addClient(MetaSocket<> *sockClient)
 
 void			Server::decoNotInGameClient(std::list<Client *>::iterator &it)
 {
-	for (std::list<Client *>::iterator it2 = this->_resources.getClients().begin(); it2 != this->_resources.getClients().end(); ++it2)
+/*	for (std::list<Client *>::iterator it2 = this->_resources.getClients().begin(); it2 != this->_resources.getClients().end(); ++it2)
 		if (*it2 == *it)
 		{
 			it2 = this->_resources.getClients().erase(it2);
 			if (it2 == this->_resources.getClients().end())
 				break;
-		}
+		}*/
 	std::cout << "deleting client " << (*it)->getID() << std::endl;
+	if ((*it)->getGame())
+	{
+	// delete game
+		//+ prevenir les autres player de la deco de ce pd du cul qui a une connection en bois ou qui rage quit
+
+		for (std::list<Client *>::iterator it2 = this->_resources.getInGameClients().begin(); it2 != this->_resources.getInGameClients().end(); ++it2)
+		{
+			it2 = this->_resources.getInGameClients().erase(it2);
+			if (it2 == this->_resources.getInGameClients().end())
+				break;
+		}
+	}
+	else
+	{
+		for (std::list<Client *>::iterator it2 = this->_resources.getNotInGameClients().begin(); it2 != this->_resources.getNotInGameClients().end(); ++it2)
+		{
+			it2 = this->_resources.getNotInGameClients().erase(it2);
+			if (it2 == this->_resources.getNotInGameClients().end())
+				break;
+		}
+	}
 	delete (*it)->getSocket();
 	delete *it;
-	it = this->_resources.getNotInGameClients().erase(it);
+	it = this->_resources.getClients().erase(it);
 	std::cout << "client deleted" << std::endl;
 }
 
@@ -110,19 +131,22 @@ bool			Server::loop()
 			this->_network.manageSocket(this->_resources.getClients(), this->_resources.getGame(), to_deco, &added);
 		}
 		else
+		{
+			std::cout << "eh oui maggle, le select capu" << std::endl;
 			error = true;
+		}
 		if (added != NULL)
 			this->addClient(added);
 		if (!to_deco.empty())
 		{
 			this->checkDecoClient(to_deco);
 		}
-		for (std::list<Client *>::iterator it = this->_resources.getNotInGameClients().begin(); it != this->_resources.getNotInGameClients().end(); ++it)
+		for (std::list<Client *>::iterator it = this->_resources.getClients().begin(); it != this->_resources.getClients().end(); ++it)
 		{
 			if ((*it)->getStatus() == TO_DECO)
 			{
 				this->decoNotInGameClient(it);
-				if (it == this->_resources.getNotInGameClients().end())
+				if (it == this->_resources.getClients().end())
 					break;
 			}
 			else if (!(*it)->getReadBuffer()->empty())
@@ -130,10 +154,13 @@ bool			Server::loop()
 				std::cout << "je vais excuter la commande toi meme tu sais" << std::endl;
 				if (!this->_executer.executCommand((*it), (*it)->getReadBuffer()->front()))
 					error = true;
+				if (it == this->_resources.getClients().end())
+					break;
 				(*it)->getReadBuffer()->pop_front();
 			}
 		}
 
 	}
+	system("pause");
 	return true;
 }

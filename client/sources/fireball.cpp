@@ -147,3 +147,8 @@ unsigned char Fireball::getType()
 {
   return (this->_Type);
 }
+
+int	Fireball::getEtat()
+{
+  return (this->_Etat);
+}

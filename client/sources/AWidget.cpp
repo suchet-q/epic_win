@@ -16,6 +16,11 @@ AWidget::~AWidget(void)
 			delete this->_sprites[i];
 }
 
+bool		AWidget::animationFinished(int idx)
+{
+	return (!(this->_sprites[idx]->updateAnimation(0.0)));
+}
+
 void		AWidget::loadImage(const std::string &filename)
 {
 	this->_img = filename;

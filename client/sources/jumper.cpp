@@ -181,3 +181,8 @@ unsigned char Jumper::getType()
 {
   return (this->_Type);
 }
+
+int	Jumper::getEtat()
+{
+  return (this->_Etat);
+}

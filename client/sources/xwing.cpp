@@ -181,3 +181,8 @@ unsigned char Xwing::getType()
 {
   return (this->_Type);
 }
+
+int	Xwing::getEtat()
+{
+  return (this->_Etat);
+}

@@ -19,6 +19,7 @@
 #include	"GameSocket.h"
 #include	"Parser.h"
 
+
 class GameMenu
 {
 	std::list<AWidget *>	_widgets;
@@ -58,7 +59,8 @@ public:
 	void		refreshPlayers();
 	void		refreshLobbies();
 	void		refreshMsg();
-	void		loadResources(RenderWindow *, Parser &);
+	void		initParser(Parser &);
+	int			loadResources(RenderWindow *);
 	void		update(RenderWindow &);
 	void		rstClock();
 	boost::any	setPlayerId(std::list<boost::any>);

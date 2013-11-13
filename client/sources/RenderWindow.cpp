@@ -13,6 +13,11 @@ RenderWindow::~RenderWindow(void)
 {
 }
 
+sf::RenderWindow*	RenderWindow::getWindow()
+{
+	return (this->_win);
+}
+
 bool		RenderWindow::isRunning()
 {
 	if (this->_win != NULL && this->_win->IsOpened())

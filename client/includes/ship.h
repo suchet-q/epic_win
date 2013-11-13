@@ -5,7 +5,7 @@
 ** Login   <heuzey_m@epitech.net>
 ** 
 ** Started on  Sat Oct 26 23:19:11 2013 mathieu heuzey
-** Last update Mon Nov 11 15:33:50 2013 mathieu heuzey
+** Last update Tue Nov 12 03:02:15 2013 mathieu heuzey
 */
 
 #pragma once
@@ -35,6 +35,10 @@ class Ship
   unsigned char _Type;
   int		_Id;
   int		_Old;
+  int		_X;
+  int		_Y;
+  Inputs	_Inputs;
+
  public:
 
 
@@ -42,7 +46,7 @@ class Ship
   int		_EllapsedTime;
   Ship(int x, int y, int team, int id);
   ~Ship();
-  void	SetSprite();
+  bool	SetSprite();
   sf::Image GetImg();
   sf::Sprite GetSprite(int, int, Inputs inp, int, Move);
   void	CheckInputs(Inputs inp);
@@ -53,4 +57,8 @@ class Ship
   unsigned char getType();
   int		getId();
   bool		SpriteAlive();
+  int		getX();
+  int		getY();
+  Inputs	getInput();
+  void		setInput(Inputs);
 };

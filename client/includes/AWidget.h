@@ -29,6 +29,7 @@ public:
 	virtual void	setAnimations(std::list<std::pair<sf::Vector2f, float> > &) = 0;
 	virtual void	update(float, RenderWindow &, int) = 0;
 
+	virtual bool	animationFinished(int);
 	virtual void	loadImage(const std::string &filename);
 	virtual void	setTransitionTime(float, bool);
 	virtual void	setDelay(float);

@@ -138,3 +138,8 @@ unsigned char Missil::getType()
 {
   return (this->_Type);
 }
+
+int	Missil::getEtat()
+{
+  return (this->_Etat);
+}

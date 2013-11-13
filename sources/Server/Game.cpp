@@ -100,7 +100,10 @@ void	Game::waitAllClients()
 		{
 			this->lockClient();
 			if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 /* need macro omg */)
+			{
+				memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
 				++readyClients;
+			}
 			this->unlockClient();
 		}
 	}

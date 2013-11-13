@@ -137,3 +137,8 @@ t_infos_client	*Client::getInfosClient() const
 {
   return (const_cast<t_infos_client *>(this->_infosClient));
 }
+
+struct sockaddr_in &Client::getUDPsin()
+{
+	return this->_UDPsin;
+}

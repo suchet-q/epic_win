@@ -67,7 +67,9 @@ bool		Resource::createGame(std::list<Client *> &clients)
 			std::cout << "Setting game iterator for all clients..." << std::endl;
 			for (std::list<Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
 			{
-				(*it)->setGame(&this->_games.begin());
+				(*it)->setGame(&(this->_games.begin()));
+				Sleep(2);
+//				std::cout << (*this->_games.begin()) << std::endl;
 			}
 			std::cout << "Game iterator set for all clients" << std::endl;
 			this->_idGames[id] = true;

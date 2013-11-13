@@ -16,6 +16,11 @@ Client::Client(int id, MetaSocket<> *socket)
 
 Client::~Client() {}
 
+t_UDPcmd		&Client::getFrameCMD()
+{
+	return this->_frameCMD;
+}
+
 std::list<Game *>::iterator *Client::getGame()
 {
 	return this->_game;

@@ -2,25 +2,27 @@
 #include	<iostream>
 #include	<string>
 #include	<list>
+#include	"ResourcesGame.h"
 #include	"Client.h"
 #include	"MetaMutex.h"
-#include	"ResourcesGame.h"
+#include	"MetaSocket.h"
 #include	"MetaThreader.hpp"
 #include	"StructCommands.h"
 
-class Client;
-class ResourcesGame;
+class		Client;
 
 class Game
 {
 private:
 	int		_id;
-	ResourcesGame	_resources;
+
+	std::list<Client *>	_clients;
 	MetaMutex<>		_gameClient;
 	MetaMutex<>		_gameSocket;
 	MetaMutex<>		_gameAttribut;
 	MetaSocket<>	_socketUDP;
 	MetaThreader<Game, void>	_thread;
+	ResourcesGame	_resources;
 	bool			_isInit;
 
 public:
@@ -42,5 +44,6 @@ public:
 	int		getID();
 	void	setResources(ResourcesGame const &);
 	ResourcesGame	&getResources();
+	std::list<Client *> &getClients();
 };
 

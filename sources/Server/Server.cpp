@@ -107,9 +107,7 @@ bool			Server::loop()
 		this->_network.initSelect(this->_resources.getClients(), this->_resources.getGame());
 		if (this->_network.Select(500))
 		{
-			// lock tout les mutex _gameClient + _socketGame dans le for
 			this->_network.manageSocket(this->_resources.getClients(), this->_resources.getGame(), to_deco, &added);
-			// unlock tout les mutex _gameClient + _socketGame dans le for;
 		}
 		else
 			error = true;

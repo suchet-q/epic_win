@@ -195,7 +195,7 @@ bool			Executer::execSTL(Client *client, t_cmd const &command)
 	succeed = this->_resource->checkIfGameIsPossible();
 //	answer.response = 1;
 //	answer.id_command = command.cmd[0];
-	memcpy(&stl, command.cmd, sizeof(t_jnl_client));
+	memcpy(&stl, command.cmd, sizeof(t_stl_client));
 	for (; it != this->_resource->getRooms().end(); ++it)
 	{
 		if ((*it)->getID() == stl.id_lobby)

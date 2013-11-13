@@ -23,7 +23,7 @@ private:
   bool			recvCommandTCP(Client*);
   bool			sendCommandTCP(Client*);
   bool			recvFromUDP(Game *);
-  bool			pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in $sin, Game *game);
+  bool			pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *game);
 
 public:
   Network();

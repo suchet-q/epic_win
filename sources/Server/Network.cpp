@@ -86,26 +86,42 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 		(**((*it)->getGame()))->unlockClient();
   }
 
-  /*for (std::list<Game *>::iterator it = gameList.begin(); it != gameList.end(); ++it)
+ for (std::list<Game *>::iterator it = gameList.begin(); it != gameList.end(); ++it)
   {
 	  if ((*it)->getIsInit())
 	  {
 		  (*it)->lockSocket();
 
-		  if (this->_select.fdIsset())
+		  if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
 		  {
 			  this->recvFromUDP(*it);
 		  }
 		  (*it)->unlockSocket();
 	  }
-  }*/
+  }
 
   return (true);
 }
 
-/*bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in $sin, Game *game)
+bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *game)
 {
-	
+	bool		end = false;
+
+	game->lockClient();
+	for (std::list<Client *>::iterator it = game->getClients().begin(); !end && it != game->getClients().end(); ++it)
+	{
+		if ((*it)->getID() == cmd.cmd[1])
+		{
+			memcpy(&(*it)->getFrameCMD().cmd, &cmd, sizeof(cmd));
+			memcpy(&(*it)->getFrameCMD().sin, &sin, sizeof(sin));
+			std::cout << "Command UDP associated to right client" << std::endl;
+			end = true;
+		}
+	}
+	game->unlockClient();
+	if (!end);
+		std::cout << "No client number" << (int)cmd.cmd[1] << " in the game " << game->getID() << std::endl;
+	return end;
 }
 
 bool			Network::recvFromUDP(Game *game)
@@ -118,7 +134,7 @@ bool			Network::recvFromUDP(Game *game)
 
 	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
 		return false;
-  if (this->_buffer.size > 0)
+	if (this->_buffer.size > 0)
     {
       if (_commandsSize[this->_buffer.cmd[0]] - this->_buffer.size < size)
 	{
@@ -129,7 +145,7 @@ bool			Network::recvFromUDP(Game *game)
 	{
 	  memcpy(&this->_buffer.cmd[size], buff, _commandsSize[this->_buffer.cmd[0]] - this->_buffer.size);
 	  this->_buffer.size = _commandsSize[this->_buffer.cmd[0]];
-//	  push_back in right client queue;
+	  this->pushCmdInRightClient(this->_buffer, sin, game);	//	  push_back in right client queue;
 	  for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
 	    this->_buffer.cmd[i] = -1;
 	  this->_buffer.size = 0;
@@ -141,7 +157,7 @@ bool			Network::recvFromUDP(Game *game)
 	memcpy(this->_buffer.cmd, &buff[i], _commandsSize[buff[i]]);
 	this->_buffer.size = _commandsSize[buff[i]];
 	std::cout << "je fou une commande dans le buffer read" << std::endl;
-	// push back in right client queue 
+	this->pushCmdInRightClient(this->_buffer, sin, game);// push back in right client queue 
 	i += _commandsSize[buff[i]];
 	this->_buffer.size = 0;
       }
@@ -153,7 +169,7 @@ bool			Network::recvFromUDP(Game *game)
       }
   }
   return true;
-}*/
+}
 
 bool			Network::recvCommandTCP(Client *client)
 {

@@ -1,12 +1,14 @@
 #pragma once
 
+#include	"ThreaderWindows.hpp"
+/*
 #include <iostream>
 #include <stdio.h>
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 
 #pragma comment(lib, "ws2_32.lib")
-
+*/
 #define UNINITIALIZED_SOCKET (-2)
 #define BAD_PROTOCOL (-3)
 

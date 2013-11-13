@@ -4,7 +4,7 @@
 Game::Game(int id, std::list<Client *> &clients)
 {
 	this->_id = id;
-	this->_resources.setListClients(clients);
+	this->_clients = clients;
 	this->_gameAttribut.initMutex();
 	this->_gameClient.initMutex();
 	this->_gameSocket.initMutex();
@@ -14,6 +14,11 @@ Game::Game(int id, std::list<Client *> &clients)
 Game::Game() {}
 
 Game::~Game() {}
+
+std::list<Client *> &Game::getClients()
+{
+	return this->_clients;
+}
 
 MetaSocket<>	&Game::getSocket()
 {
@@ -70,7 +75,7 @@ bool		Game::init()
 	memcpy(cmd.cmd, &rep, sizeof(rep));
 	cmd.size = sizeof(rep);
 	this->lockClient();
-	for (std::list<Client *>::iterator it = this->getResources().getClients().begin(); it != this->getResources().getClients().end(); ++it)\
+	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
 	this->unlockClient();
 	this->_isInit = true;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include	"Game.h"
 # include	<iostream>
 # include	<string>
 # include	<cstring>
@@ -7,7 +8,6 @@
 # include	<map>
 
 # include	"MetaSocket.h"
-#include	"Game.h"
 
 class Game;
 
@@ -65,10 +65,10 @@ private:
   std::list<Game *>::iterator *_game;
   t_infos_client	*_infosClient;
   MetaSocket<>	*_socket;
-  t_UDPcmd		_frameCMD;
   t_cmd		_buffer;
   std::list<t_cmd>	_writeBuffer;
   std::list<t_cmd>	_readBuffer;
+  t_UDPcmd		_frameCMD;
 
 public:
   Client(int, MetaSocket<> *);
@@ -88,4 +88,5 @@ public:
   std::string const	&getNickName() const;
   t_infos_client	*getInfosClient() const;
   void			setInfosClient();
+  t_UDPcmd		&getFrameCMD();
 };

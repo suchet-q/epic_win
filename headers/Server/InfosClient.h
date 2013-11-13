@@ -11,7 +11,6 @@ enum		Weapons
 class		InfosClient
 {
 private:
-	bool	_toto;
 	int		_life;
 	Weapons	_weapon;
 	bool	_bonus;

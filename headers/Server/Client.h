@@ -69,6 +69,7 @@ private:
   std::list<t_cmd>	_writeBuffer;
   std::list<t_cmd>	_readBuffer;
   t_UDPcmd		_frameCMD;
+  struct sockaddr_in _UDPsin;
 
 public:
   Client(int, MetaSocket<> *);
@@ -89,4 +90,5 @@ public:
   t_infos_client	*getInfosClient() const;
   void			setInfosClient();
   t_UDPcmd		&getFrameCMD();
+  struct sockaddr_in &getUDPsin();
 };

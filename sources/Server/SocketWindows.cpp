@@ -117,7 +117,6 @@ bool		SocketWindows::Bind(char *ip, unsigned int port)
 		this->_sin.sin_addr.s_addr = inet_addr(ip);
 	this->_sin.sin_family = AF_INET;
 	this->_sin.sin_port = htons(port);
-
 	if (bind(this->_socket, (SOCKADDR *)&this->_sin, sizeof(this->_sin)))
 		return false;
 

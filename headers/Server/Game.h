@@ -43,6 +43,7 @@ public:
 	void	setID(int);
 	int		getID();
 	void	setResources(ResourcesGame const &);
+	void	waitAllClients();
 	ResourcesGame	&getResources();
 	std::list<Client *> &getClients();
 };

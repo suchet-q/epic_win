@@ -68,7 +68,10 @@ bool		Game::init()
 	std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
 	this->_socketUDP.init(UDP);
 	this->_socketUDP.Bind("127.0.0.1", 0);
-	std::cout << "Socket binded on port number " << ntohs(this->_socketUDP.getSockaddr()->sin_port) << std::endl;
+	struct sockaddr_in sin;
+	socklen_t len = sizeof(sin);
+	getsockname(this->_socketUDP.getSocket(), (struct sockaddr *)&sin, &len);
+	std::cout << "Socket binded on port number " << ntohs(sin.sin_port) << std::endl;
 	rep.id_command = 6;
 	rep.response = 1;
 	rep.port = ntohs(this->_socketUDP.getSockaddr()->sin_port);
@@ -87,10 +90,30 @@ bool	Game::launchThread(void *arg)
 	return this->_thread.start(&Game::startGame, this, arg);
 }
 
+void	Game::waitAllClients()
+{
+	unsigned char	readyClients = 0;
+
+	while (readyClients < this->_clients.size())
+	{
+		for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+		{
+			this->lockClient();
+			if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 /* need macro omg */)
+				++readyClients;
+			this->unlockClient();
+		}
+	}
+}
+
 int		Game::startGame(void *var)
 {
 	std::cout << "j'ai lance la game ma gueule" << std::endl;
 	this->init();
+	std::cout << "J'attend tout les clients ma gueule" << std::endl;
+	this->waitAllClients();
+	std::cout << "Tout les clients sont présents ma gueue !" << std::endl;
+
 	/*identification verifier nchanger status dans infos client puis lancer la game*/
 	/*appel de methode init etc... et la loop de la game*/
 	std::cout << "c'est la fin de la game maggle" << std::endl;

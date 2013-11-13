@@ -16,6 +16,7 @@ private:
 	bool	_bonus;
 	int		_score;
 	int		_hightScore;
+
 public:
 	InfosClient();
 	~InfosClient();

@@ -63,20 +63,21 @@ bool		Game::getIsInit() const
 bool		Game::init()
 {
 	t_stl_server	rep;
+	struct sockaddr_in sin;
+	socklen_t len = sizeof(sin);
 	t_cmd			cmd;
 
 	std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
 	this->_socketUDP.init(UDP);
 	this->_socketUDP.Bind("127.0.0.1", 0);
-	struct sockaddr_in sin;
-	socklen_t len = sizeof(sin);
 	getsockname(this->_socketUDP.getSocket(), (struct sockaddr *)&sin, &len);
 	std::cout << "Socket binded on port number " << ntohs(sin.sin_port) << std::endl;
 	rep.id_command = 6;
 	rep.response = 1;
-	rep.port = ntohs(this->_socketUDP.getSockaddr()->sin_port);
+	rep.port = ntohs(sin.sin_port);
 	memcpy(cmd.cmd, &rep, sizeof(rep));
 	cmd.size = sizeof(rep);
+	std::cout << "size de la reponse : " << sizeof(rep) << std::endl;
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
@@ -99,7 +100,7 @@ void	Game::waitAllClients()
 		for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
 		{
 			this->lockClient();
-			if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 /* need macro omg */)
+			if ((*it)->getFrameCMD().cmd.size == 2 /*&& (*it)->getFrameCMD().cmd.cmd[0] == 15*/ /* need macro omg */)
 			{
 				memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
 				++readyClients;

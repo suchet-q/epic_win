@@ -41,7 +41,7 @@ void			Network::initSelect(std::list<Client *> const &clientList, std::list<Game
   {
 	  if ((*it)->getGame())
 			(**((*it)->getGame()))->lockClient();
-    _select.fdSet(*(*it)->getSocket(), &_fdRead);
+	 _select.fdSet(*(*it)->getSocket(), &_fdRead);
     if (!(*it)->getWriteBuffer()->empty())
       _select.fdSet(*(*it)->getSocket(), &_fdWrite);
 	  if ((*it)->getGame())
@@ -94,9 +94,9 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 	  if ((*it)->getIsInit())
 	  {
 		  (*it)->lockSocket();
-
 		  if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
 		  {
+			  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
 			  this->recvFromUDP(*it);
 		  }
 		  (*it)->unlockSocket();
@@ -110,6 +110,7 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 {
 	bool		end = false;
 
+	std::cout << "Je vais pusher dans le bon client ma gueule" << std::endl;
 	game->lockClient();
 	for (std::list<Client *>::iterator it = game->getClients().begin(); !end && it != game->getClients().end(); ++it)
 	{
@@ -123,18 +124,17 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 	}
 	game->unlockClient();
 	if (!end)
-		std::cout << "No client number" << (int)cmd.cmd[1] << " in the game " << game->getID() << std::endl;
+		std::cout << "No client number " << (unsigned int)cmd.cmd[1] << " in the game " << game->getID() << std::endl;
 	return end;
 }
 
 bool			Network::recvFromUDP(Game *game)
 {
-	unsigned int size;
+	unsigned int size = 0;
 	struct sockaddr_in	sin;
-	char		buff[512];
+	unsigned char		buff[512];
 
-	memset(buff, -1, 512);
-
+	std::cout << "je vais read sur le udp maggle" << std::endl;
 	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
 		return false;
 	if (this->_buffer.size > 0)

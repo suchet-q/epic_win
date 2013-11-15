@@ -26,7 +26,7 @@ public:
   ~Entity();
 
   entityType		getType() const;
-  Coord<>&		getCoord();
+  Coord<>&			getCoord();
 
   void			setVecDir(Coord<float> const &coord);
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma pack(push, 1)
+
 /*send*/
 typedef	struct			s_pnb_server
 {
@@ -173,3 +175,5 @@ typedef struct			s_idt_client
 	unsigned char		id_cmd;
 	unsigned char		id_client;
 }						t_idt_client;
+
+#pragma	pack(pop)

@@ -7,6 +7,7 @@ GameMenu::GameMenu(void)
 	this->_finished = false;
 	this->_exceptionOccured = false;
 	this->_sheetSkipped = false;
+	this->_antiSpam = false;
 }
 
 
@@ -1078,7 +1079,8 @@ void	GameMenu::startGame()
 
 void		GameMenu::sendMsg()
 {
-	this->_parser->addMSG(this->_playerId, this->_lobbyId, this->_win->getMsg());
+	if (this->_win->getMsg().compare("") != 0)
+		this->_parser->addMSG(this->_playerId, this->_lobbyId, this->_win->getMsg());
 	this->_win->clearMsg();
 }
 
@@ -1169,6 +1171,23 @@ void		GameMenu::checkInputs(RenderWindow &win)
 			this->_sheetSkipped = true;
 			this->_sheetSkippedval = this->_sheetNb;
 		}
+	}
+	if (!(input.IsKeyDown(sf::Key::Return)))
+		this->_antiSpam = false;
+	if (input.IsKeyDown(sf::Key::Return) && !(this->_antiSpam))
+	{
+		if (win.msgActive())
+		{
+			this->sendMsg();
+			this->_antiSpam = true;
+		}
+		if (win.nickActive())
+		{
+			win.switchNick();
+			this->_typingBar->switchActivate();
+			this->setNickname();
+		}
+
 	}
 }
 

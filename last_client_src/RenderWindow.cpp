@@ -146,6 +146,11 @@ void					RenderWindow::disableMsg()
 	this->_getMsg = false;
 }
 
+bool				RenderWindow::nickActive()
+{
+	return (this->_getNick);
+}
+
 bool				RenderWindow::msgActive()
 {
 	return (this->_getMsg);

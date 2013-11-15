@@ -51,6 +51,7 @@ class GameMenu
 	bool					_exceptionOccured;
 	bool					_sheetSkipped;
 	int						_sheetSkippedval;
+	bool					_antiSpam;
 
 	void					loadText(RenderWindow *);
 	void					loadImages();

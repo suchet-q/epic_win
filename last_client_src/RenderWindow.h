@@ -36,6 +36,7 @@ public:
 	void		disableMsg();
 	void		clearMsg();
 	bool		msgActive();
+	bool		nickActive();
 	sf::RenderWindow*	getWindow();
 };
 

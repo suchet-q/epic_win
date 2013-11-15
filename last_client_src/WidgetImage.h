@@ -10,8 +10,8 @@ public:
 	WidgetImage(void);
 	~WidgetImage(void);
 
-	virtual void	loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &);
-	virtual void	loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &, unsigned char r, unsigned char g, unsigned char b);
+	virtual void	loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &);
+	virtual void	loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &, unsigned char r, unsigned char g, unsigned char b);
 	virtual void	setPosition(std::list<sf::Vector2f> &);
 	virtual void	setAnimations(std::list<std::pair<sf::Vector2f, float> > &);
 	virtual void	update(float, RenderWindow &, int);

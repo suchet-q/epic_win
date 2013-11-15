@@ -12,7 +12,7 @@ AWidget::AWidget(void)
 AWidget::~AWidget(void)
 {
 	if (!(this->_sprites.empty()))
-		for (int i = 0; i < this->_sprites.size(); ++i)
+		for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 			delete this->_sprites[i];
 	for (std::map<std::string, std::list<Callback *> >::iterator it = this->_callback.begin(); it != this->_callback.end(); ++it)
 		for (std::list<Callback *>::iterator it2 = (*it).second.begin(); it2 != (*it).second.end(); ++it2)
@@ -63,7 +63,7 @@ void		AWidget::addActualSheet(int sheet)
 
 void		AWidget::skipAnimations()
 {
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 		while (this->_sprites[i]->updateAnimation(3600));
 	this->_delay = 0;
 	this->_timeToLive = 0;

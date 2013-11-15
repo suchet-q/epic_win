@@ -51,7 +51,7 @@ void		RenderWindow::handleEvents()
 {
 	sf::Event	event;
 	std::string	str;
-	int			maxSize;
+	unsigned int		maxSize;
 
 	if (this->isRunning())
 	{
@@ -75,7 +75,7 @@ void		RenderWindow::handleEvents()
 				}
 				(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
 			}
-		}	
+		}
 	}
 }
 

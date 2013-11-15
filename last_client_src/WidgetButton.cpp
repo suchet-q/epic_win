@@ -18,9 +18,9 @@ WidgetButton::~WidgetButton(void)
 {
 }
 
-void		WidgetButton::loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &subRects)
+void		WidgetButton::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &subRects)
 {
-	std::list<std::pair<sf::Vector2f, sf::Vector2f> >::iterator	it;
+	std::list<std::pair<sf::Vector2i, sf::Vector2i> >::iterator	it;
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
@@ -107,7 +107,7 @@ void		WidgetButton::update(float elapsed, RenderWindow &win, int sheetNb)
 	}
 	if (this->_clickable)
 		this->handleInputs(win);
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 	{
 		if (this->_sprites[i]->updateAnimation(elapsed))
 			finished = false;
@@ -169,7 +169,7 @@ void		WidgetButton::setResetParameters(float delay)
 void		WidgetButton::resetWidget()
 {
 	this->_hovered = false;
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (int unsigned i = 0; i < this->_sprites.size(); ++i)
 	{
 		this->_sprites[i]->resetPosition();
 		this->_sprites[i]->loadAnimationsBackup();

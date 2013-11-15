@@ -12,9 +12,9 @@ WidgetImage::~WidgetImage(void)
 {
 }
 
-void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &subRects)
+void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &subRects)
 {
-	std::list<std::pair<sf::Vector2f, sf::Vector2f> >::iterator	it;
+	std::list<std::pair<sf::Vector2i, sf::Vector2i> >::iterator	it;
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
@@ -30,9 +30,9 @@ void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> >
 	}
 }
 
-void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &subRects, unsigned char r, unsigned char g, unsigned char b)
+void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &subRects, unsigned char r, unsigned char g, unsigned char b)
 {
-	std::list<std::pair<sf::Vector2f, sf::Vector2f> >::iterator	it;
+	std::list<std::pair<sf::Vector2i, sf::Vector2i> >::iterator	it;
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
@@ -91,14 +91,14 @@ void		WidgetImage::update(float elapsed, RenderWindow &win, int sheetNb)
 	}
 	if (this->_useTimeToLive && (this->_timeToLive -= elapsed) <= 0.0)
 		return;
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 	{
 		if (this->_useTransition && this->_transition >= 0.0)
 		{
 			if ((this->_transition -= elapsed) >= 1.0)
-				alpha = 255 * (1.0 - (this->_transition - 1.0));
+				alpha = static_cast<unsigned char>(255.0f * (1.0f - (this->_transition - 1.0f)));
 			else if (this->_transitionFull)
-				alpha = 255 * ((this->_transition < 0.5) ? (0.5) : (this->_transition));
+				alpha = static_cast<unsigned char>(255.0f * ((this->_transition < 0.5f) ? (0.5f) : (this->_transition)));
 			this->_sprites[i]->setAlpha(alpha);
 		}
 		if (this->_sprites[i]->updateAnimation(elapsed))
@@ -115,7 +115,7 @@ void		WidgetImage::setResetParameters(float delay, float transition)
 
 void		WidgetImage::resetWidget()
 {
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 	{
 		this->_sprites[i]->resetPosition();
 		this->_sprites[i]->loadAnimationsBackup();

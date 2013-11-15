@@ -90,7 +90,7 @@ sf::Vector2f	Sprite::getPosition()
 	return (this->_sprite.GetPosition());
 }
 
-void			Sprite::cut(sf::Vector2f begin, sf::Vector2f end)
+void			Sprite::cut(sf::Vector2i begin, sf::Vector2i end)
 {
 	this->_sprite.SetSubRect(sf::IntRect(begin.x, begin.y, end.x, end.y));
 }
@@ -126,8 +126,8 @@ bool			Sprite::updateAnimation(float elapsed)
 		}
 		else
 		{
-			x =  this->_animations.front().first.x - this->_floatPos.x;
-			y =  this->_animations.front().first.y - this->_floatPos.y;
+			x =  static_cast<int>(this->_animations.front().first.x - this->_floatPos.x);
+			y =  static_cast<int>(this->_animations.front().first.y - this->_floatPos.y);
 			this->_floatPos.x += (x / this->_animations.front().second) * elapsed;
 			this->_floatPos.y += (y / this->_animations.front().second) * elapsed;
 			this->place(SP_POS, this->_floatPos, sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0);

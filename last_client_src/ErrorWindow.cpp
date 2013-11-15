@@ -12,7 +12,7 @@ ErrorWindow::~ErrorWindow(void)
 
 void		ErrorWindow::initialize()
 {
-	std::list<std::pair<sf::Vector2f, sf::Vector2f> >	subRects;
+	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<sf::Vector2f>								pos;
 
 	this->_msg.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 0, 0);
@@ -20,8 +20,8 @@ void		ErrorWindow::initialize()
 	this->_method.setStyle(sf::String::Bold, 30, "Images/charlie_dotted.ttf", 142, 142, 142);
 	this->_method.addActualSheet(0);
 
-	subRects.push_back(std::pair<sf::Vector2f, sf::Vector2f>(sf::Vector2f(0, 0), sf::Vector2f(200, 50)));
-	subRects.push_back(std::pair<sf::Vector2f, sf::Vector2f>(sf::Vector2f(200, 0), sf::Vector2f(400, 50)));
+	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(200, 50)));
+	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(200, 0), sf::Vector2i(400, 50)));
 	pos.push_back(sf::Vector2f(125, 100));
 	pos.push_back(sf::Vector2f(WIN_X, WIN_Y));
 	this->_ok.loadImage("Images/Ok.png");
@@ -42,9 +42,9 @@ void		ErrorWindow::displayError(const std::string &method, const std::string &er
 	while (this->isRunning())
 	{
 		this->clearWindow();
-		this->_msg.update(0.05, (*this), 0);
-		this->_method.update(0.05, (*this), 0);
-		this->_ok.update(0.05, (*this), 0);
+		this->_msg.update(0.05f, (*this), 0);
+		this->_method.update(0.05f, (*this), 0);
+		this->_ok.update(0.05f, (*this), 0);
 		this->refreshWindow();
 		this->handleEvents();
 	}

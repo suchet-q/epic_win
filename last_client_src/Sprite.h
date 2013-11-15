@@ -29,7 +29,7 @@ public:
 	sf::Image&	getImage();
 	sf::Vector2f	getSize();
 	sf::Vector2f	getPosition();
-	void		cut(sf::Vector2f, sf::Vector2f);
+	void		cut(sf::Vector2i, sf::Vector2i);
 	void		queueAnimation(sf::Vector2f , float);
 	bool		updateAnimation(float);
 	void		clearAnimationsBackup();

@@ -60,7 +60,7 @@ void		WidgetSwitch::cancelAnimations()
 	while (!finished)
 	{
 		finished = true;
-		for (int i = 0; i < this->_sprites.size(); ++i)
+		for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 			if (this->_sprites[i]->updateAnimation(1337.0))
 				finished = false;
 	}
@@ -70,7 +70,7 @@ void		WidgetSwitch::cancelAnimations()
 void		WidgetSwitch::resetWidget()
 {
 	this->_hovered = false;
-	for (int i = 0; i < this->_sprites.size(); ++i)
+	for (unsigned int i = 0; i < this->_sprites.size(); ++i)
 	{
 		this->_sprites[i]->resetPosition();
 		this->_sprites[i]->loadAnimationsBackup();

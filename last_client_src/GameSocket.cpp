@@ -38,6 +38,7 @@ bool			GameSocket::connectUDP()
 	if (!(this->_udpRunning))
 	{
 		this->_socketUDP.init(UDP);
+		std::cout << "UDP Port : " << this->_udpPort << std::endl;
 		if (this->_socketUDP.Bind(const_cast<char *>(this->_ip.c_str()), 0))
 		{
 			this->_udpRunning = true;
@@ -97,6 +98,6 @@ void			GameSocket::update(Parser &parser)
 		parser.parse(&rec, this->_socket.recvFrom(rec, 512, this->_sin));
 		parser.setStartUDP();
 	}
-	if (this->_udpRunning && cmdUDP.first != NULL && this->_select.fdIsset(this->_socketUDP, &writeFd))
+	if (this->_udpRunning && cmdUDP.first != NULL)
 		this->_socketUDP.sendTo(cmdUDP.first, cmdUDP.second, this->_sin);
 }

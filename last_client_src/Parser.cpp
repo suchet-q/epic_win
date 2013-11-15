@@ -268,6 +268,7 @@ void		Parser::parseSTL(void *command, int size)
 		memcpy(&cmd, command, size);
 		args.push_back(cmd.response);
 		args.push_back(cmd.port);
+		std::cout << "Port received : " << cmd.port << std::endl;
 		for (it = this->_callbacks[CMD_STL].begin(); it != this->_callbacks[CMD_STL].end(); ++it)
 			(*it)(args);
 	}

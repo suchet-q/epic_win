@@ -29,11 +29,11 @@ void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &
 			clock.Reset();
 		ss.str("");
 		ss << "Loading ";
-		while ((tmp -= 0.3) >= 0.0)
+		while ((tmp -= 0.3f) >= 0.0f)
 			ss << ". ";
 		loading.setText(ss.str());
 		this->_win.clearWindow();
-		loading.update(0.15, this->_win, 0);
+		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 		this->_win.handleEvents();
 	}

@@ -12,7 +12,7 @@ WidgetText::~WidgetText(void)
 }
 
 
-void		WidgetText::loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &subRects)
+void		WidgetText::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &subRects)
 {
 
 }
@@ -54,7 +54,7 @@ void		WidgetText::update(float elapsed, RenderWindow &win, int sheetNb)
 
 void		WidgetText::setCenter(int x, int y)
 {
-	this->_text.SetCenter(x, y);
+	this->_text.SetCenter(static_cast<float>(x), static_cast<float>(y));
 }
 
 void		WidgetText::setText(const std::string &text)
@@ -65,7 +65,7 @@ void		WidgetText::setText(const std::string &text)
 void		WidgetText::setStyle(unsigned long style, int size, std::string const &font, unsigned char r, unsigned char g, unsigned char b)
 {
 	this->_text.SetStyle(style);
-	this->_text.SetSize(size);
+	this->_text.SetSize(static_cast<float>(size));
 	if (font != "")
 	{
 		this->_font.LoadFromFile(font);
@@ -99,5 +99,5 @@ sf::FloatRect	WidgetText::getRect()
 
 int				WidgetText::getSize()
 {
-	return (this->_text.GetSize());
+	return (static_cast<int>(this->_text.GetSize()));
 }

@@ -24,7 +24,7 @@ public:
 	virtual ~AWidget(void);
 	
 	
-	virtual void	loadSprites(std::list<std::pair<sf::Vector2f, sf::Vector2f> > &) = 0;
+	virtual void	loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > &) = 0;
 	virtual void	setPosition(std::list<sf::Vector2f> &) = 0;
 	virtual void	setAnimations(std::list<std::pair<sf::Vector2f, float> > &) = 0;
 	virtual void	update(float, RenderWindow &, int) = 0;

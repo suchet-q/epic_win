@@ -14,13 +14,13 @@ GameLoop::~GameLoop(void)
 
 int		GameLoop::loadResources(void *arg)
 {
-	std::list<std::pair<sf::Vector2f, sf::Vector2f> >	subRects;
+	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
 
 	try {
-		subRects.push_back(std::pair<sf::Vector2f, sf::Vector2f>(sf::Vector2f(0, 0), sf::Vector2f(1024, 768)));
-		subRects.push_back(std::pair<sf::Vector2f, sf::Vector2f>(sf::Vector2f(1024, 0), sf::Vector2f(2048, 768)));
+		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(1024, 768)));
+		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(1024, 0), sf::Vector2i(2048, 768)));
 		pos.push_back(sf::Vector2f(0, 0));
 		pos.push_back(sf::Vector2f(1024, 0));
 		anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(-1024, 0), 15.0));

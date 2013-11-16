@@ -14,11 +14,11 @@ std::list<Ship *>&	ResourcesGame::getShipList() {
   return _shipList;
 }
 
-void			ResourcesGame::createShip()
+void			ResourcesGame::createPlayerShip()
 {
   Ship*			newShip;
 
-  newShip = _shipPool.getInstance();
+  newShip = _playerShipPool.getInstance();
   _shipList.push_back(newShip);
   _entityList.push_back(newShip);
 }

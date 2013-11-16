@@ -1,5 +1,6 @@
 #pragma once
 
+# include		<list>
 # include		"Coord.hpp"
 //# include		"Sprite.h"
 
@@ -34,5 +35,5 @@ public:
   void			setVecDir(Coord<float> const &coord);
   void			setType(entityType type);
 
-  virtual void		update() = 0;
+  virtual void		update(std::list<Entity *> &) = 0;
 };

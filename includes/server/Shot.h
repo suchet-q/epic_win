@@ -8,5 +8,5 @@ public:
   Shot();
   ~Shot();
 
-  void			update();
+  void			update(std::list<Entity *> &);
 };

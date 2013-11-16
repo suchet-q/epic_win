@@ -4,6 +4,6 @@ Shot::Shot() {}
 
 Shot::~Shot() {}
 
-void			Shot::update() {
+void			Shot::update(std::list<Entity *> &) {
   _coord += _vecDir;
 }

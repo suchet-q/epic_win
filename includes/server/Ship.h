@@ -1,34 +1,33 @@
 #pragma once
 
-# include		<list>
+#include		<list>
 
-# include		"Entity.h"
-# include		"Pool.hpp"
-# include		"Shot.h"
+#include		"Entity.h"
+#include		"Shot.h"
+#include		"Pool.hpp"
 
-# define		LEFT			(1)
-# define		RIGHT			(2)
-# define		UP			(4)
-# define		DOWN			(8)
-# define		SHOOT			(16)
+#define		LEFT			(1)
+#define		RIGHT			(2)
+#define		UP				(4)
+#define		DOWN			(8)
+#define		SHOOT			(16)
 
 # define		CHECK_INPUT(in, st)	((in & st == st) ? (1) : (0))
 
 class			Ship : public Entity
 {
-private:
+protected:
   bool			_shoot;
-  std::list<Entity*>*	_entityList;
   Pool<Shot, 64>*	_shotPool;
+  unsigned short	_input;
 
 public:
   Ship();
-  ~Ship();
+  virtual ~Ship();
 
-  void			setEntityList(std::list<Entity *>* entityList);
-  void			setShotPool(Pool<Shot, 64>* pool);
-
-  void			update();
-  void			shoot();
-  void			manageInput(short unsigned int imput);
+  void			setShotPool(Pool<Shot, 64>& pool);
+  unsigned short	getInput() const;
+  void				setInput(unsigned short);
+  virtual void			update(std::list<Entity *> &) = 0;
+//  void			shoot();
 };

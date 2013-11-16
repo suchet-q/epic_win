@@ -106,7 +106,7 @@ void			Game::initPlayersShip()
   unsigned int		type = PLAYER1;
 
   for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
-    _resources.createShip();
+    _resources.createPlayerShip();
     _resources.getShipList().back()->setType(static_cast<entityType>(type));
     _clientToShip[*it] = _resources.getShipList().back();
     type++;
@@ -170,10 +170,10 @@ void			Game::manageClientsInputs()
 
   for (std::map<Client*, Ship*>::iterator it = _clientToShip.begin();
        it != _clientToShip.end(); ++it)
-    if (!(*it).first->getFrameCMD().cmd.size) {
+    if ((*it).first->getFrameCMD().cmd.size) {
       memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
-      if (cmd.id_cmd = 14) //TODO : MACRO
-	(*it).second->manageInput(cmd.input);
+		if (cmd.id_cmd = 14) //TODO : MACRO
+			(*it).second->setInput(cmd.input);
   }
 }
 

@@ -5,7 +5,10 @@
 
 enum			entityType
   {
-    PLAYER,
+    PLAYER1 = 1,
+    PLAYER2,
+    PLAYER3,
+    PLAYER4,
     MOBB,
     SHOT,
     LANDSCAPE
@@ -29,6 +32,7 @@ public:
   Coord<>&		getCoord();
 
   void			setVecDir(Coord<float> const &coord);
+  void			setType(entityType type);
 
   virtual void		update() = 0;
 };

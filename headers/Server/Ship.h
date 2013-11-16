@@ -3,6 +3,8 @@
 # include		<list>
 
 # include		"Entity.h"
+# include		"Pool.hpp"
+# include		"Shot.h"
 
 # define		LEFT			(1)
 # define		RIGHT			(2)
@@ -17,13 +19,16 @@ class			Ship : public Entity
 private:
   bool			_shoot;
   std::list<Entity*>*	_entityList;
+  Pool<Shot, 64>*	_shotPool;
 
 public:
   Ship();
   ~Ship();
 
   void			setEntityList(std::list<Entity *>* entityList);
+  void			setShotPool(Pool<Shot, 64>* pool);
 
   void			update();
+  void			shoot();
   void			manageInput(short unsigned int imput);
 };

@@ -5,10 +5,10 @@
 // Login   <suchet_q@epitech.net>
 // 
 // Started on  Wed Nov  6 00:53:36 2013 quentin suchet
-// Last update Wed Nov  6 01:03:26 2013 quentin suchet
+// Last update Wed Nov 13 03:02:14 2013 geoffrey michelini
 //
 
-#include		"MutexLinux.h"
+#include		"Linux/MutexLinux.h"
 
 MutexLinux::MutexLinux() : _init(false) {}
 

@@ -15,6 +15,10 @@ Coord<>&		Entity::getCoord() {
   return _intCoord;
 }
 
+void			Entity::setType(entityType type) {
+  _type = type;
+}
+
 void			Entity::setVecDir(Coord<float> const &coord) {
   _vecDir = coord;
 }

@@ -2,9 +2,9 @@
 
 # include			<array>
 
-# define			NB_ELEM		(64)
+//# define			NB_ELEM		(64)
 
-template<typename T>
+template<typename T, unsigned int NB_ELEM>
 class				Pool
 {
 private:
@@ -16,7 +16,8 @@ public:
     for (unsigned int i = 0; i < NB_ELEM; ++i)
       this->_idArray[i] = false;
   }
-  ~Pool();
+ 
+  ~Pool() {}
 
   T*				getInstance() {
     unsigned int		i = 0;

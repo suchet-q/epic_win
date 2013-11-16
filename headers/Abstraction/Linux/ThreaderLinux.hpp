@@ -5,7 +5,7 @@
 // Login   <bozzan_a@epitech.net>
 // 
 // Started on  Fri Apr 12 15:08:49 2013 adrien bozzano
-// Last update Tue Oct 22 09:51:37 2013 quentin suchet
+// Last update Wed Nov 13 03:11:58 2013 geoffrey michelini
 //
 
 #ifndef THREADER_HPP__
@@ -20,7 +20,7 @@
 template <typename T>
 void*		funct(void *ptr);
 
-template <typename S>
+template <typename T, typename S>
 class		ThreaderLinux
 {
   int		(T::*_ptr)(S *);

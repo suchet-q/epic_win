@@ -4,6 +4,8 @@ project(R-Type)
 
 include_directories(../lib)
 include_directories(../includes/client)
+#include_directories(../includes/server)
+
 include_directories(../includes/common)
 
 file(
@@ -11,6 +13,14 @@ file(
         multi_client_files
         ../sources/client/*
 	../includes/client/*
+)
+
+
+file(
+        GLOB_RECURSE
+        multi_server_files
+        ../sources/server/*
+	../includes/server/*
 )
 
 file(
@@ -44,6 +54,13 @@ if ( CMAKE_COMPILER_IS_GNUCXX )
 		${linux_client_files}
 	) 
 
+	add_executable(
+		Server
+		${multi_server_files}
+		${common_files}
+		${linux_client_files}
+	) 
+
 	set(EXECUTABLE_OUTPUT_PATH ../../bin)
 
 	include_directories(../lib/sfml/linux/include)
@@ -65,6 +82,13 @@ if ( MSVC )
 	add_executable(
 		R-Type
 		${multi_client_files}
+		${common_files}
+		${windows_client_files}
+	)
+
+	add_executable(
+		Server
+		${multi_server_files}
 		${common_files}
 		${windows_client_files}
 	)
@@ -100,3 +124,6 @@ if ( MSVC )
     	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
 
 endif ( MSVC )
+
+set_target_properties(Server PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET Server APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)

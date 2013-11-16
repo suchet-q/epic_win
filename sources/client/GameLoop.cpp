@@ -177,7 +177,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		this->drawEntities(win, elapsed);
 		this->drawHUB(win, elapsed);
 		win.refreshWindow();
-		win.handleEvents();
+		win.handleEventsGame(parser, *this->_idClient);
 		sock.update(parser);
 		elapsed = clock.GetElapsedTime();
 		clock.Reset();

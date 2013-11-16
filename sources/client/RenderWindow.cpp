@@ -79,6 +79,51 @@ void		RenderWindow::handleEvents()
 	}
 }
 
+void		RenderWindow::handleEventsGame(Parser &parser, unsigned char idClient)
+{
+	sf::Event	event;
+
+	if (this->isRunning())
+	{
+		while (this->_win->GetEvent(event))
+		{
+			switch (event.Type)
+			{
+				case (sf::Event::Closed) : {
+					throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
+					break;
+				}
+				case (sf::Event::KeyPressed) : {
+					switch (event.Key.Code)
+					{
+						case (sf::Key::Left) : {
+							parser.addINP(idClient, INP_LEFT);
+							break;
+						}
+						case (sf::Key::Right) : {
+							parser.addINP(idClient, INP_RIGHT);
+							break;
+						}
+						case (sf::Key::Up) : {
+							parser.addINP(idClient, INP_UP);
+							break;
+						}
+						case (sf::Key::Down) : {
+							parser.addINP(idClient, INP_DOWN);
+							break;
+						}
+						case (sf::Key::Space) : {
+							parser.addINP(idClient, INP_FIRE);
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
 void		RenderWindow::clearWindow()
 {
 	if (this->isRunning())

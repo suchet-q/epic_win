@@ -24,3 +24,8 @@
 #define		CMD_EVT		13
 #define		CMD_INP		14
 #define		CMD_IDT		15
+#define		INP_LEFT	1
+#define		INP_RIGHT	2
+#define		INP_UP		4
+#define		INP_DOWN	8
+#define		INP_FIRE	16

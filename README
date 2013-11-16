@@ -1,0 +1,21 @@
+====BUILDING INSTRUCTIONS====
+
+Pre-requisite:
+	-CMake >= 2.6
+	-Windows with vc2010 or Linux
+
+Windows:
+	-Go into build folder
+	-Execute either build_win32_debug.bat or build_win32_release.bat depending what you want
+	-Generated solution is located in the newly created do_not_commit folder
+	-Open and build solution. Generated binaries are located in the bin folder at the repo's root
+
+Linux:
+	-Go into build folder
+	-Execute build_linux_x86.sh
+	-Generated Makefile is located in the newly created do_not_commit folder
+	-Execute make command. Generated binaries are located in the bin folder at the repo's root
+
+/!\ 	Delete the do_not_commit folder before commiting
+	If you need a Makefile update (typically when adding new files to project), simply create your new files then delete
+	the the do_not_commit folder and regenerate makefile with build_linux_x86.sh 	

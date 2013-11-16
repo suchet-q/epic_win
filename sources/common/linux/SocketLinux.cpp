@@ -5,7 +5,7 @@
 // Login   <suchet_q@epitech.net>
 // 
 // Started on  Sat Oct 12 14:35:59 2013 quentin suchet
-// Last update Sat Nov 16 06:24:57 2013 gaetan blery
+// Last update Sat Nov 16 22:17:21 2013 geoffrey michelini
 //
 
 #include		<unistd.h>
@@ -87,7 +87,7 @@ bool			SocketLinux::init(proto type)
   return true;
 }
 
-bool			SocketLinux::Bind(char *ip, unsigned int port)
+bool			SocketLinux::Bind(char const *ip, unsigned int port)
 {
 
   if (this->_ifClosed)

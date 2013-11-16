@@ -43,7 +43,7 @@ public:
 		return (this->_socket.init(type));
 	}
 
-	bool		Bind(char *ip, unsigned int port)
+	bool		Bind(char const *ip, unsigned int port)
 	{
 		return this->_socket.Bind(ip, port);
 	}

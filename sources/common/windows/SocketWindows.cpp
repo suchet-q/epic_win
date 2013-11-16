@@ -106,7 +106,7 @@ bool		SocketWindows::init(proto type)
 	return true;
 }
 
-bool		SocketWindows::Bind(char *ip, unsigned int port)
+bool		SocketWindows::Bind(char const *ip, unsigned int port)
 {
 	 if (this->_ifClosed)
 		return false;

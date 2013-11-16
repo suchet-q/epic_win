@@ -5,7 +5,7 @@
 ** Login   <suchet_q@epitech.net>
 ** 
 ** Started on  Sat Oct 12 14:35:56 2013 quentin suchet
-// Last update Mon Nov 11 23:54:42 2013 geoffrey michelini
+// Last update Sat Nov 16 22:16:06 2013 geoffrey michelini
 */
 
 #pragma once
@@ -50,7 +50,7 @@ public:
   void			setType(proto type);
   
   bool			init(proto type);
-  bool			Bind(char *ip, unsigned int port);
+  bool			Bind(char const *ip, unsigned int port);
   bool			Listen(int queue);
   bool			Connect(char *ip, unsigned int port);
   SocketLinux	*Accept();

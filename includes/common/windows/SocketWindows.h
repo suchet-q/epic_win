@@ -39,7 +39,7 @@ public:
 	bool		loadWinSock() const;
 
 	bool		init(proto type);
-	bool		Bind(char *, unsigned int);
+	bool		Bind(char const *, unsigned int);
 	bool		Listen(int queue);
 	bool		Connect(char *ip, unsigned int port);
 	SocketWindows *Accept();

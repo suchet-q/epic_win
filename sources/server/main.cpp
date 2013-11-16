@@ -5,7 +5,7 @@
 // Login   <michel_b@epitech.net>
 // 
 // Started on  Tue Oct 29 21:28:45 2013 geoffrey michelini
-// Last update Fri Nov  1 22:46:27 2013 geoffrey michelini
+// Last update Sat Nov 16 22:21:56 2013 geoffrey michelini
 //
 
 #include	<sstream>
@@ -13,14 +13,15 @@
 
 int		main(int ac, char **av)
 {
-  std::istringstream	buffer;
+  std::stringstream	buffer;
   Server	server;
   int		port;
 
-  if (ac < 2) {
-    std::cerr << "[USAGE]: R-type [PORT]" << std::endl;
-    return (-1);
-  }
+  if (ac < 2)
+    {
+      std::cerr << "[USAGE]: R-type [PORT]" << std::endl;
+      return (-1);
+    }
   buffer.str(av[1]);
   buffer >> port;
   if (!server.init(port)

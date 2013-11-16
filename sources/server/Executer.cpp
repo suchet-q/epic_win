@@ -2,7 +2,7 @@
 
 Executer::Executer()
 {
-	this->_func = new exec[10];
+	this->_func = new exec[16];
 	this->_func[1] = &Executer::execNBP;
 	this->_func[2] = &Executer::execNBL;
 	this->_func[3] = &Executer::execJNL;

@@ -29,6 +29,7 @@ public:
 	GameLoop(void);
 	~GameLoop(void);
 
+	boost::any	aff(std::list<boost::any> &);
 	void		exception();
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);

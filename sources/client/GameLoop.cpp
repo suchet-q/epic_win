@@ -42,10 +42,12 @@ int		GameLoop::loadResources(void *arg)
 
 		this->_life.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_life.addActualSheet(0);
+		this->_life.setText("Type 2");
 		this->_life.setPosition(sf::Vector2f(10, 0));
 
 		this->_score.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_score.addActualSheet(0);
+		this->_score.setText("Type 1");
 		this->_score.setPosition(sf::Vector2f(10, 730));
 	}
 	catch (RuntimeException &e) {
@@ -81,7 +83,8 @@ void		GameLoop::drawHUB(RenderWindow &win, float elapsed)
 
 void		GameLoop::drawEntities(RenderWindow &win, float elapsed)
 {
-
+	this->_life.update(elapsed, win, 0);
+	this->_score.update(elapsed, win, 0);
 }
 
 void		GameLoop::drawBackground(RenderWindow &win, float elapsed)
@@ -142,6 +145,24 @@ void		GameLoop::drawBackground(RenderWindow &win, float elapsed)
 	this->_back2.update(elapsed, win, 0);
 }
 
+boost::any	GameLoop::aff(std::list<boost::any> &args)
+{
+		int x, y;
+		unsigned char type;
+
+		type = boost::any_cast<unsigned char>(args.front());
+		args.pop_front();
+		args.pop_front();
+		x = boost::any_cast<unsigned short>(args.front());
+		args.pop_front();
+		y = boost::any_cast<unsigned short>(args.front());
+		if (type == 1)
+			this->_score.setPosition(sf::Vector2f(x, y));
+		else
+			this->_life.setPosition(sf::Vector2f(x, y));
+		return (0);
+}
+
 bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 {
 	sf::Clock	clock;
@@ -153,6 +174,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		throw RuntimeException("[GameLoop::loop]", "Can't create UDP Socket");
 	std::cout << "Send ID CLIENT : " << (int)*this->_idClient << std::endl;
 	clock.Reset();
+	parser.addCallback(CMD_AFF, boost::bind(&GameLoop::aff, this, _1));
 	while (win.isRunning() && !(parser.getStartUDP()))
 	{
 		win.clearWindow();
@@ -175,7 +197,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		win.clearWindow();
 		this->drawBackground(win, elapsed);
 		this->drawEntities(win, elapsed);
-		this->drawHUB(win, elapsed);
+		//this->drawHUB(win, elapsed);
 		win.refreshWindow();
 		win.handleEventsGame(parser, *this->_idClient);
 		sock.update(parser);

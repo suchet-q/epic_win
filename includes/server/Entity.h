@@ -31,6 +31,7 @@ public:
 
   entityType		getType() const;
   Coord<>&			getCoord();
+  Coord<float>&		getFloatCoord();
 
   void			setVecDir(Coord<float> const &coord);
   void			setType(entityType type);

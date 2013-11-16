@@ -14,6 +14,12 @@
 
 class			Client;
 
+struct t_rep_client
+{
+	char	buffer[8128];
+	unsigned int		size;
+};
+
 class			Game
 {
 private:
@@ -27,7 +33,7 @@ private:
   MetaThreader<Game, void>	_thread;
   ResourcesGame			_resources;
   bool				_isInit;
-
+  std::map<Client *, t_rep_client>	_repClient;
 public:
   Game(int, std::list<Client *> &);
   Game();
@@ -53,6 +59,7 @@ public:
   bool			launchThread(void *arg);
   void			initPlayersShip();
   bool			init();
+  void			initBufClient();
   void			waitAllClients();
   void			manageClientsInputs();
   void			loop();

@@ -87,6 +87,7 @@ bool		Game::init()
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
 	this->unlockClient();
+	this->initBufClient();
 	this->_isInit = true;
 	return true;
 }
@@ -99,7 +100,17 @@ bool			Game::unlockAttribut() {
   return this->_gameAttribut.Unlock();
 }
 
+void			Game::initBufClient()
+{
+	t_rep_client	tmp;
 
+	memset(&tmp, 0, sizeof(t_rep_client));
+	std::list<Client *>::iterator it = this->_clients.begin();
+	for (; it != this->_clients.end(); ++it)
+	{
+		this->_repClient[(*it)] = tmp;
+	}
+}
 
 void			Game::initPlayersShip()
 {
@@ -169,15 +180,66 @@ void			Game::manageClientsInputs()
   t_inp_client		cmd;
 
   for (std::map<Client*, Ship*>::iterator it = _clientToShip.begin();
-       it != _clientToShip.end(); ++it)
-    if ((*it).first->getFrameCMD().cmd.size) {
-      memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
-		if (cmd.id_cmd = 14) //TODO : MACRO
-			(*it).second->setInput(cmd.input);
+	  it != _clientToShip.end(); ++it)
+  {
+	  if ((*it).first->getFrameCMD().cmd.size) {
+		  memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
+		  if (cmd.id_cmd = 14) //TODO : MACRO
+			  (*it).second->setInput(cmd.input);
+
+	  }
+	  (*it).first->getFrameCMD().cmd.size = 0;
   }
 }
 
 void			Game::loop()
 {
- 
+	Coord<>		tmp;
+	t_aff_server	affServer;
+	t_evt_server	evtServer;
+	std::list<Entity *>::iterator itEntity;
+	std::map<Client *, t_rep_client>::iterator itRep;
+	t_scr_server	srcServer;
+	t_lif_server	lifServer;
+
+	while (true)
+	{
+		this->manageClientsInputs();
+		/*plus tard*//*update AI*/
+		itEntity = this->_resources.getEntityList().begin();
+		for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
+		{
+			(*itEntity)->update(this->_resources.getEntityList()/*peut etre envoye iterator pour cheque colision*/);
+			tmp = (*itEntity)->getCoord();
+			itRep = this->_repClient.begin();
+			for (; itRep != this->_repClient.end(); ++itRep)
+			{
+				affServer.id_cmd = 10;
+				affServer.type = (*itEntity)->getType();
+				affServer.id_obj = 007/*mettre l id dans la class entity*/;
+				affServer.x = tmp.getX();
+				affServer.y = tmp.getY();
+				memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
+				(*itRep).second.size += sizeof(affServer);
+			}
+		}
+		itRep = this->_repClient.begin();
+		for (; itRep != this->_repClient.end(); ++itRep)
+		{
+			/*info a mettre dans dans la map et retire la struc infoclient du client*/
+			srcServer.id_cmd = 11;
+			srcServer.score = (*itRep).first->getInfosClient()->score;
+			memcpy(&(*itRep).second.buffer[(*itRep).second.size], &srcServer, sizeof(srcServer));
+			(*itRep).second.size += sizeof(srcServer);
+			lifServer.id_cmd = 12;
+			lifServer.life = (*itRep).first->getInfosClient()->life;
+			memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
+			(*itRep).second.size += sizeof(lifServer);
+			this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer), (*itRep).second.size, &(*itRep).first->getUDPsin());
+			(*itRep).second.size = 0;
+		}
+		/*check colision peut etre fait dans update entity (vie ou mort)*/
+		/*evtServer.id_cmd = 13; set levent (mort colision etc..) surment pas fait ici
+		evtServer.event = ;*/
+	}
 }

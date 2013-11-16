@@ -57,12 +57,39 @@ bool			Game::unlockClient() {
   return this->_gameClient.Unlock();
 }
 
+<<<<<<< HEAD
 bool			Game::lockSocket() {
   return this->_gameSocket.Lock();
 }
 
 bool			Game::unlockSocket() {
   return this->_gameSocket.Unlock();
+=======
+bool		Game::init()
+{
+	t_stl_server	rep;
+	struct sockaddr_in sin;
+	socklen_t len = sizeof(sin);
+	t_cmd			cmd;
+
+	std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
+	this->_socketUDP.init(UDP);
+	this->_socketUDP.Bind("127.0.0.1", 0);
+	getsockname(this->_socketUDP.getSocket(), (struct sockaddr *)&sin, &len);
+	std::cout << "Socket binded on port number " << ntohs(sin.sin_port) << std::endl;
+	rep.id_command = 6;
+	rep.response = 1;
+	rep.port = ntohs(sin.sin_port);
+	memcpy(cmd.cmd, &rep, sizeof(rep));
+	cmd.size = sizeof(rep);
+	std::cout << "size de la reponse : " << sizeof(rep) << std::endl;
+	this->lockClient();
+	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
+		(*it)->getWriteBuffer()->push_back(cmd);
+	this->unlockClient();
+	this->_isInit = true;
+	return true;
+>>>>>>> 1da85fa04e01fe88a089eb897364565953affba9
 }
 
 bool			Game::lockAttribut() {
@@ -79,12 +106,28 @@ void			Game::initPlayersShip()
 {
   unsigned int		type = PLAYER1;
 
+<<<<<<< HEAD
   for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
     _resources.createShip();
     _resources.getShipList().back()->setType(static_cast<entityType>(type));
     _clientToShip[*it] = _resources.getShipList().back();
     type++;
   }
+=======
+	while (readyClients < this->_clients.size())
+	{
+		for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+		{
+			this->lockClient();
+			if ((*it)->getFrameCMD().cmd.size == 2 /*&& (*it)->getFrameCMD().cmd.cmd[0] == 15*/ /* need macro omg */)
+			{
+				memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
+				++readyClients;
+			}
+			this->unlockClient();
+		}
+	}
+>>>>>>> 1da85fa04e01fe88a089eb897364565953affba9
 }
 
 bool			Game::init()

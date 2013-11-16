@@ -108,7 +108,14 @@ void			Game::initBufClient()
 	std::list<Client *>::iterator it = this->_clients.begin();
 	for (; it != this->_clients.end(); ++it)
 	{
-		this->_repClient[(*it)] = tmp;
+		memset(&this->_repClient[(*it)].buffer, 0, sizeof(8128));
+		this->_repClient[(*it)].size = 0;
+		this->_repClient[(*it)].life = 3;
+		this->_repClient[(*it)].weapon = MISSIL;
+		this->_repClient[(*it)].bonus = false;
+		this->_repClient[(*it)].score = 0;
+		this->_repClient[(*it)].hightScore = 0;
+		this->_repClient[(*it)].status = NONE;
 	}
 }
 
@@ -228,11 +235,11 @@ void			Game::loop()
 		{
 			/*info a mettre dans dans la map et retire la struc infoclient du client*/
 			srcServer.id_cmd = 11;
-			srcServer.score = (*itRep).first->getInfosClient()->score;
+			srcServer.score = (*itRep).second.score;
 			memcpy(&(*itRep).second.buffer[(*itRep).second.size], &srcServer, sizeof(srcServer));
 			(*itRep).second.size += sizeof(srcServer);
 			lifServer.id_cmd = 12;
-			lifServer.life = (*itRep).first->getInfosClient()->life;
+			lifServer.life = (*itRep).second.life;
 			memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
 			(*itRep).second.size += sizeof(lifServer);
 			this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer), (*itRep).second.size, &(*itRep).first->getUDPsin());

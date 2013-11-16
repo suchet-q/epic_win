@@ -63,7 +63,7 @@ private:
   Status	_status;
   std::string	_nickName;
   std::list<Game *>::iterator *_game;
-  t_infos_client	*_infosClient;
+  //t_infos_client	*_infosClient;
   MetaSocket<>	*_socket;
   t_cmd		_buffer;
   std::list<t_cmd>	_writeBuffer;
@@ -87,7 +87,7 @@ public:
   void		setHost(bool);
   void		setNickName(const char *);
   std::string const	&getNickName() const;
-  t_infos_client	*getInfosClient() const;
+ // t_infos_client	*getInfosClient() const;
   void			setInfosClient();
   t_UDPcmd		&getFrameCMD();
   struct sockaddr_in &getUDPsin();

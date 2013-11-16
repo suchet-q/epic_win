@@ -14,10 +14,29 @@
 
 class			Client;
 
+enum		Weapons
+{
+	MISSIL,
+	LASER
+};
+
+enum		StatusInGame
+{
+	NONE,
+	READY,
+	DECO
+};
+
 struct t_rep_client
 {
 	char	buffer[8128];
 	unsigned int		size;
+	int		life;
+	int	weapon;
+	bool		bonus;
+	int		score;
+	int		hightScore;
+	int	status;
 };
 
 class			Game

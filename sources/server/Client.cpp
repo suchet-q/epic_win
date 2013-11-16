@@ -6,7 +6,6 @@ Client::Client(int id, MetaSocket<> *socket)
   this->_socket = socket;
   this->_id = id;
   this->_host = false;
-  //this->_infosClient = NULL;
   for (int i = 0; i < GREATEST_COMMAND_SIZE; ++i)
     this->_buffer.cmd[i] = -1;
   this->_buffer.size = 0;
@@ -31,18 +30,6 @@ void				Client::setGame(std::list<Game *>::iterator *game)
 	this->_game = game;
 }
 
-/*ne pas oublie de delete infos_client quand la gameet fini*/
-/*void			Client::setInfosClient()
-{
-	this->_infosClient = new t_infos_client;
-	this->_infosClient->life = 3;
-	this->_infosClient->weapon = MISSIL;
-	this->_infosClient->bonus = false;
-	this->_infosClient->score = 0;
-	this->_infosClient->hightScore = 0;
-	this->_infosClient->status = READY;
-}
-*/
 Status			Client::getStatus() const
 {
 	return (this->_status);
@@ -132,11 +119,6 @@ void	Client::setNickName(const char *nickName)
 {
   this->_nickName = nickName;
 }
-
-/*t_infos_client	*Client::getInfosClient() const
-{
-  return (const_cast<t_infos_client *>(this->_infosClient));
-}*/
 
 struct sockaddr_in &Client::getUDPsin()
 {

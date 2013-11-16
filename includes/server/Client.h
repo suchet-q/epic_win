@@ -21,28 +21,6 @@ enum		Status
 	TO_DECO
 };
 
-enum		Weapons
-{
-  MISSIL,
-  LASER
-};
-
-enum		StatusInGame
-{
-	READY,
-	DECO
-};
-
-typedef struct	s_infos_client
-{
-  int		life;
-  Weapons	weapon;
-  bool		bonus;
-  int		score;
-  int		hightScore;
-  StatusInGame	status;
-}				t_infos_client;
-
 struct		t_cmd
 {
   char		cmd[GREATEST_COMMAND_SIZE];
@@ -63,7 +41,6 @@ private:
   Status	_status;
   std::string	_nickName;
   std::list<Game *>::iterator *_game;
-  //t_infos_client	*_infosClient;
   MetaSocket<>	*_socket;
   t_cmd		_buffer;
   std::list<t_cmd>	_writeBuffer;
@@ -87,7 +64,6 @@ public:
   void		setHost(bool);
   void		setNickName(const char *);
   std::string const	&getNickName() const;
- // t_infos_client	*getInfosClient() const;
   void			setInfosClient();
   t_UDPcmd		&getFrameCMD();
   struct sockaddr_in &getUDPsin();

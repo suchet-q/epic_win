@@ -3,7 +3,7 @@
 #include	<string>
 #include	<list>
 #include	<array>
-#include	"Client.h"
+#include	"Clients.h"
 #include	"Room.h"
 #include	"MetaSocket.h"
 #include	"Game.h"

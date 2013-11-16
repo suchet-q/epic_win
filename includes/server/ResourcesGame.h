@@ -4,7 +4,7 @@
 # include		<iostream>
 # include		<string>
 
-# include		"Ship.h"
+# include		"Ships.h"
 # include		"PlayerShip.h"
 # include		"Shot.h"
 # include		"Pool.hpp"

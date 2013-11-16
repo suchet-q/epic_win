@@ -4,7 +4,7 @@
 #include		<list>
 #include		<array>
 
-#include		"Client.h"
+#include		"Clients.h"
 #include		"Network.h"
 #include		"Resource.h"
 #include		"StructCommands.h"

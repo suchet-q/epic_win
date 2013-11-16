@@ -6,7 +6,7 @@
 # include		<map>
 
 # include		"ResourcesGame.h"
-# include		"Client.h"
+# include		"Clients.h"
 # include		"MetaMutex.h"
 # include		"MetaSocket.h"
 # include		"MetaThreader.hpp"

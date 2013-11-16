@@ -4,8 +4,6 @@ project(R-Type)
 
 include_directories(../lib)
 include_directories(../includes/client)
-#include_directories(../includes/server)
-
 include_directories(../includes/common)
 
 file(
@@ -47,6 +45,9 @@ file(
 
 if ( CMAKE_COMPILER_IS_GNUCXX )
 
+	
+	include_directories(../includes/server)
+
      	add_executable(
 		R-Type
 		${multi_client_files}
@@ -72,6 +73,11 @@ if ( CMAKE_COMPILER_IS_GNUCXX )
 		libsfml-graphics.so
 		libsfml-window.so
 		libsfml-system.so
+		pthread
+		)
+
+	target_link_libraries(
+		Server
 		pthread
 		)
 
@@ -123,7 +129,7 @@ if ( MSVC )
     	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
     	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
 
-endif ( MSVC )
+	set_target_properties(Server PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+	set_property(TARGET Server APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
 
-set_target_properties(Server PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
-set_property(TARGET Server APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+endif ( MSVC )

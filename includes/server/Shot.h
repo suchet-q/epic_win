@@ -1,6 +1,6 @@
 #pragma once
 
-# include		"Entity.h"
+# include		"Entities.h"
 
 class			Shot : public Entity
 {

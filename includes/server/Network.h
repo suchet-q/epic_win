@@ -7,7 +7,7 @@
 #include		"MetaSocket.h"
 #include		"StructCommands.h"
 #include		"MetaSelect.h"
-#include		"Client.h"
+#include		"Clients.h"
 #include		"Resource.h"
 
 class			Network

@@ -115,7 +115,7 @@ void			Game::initBufClient()
 		this->_repClient[(*it)].bonus = false;
 		this->_repClient[(*it)].score = 0;
 		this->_repClient[(*it)].hightScore = 0;
-		this->_repClient[(*it)].status = NONE;
+		this->_repClient[(*it)].status = EMPTY;
 	}
 }
 

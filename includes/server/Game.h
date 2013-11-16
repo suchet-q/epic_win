@@ -22,7 +22,7 @@ enum		Weapons
 
 enum		StatusInGame
 {
-	NONE,
+	EMPTY,
 	READY,
 	DECO
 };

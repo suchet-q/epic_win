@@ -117,6 +117,7 @@ bool	Drawer::SetImg()
     return (false);
   if (!this->_ShipImg->LoadFromFile("./sprites/r-typesheet42.png"))
     return (false);
+  this->_ShipImg->CreateMaskFromColor(sf::Color(0, 0, 0));
   return true;
 }
 
@@ -229,6 +230,7 @@ void	Drawer::CutImg()
 
   for (x = 0; x < 5; ++x)
     {
+		this->_Ship1Anim[x].SetScale(2.0f, 2.0f);
       this->_Ship1Anim[x].SetSubRect(sf::IntRect((166 / 5) * x,0,(166/5) * (x+1),86 / 5));
       this->_Ship2Anim[x].SetSubRect(sf::IntRect((166 / 5) * x, 86 / 5 ,(166/5) * (x+1), (86/5) * 2));
       this->_Ship3Anim[x].SetSubRect(sf::IntRect((166 / 5) * x, (86 / 5) * 2 ,(166/5) * (x+1), (86/5) * 3));

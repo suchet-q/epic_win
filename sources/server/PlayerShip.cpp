@@ -29,13 +29,13 @@ void			PlayerShip::update(std::list<Entity *> &entityList)
 
 void			PlayerShip::manageInput(unsigned short input)
 {
-	std::cout << "L'input = " << input << " la valeur de check input(RIGHT) est : " << CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) << std::endl;
+	//std::cout << "L'input = " << input << " la valeur de check input(RIGHT) est : " << CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) << std::endl;
 	_vecDir.setX(CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) * 5);
 	_vecDir.setX(_vecDir.getX() - (CHECK_INPUT(input, static_cast<unsigned short>(LEFT)) * 5));
 	_vecDir.setY((CHECK_INPUT(input, static_cast<unsigned short>(DOWN)) * 5));
 	_vecDir.setY(_vecDir.getY() - (CHECK_INPUT(input, static_cast<unsigned short>(UP)) * 5));
 	if (CHECK_INPUT(input, static_cast<unsigned short>(SHOOT)))
 		_shoot = true;
-	std::cout << "je get l'input ma gueule , vecteur COORD : X = " << _vecDir.getX() << " Y = " << _vecDir.getY() << std::endl;
+	//std::cout << "je get l'input ma gueule , vecteur COORD : X = " << _vecDir.getX() << " Y = " << _vecDir.getY() << std::endl;
 	this->_input = 0;
 }

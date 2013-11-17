@@ -69,13 +69,13 @@ bool		Resource::createGame(std::list<Client *> &clients)
 			this->_games.push_front(game);
 			*it2 = this->_games.begin();
 
-			std::cout << "Setting game iterator for all clients..." << std::endl;
+//			std::cout << "Setting game iterator for all clients..." << std::endl;
 			for (std::list<Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
 			{
 				(*it)->setGame(it2);
 //				std::cout << (*this->_games.begin()) << std::endl;
 			}
-			std::cout << "Game iterator set for all clients" << std::endl;
+//			std::cout << "Game iterator set for all clients" << std::endl;
 			this->_idGames[id] = true;
 			game->launchThread(NULL);
 			return (true);

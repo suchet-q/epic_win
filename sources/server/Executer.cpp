@@ -26,7 +26,7 @@ Executer::~Executer()
 bool			Executer::executCommand(Client *client, t_cmd const &command)
 {
 
-	std::cout << "la commande est : " << (int)command.cmd[0] << std::endl;
+//	std::cout << "la commande est : " << (int)command.cmd[0] << std::endl;
 	return ((this->*_func[command.cmd[0]])(client, command));
 }
 
@@ -41,7 +41,7 @@ bool			Executer::execNBP(Client *client, t_cmd const &command)
 	t_nbp_server	answer;
 	t_cmd			cmd;
 
-	std::cout << "debut nbp" << std::endl;
+	//std::cout << "debut nbp" << std::endl;
 	memcpy(&nbp, command.cmd, sizeof(t_nbp_client));
 	answer.id_command = nbp.id_command;
 	answer.nb_players = this->_resource->getClients().size();
@@ -61,22 +61,22 @@ bool			Executer::execNBL(Client *client, t_cmd const &command)
 	memcpy(&nbl, command.cmd, sizeof(t_nbl_client));
 	tmp.id_command = nbl.id_command;
 	awnser.size = sizeof(t_nbl_server);
-	std::cout << "step 1" << std::endl;
+	//std::cout << "step 1" << std::endl;
 	for (std::list<Room *>::const_iterator it = _resource->getRooms().begin();
 		it != _resource->getRooms().end(); ++it)
 	{
-		std::cout << "step 2" << std::endl;
+	//	std::cout << "step 2" << std::endl;
 		tmp.id_command = nbl.id_command;
 		tmp.id_lobby = (*it)->getID();
-		std::cout << "step 22" << std::endl;
+		//std::cout << "step 22" << std::endl;
 		tmp.lobby_nb_players = (*it)->getClient()->size();
 		memcpy(awnser.cmd, &tmp, sizeof(t_nbl_server));
-		std::cout << "step 222" << std::endl;
+		//std::cout << "step 222" << std::endl;
 		awnser.size = sizeof(t_nbl_server);
-		std::cout << "step 2222" << std::endl;
+		//std::cout << "step 2222" << std::endl;
 		client->getWriteBuffer()->push_back(awnser);
 	}
-	std::cout << "step 3" << std::endl;
+	//std::cout << "step 3" << std::endl;
 	return (true);
 }
 
@@ -165,12 +165,12 @@ bool			Executer::execCRL(Client *client, t_cmd const &command)
 		if (client->getNickName().size() < 16)
 			plj.nick_name[client->getNickName().size()] = '\0';
 		success = true;
-		std::cout << "je vais ajouter" << std::endl;
+		//std::cout << "je vais ajouter" << std::endl;
 		_resource->getRooms().back()->addClient(client);
 		_resource->getRooms().back()->setHost(client);
-		std::cout << "jai ajoute" << std::endl;
+		//std::cout << "jai ajoute" << std::endl;
 	}
-	std::cout << "tmp.id_lobby = " << (int)tmp.id_lobby << std::endl;
+	//std::cout << "tmp.id_lobby = " << (int)tmp.id_lobby << std::endl;
 	memcpy(awnser.cmd, &tmp, sizeof(t_crl_server));
 	awnser.size = sizeof(t_crl_server);
 	client->getWriteBuffer()->push_back(awnser);
@@ -277,10 +277,10 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 	tmp.id_client = lvl.id_client;
 	memcpy(awnser.cmd, &tmp, sizeof(t_lvl_server));
 	awnser.size = sizeof(t_lvl_server);
-	std::cout << "step 1" << std::endl;
+	//std::cout << "step 1" << std::endl;
 	for (it = _resource->getRooms().begin();
 		it != _resource->getRooms().end() && (*it)->getID() != lvl.id_lobby; ++it);
-	std::cout << "step 2" << std::endl;
+	//std::cout << "step 2" << std::endl;
 	if ((*it)->getID() == lvl.id_lobby)
 	{
  		for (itc = (*it)->getClient()->begin();
@@ -293,7 +293,7 @@ bool			Executer::execLVL(Client *client, t_cmd const &command)
 				for (std::list<Client *>::iterator itc_c = (*it)->getClient()->begin();
 					itc_c != (*it)->getClient()->end();)
 				{
-					std::cout << "je pqsse pqr lq connqrd de merde " << (*it)->getClient()->size() << std::endl;
+		//			std::cout << "je pqsse pqr lq connqrd de merde " << (*it)->getClient()->size() << std::endl;
 					tmp.id_client = (*itc_c)->getID();
 					memcpy(awnser.cmd, &tmp, sizeof(t_lvl_server));
 					(*itc_c)->getWriteBuffer()->push_back(awnser);

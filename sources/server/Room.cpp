@@ -7,13 +7,9 @@ Room::Room(int id, Client *client)
   this->_host = client;
 }
 
-Room::Room()
-{
-}
+Room::Room() {}
 
-Room::~Room()
-{
-}
+Room::~Room() {}
 
 void		Room::setID(int id)
 {

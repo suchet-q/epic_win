@@ -72,17 +72,17 @@ bool		Game::init()
 	socklen_t len = sizeof(sin);
 	t_cmd			cmd;
 
-	std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
+	//std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
 	this->_socketUDP.init(UDP);
 	this->_socketUDP.Bind("127.0.0.1", 0);
 	getsockname(this->_socketUDP.getSocket(), (struct sockaddr *)&sin, &len);
-	std::cout << "Socket binded on port number " << ntohs(sin.sin_port) << std::endl;
+	//std::cout << "Socket binded on port number " << ntohs(sin.sin_port) << std::endl;
 	rep.id_command = 6;
 	rep.response = 1;
 	rep.port = ntohs(sin.sin_port);
 	memcpy(cmd.cmd, &rep, sizeof(rep));
 	cmd.size = sizeof(rep);
-	std::cout << "size de la reponse : " << sizeof(rep) << std::endl;
+	//std::cout << "size de la reponse : " << sizeof(rep) << std::endl;
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
@@ -173,15 +173,15 @@ void			Game::waitAllClients()
 
 int			Game::startGame(void *var)
 {
-  std::cout << "j'ai lance la game ma gueule" << std::endl;
+  //std::cout << "j'ai lance la game ma gueule" << std::endl;
   this->init();
-  std::cout << "J'attend tout les clients ma gueule" << std::endl;
+  //std::cout << "J'attend tout les clients ma gueule" << std::endl;
   this->waitAllClients();
-  std::cout << "Tout les clients sont présents ma gueue !" << std::endl;
+  //std::cout << "Tout les clients sont présents ma gueue !" << std::endl;
   this->loop();
   /*identification verifier changer status dans infos client puis lancer la game*/
   /*appel de methode init etc... et la loop de la game*/
-  std::cout << "c'est la fin de la game maggle" << std::endl;
+  //std::cout << "c'est la fin de la game maggle" << std::endl;
   while(true);
   return (1);
 }
@@ -197,7 +197,7 @@ void			Game::manageClientsInputs()
 		  memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
 		  if (cmd.id_cmd == 14) //TODO : MACRO
 		  {
-			  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
+	//		  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
 			  (*it).second->setInput(cmd.input);
 		  }
 

@@ -23,12 +23,12 @@ void			Server::addClient(MetaSocket<> *sockClient)
 
 	if (sockClient == NULL)
 	{
-		std::cout << "Error Accept()" << std::endl;
+//		std::cout << "Error Accept()" << std::endl;
 	    return ;
 	}
 	for (int id = 0; id < 255 && !accepted; ++id)
 		if (!_idArray[id]) {
-			std::cout << "adding client " <<  id << std::endl;
+	//		std::cout << "adding client " <<  id << std::endl;
 			res.id_client = id;
 			res.id_command = 0;
 			memcpy(cmd.cmd, &res, sizeof(res));
@@ -40,7 +40,7 @@ void			Server::addClient(MetaSocket<> *sockClient)
 			this->_resources.getNotInGameClients().push_back(newClient);
 			_idArray[id] = true;
 		    accepted = true;
-			std::cout << "client " << id << " added" << std::endl;
+		//	std::cout << "client " << id << " added" << std::endl;
 		}
 	if (!accepted)
 		std::cout << "No more slot available for new client" << std::endl;
@@ -55,7 +55,7 @@ void			Server::decoNotInGameClient(std::list<Client *>::iterator &it)
 			if (it2 == this->_resources.getClients().end())
 				break;
 		}*/
-	std::cout << "deleting client " << (*it)->getID() << std::endl;
+	//std::cout << "deleting client " << (*it)->getID() << std::endl;
 	if ((*it)->getGame())
 	{
 	// delete game
@@ -80,7 +80,7 @@ void			Server::decoNotInGameClient(std::list<Client *>::iterator &it)
 	delete (*it)->getSocket();
 	delete *it;
 	it = this->_resources.getClients().erase(it);
-	std::cout << "client deleted" << std::endl;
+	//std::cout << "client deleted" << std::endl;
 }
 
 void			Server::checkDecoClient(std::list<Client *> &to_deco)
@@ -151,7 +151,7 @@ bool			Server::loop()
 			}
 			else if (!(*it)->getReadBuffer()->empty())
 			{
-				std::cout << "je vais excuter la commande toi meme tu sais" << std::endl;
+		//		std::cout << "je vais excuter la commande toi meme tu sais" << std::endl;
 				if (!this->_executer.executCommand((*it), (*it)->getReadBuffer()->front()))
 					error = true;
 				if (it == this->_resources.getClients().end())

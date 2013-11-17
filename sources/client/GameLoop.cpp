@@ -182,6 +182,18 @@ void		GameLoop::handleInputs(const sf::Input &input, Parser &parser)
 	}
 }
 
+boost::any	GameLoop::life(std::list<boost::any> &args)
+{
+	this->_lifeNb = boost::any_cast<unsigned char>(args.front());
+	return (0);
+}
+
+boost::any	GameLoop::score(std::list<boost::any> &args)
+{
+	this->_scoreNb = boost::any_cast<unsigned short>(args.front());
+	return (0);
+}
+
 bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 {
 	sf::Clock	clock;
@@ -192,6 +204,8 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	if (!(sock.connectUDP()))
 		throw RuntimeException("[GameLoop::loop]", "Can't create UDP Socket");
 	parser.addCallback(CMD_AFF, boost::bind(&GameLoop::aff, this, _1));
+	parser.addCallback(CMD_LIF, boost::bind(&GameLoop::life, this, _1));
+	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
 	this->_manager = new Managewindow(win.getWindow());
 	this->_manager->InitDrawer();
 

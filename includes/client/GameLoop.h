@@ -32,6 +32,8 @@ public:
 	~GameLoop(void);
 
 	boost::any	aff(std::list<boost::any> &);
+	boost::any	life(std::list<boost::any> &);
+	boost::any	score(std::list<boost::any> &);
 	void		exception();
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);

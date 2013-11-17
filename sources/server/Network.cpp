@@ -96,7 +96,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 		  (*it)->lockSocket();
 		  if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
 		  {
-			  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
+	//		  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
 			  this->recvFromUDP(*it);
 		  }
 		  (*it)->unlockSocket();
@@ -110,7 +110,7 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 {
 	bool		end = false;
 
-	std::cout << "Je vais pusher dans le bon client ma gueule" << std::endl;
+//	std::cout << "Je vais pusher dans le bon client ma gueule" << std::endl;
 	game->lockClient();
 	for (std::list<Client *>::iterator it = game->getClients().begin(); !end && it != game->getClients().end(); ++it)
 	{
@@ -118,7 +118,7 @@ bool			Network::pushCmdInRightClient(t_cmd &cmd, struct sockaddr_in &sin, Game *
 		{
 			memcpy(&(*it)->getFrameCMD().cmd, &cmd, sizeof(cmd));
 			memcpy(&(*it)->getFrameCMD().sin, &sin, sizeof(sin));
-			std::cout << "Command UDP associated to right client" << std::endl;
+	//		std::cout << "Command UDP associated to right client" << std::endl;
 			end = true;
 		}
 	}
@@ -134,7 +134,7 @@ bool			Network::recvFromUDP(Game *game)
 	struct sockaddr_in	sin;
 	unsigned char		buff[512];
 
-	std::cout << "je vais read sur le udp maggle" << std::endl;
+//	std::cout << "je vais read sur le udp maggle" << std::endl;
 	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
 		return false;
 	if (this->_buffer.size > 0)
@@ -159,7 +159,7 @@ bool			Network::recvFromUDP(Game *game)
       {
 	memcpy(this->_buffer.cmd, &buff[i], _commandsSize[buff[i]]);
 	this->_buffer.size = _commandsSize[buff[i]];
-	std::cout << "je fou une commande dans le buffer read" << std::endl;
+//	std::cout << "je fou une commande dans le buffer read" << std::endl;
 	this->pushCmdInRightClient(this->_buffer, sin, game);// push back in right client queue 
 	i += _commandsSize[buff[i]];
 	this->_buffer.size = 0;

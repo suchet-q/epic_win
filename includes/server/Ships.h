@@ -6,13 +6,13 @@
 #include		"Shot.h"
 #include		"Pool.hpp"
 
-#define		LEFT			(1)
-#define		RIGHT			(2)
-#define		UP				(4)
-#define		DOWN			(8)
-#define		SHOOT			(16)
+#define		LEFT			1
+#define		RIGHT			2
+#define		UP				4
+#define		DOWN			8
+#define		SHOOT			16
 
-# define		CHECK_INPUT(in, st)	((in & st == st) ? (1) : (0))
+# define		CHECK_INPUT(in, st)	((in & st) ? (1) : (0))
 
 class			Ship : public Entity
 {

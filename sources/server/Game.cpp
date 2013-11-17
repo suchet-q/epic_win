@@ -86,8 +86,9 @@ bool		Game::init()
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
-	this->unlockClient();
 	this->initBufClient();
+	this->initPlayersShip();
+	this->unlockClient();
 	this->_isInit = true;
 	return true;
 }
@@ -125,6 +126,8 @@ void			Game::initPlayersShip()
 
   for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
     _resources.createPlayerShip();
+	_resources.getShipList().back()->getFloatCoord().setX(30);
+	_resources.getShipList().back()->getFloatCoord().setY((768 - 100) / (_clients.size() + 1) * type);
     _resources.getShipList().back()->setType(static_cast<entityType>(type));
     _clientToShip[*it] = _resources.getShipList().back();
     type++;
@@ -174,8 +177,8 @@ int			Game::startGame(void *var)
   std::cout << "J'attend tout les clients ma gueule" << std::endl;
   this->waitAllClients();
   std::cout << "Tout les clients sont présents ma gueue !" << std::endl;
-
-  /*identification verifier nchanger status dans infos client puis lancer la game*/
+  this->loop();
+  /*identification verifier changer status dans infos client puis lancer la game*/
   /*appel de methode init etc... et la loop de la game*/
   std::cout << "c'est la fin de la game maggle" << std::endl;
   while(true);
@@ -191,8 +194,11 @@ void			Game::manageClientsInputs()
   {
 	  if ((*it).first->getFrameCMD().cmd.size) {
 		  memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
-		  if (cmd.id_cmd = 14) //TODO : MACRO
+		  if (cmd.id_cmd == 14) //TODO : MACRO
+		  {
+			  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
 			  (*it).second->setInput(cmd.input);
+		  }
 
 	  }
 	  (*it).first->getFrameCMD().cmd.size = 0;
@@ -228,6 +234,7 @@ void			Game::loop()
 				affServer.y = tmp.getY();
 				memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
 				(*itRep).second.size += sizeof(affServer);
+		//		std::cout << "type = " << (int)affServer.type << " x = " << affServer.x << " y = " << affServer.y << "la size = " << (*itRep).second.size << std::endl;
 			}
 		}
 		itRep = this->_repClient.begin();

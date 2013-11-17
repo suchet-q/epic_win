@@ -30,7 +30,7 @@ public:
   ~Entity();
 
   entityType		getType() const;
-  Coord<>&			getCoord();
+  Coord<>&		getCoord();
   Coord<float>&		getFloatCoord();
 
   void			setVecDir(float x, float y);

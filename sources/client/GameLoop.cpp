@@ -6,6 +6,8 @@ GameLoop::GameLoop(void)
 	this->_lifeNb = 3;
 	this->_scoreNb = 0;
 	this->_exceptionOccured = false;
+	this->_vsyncDelay = 0.0f;
+	this->_vsyncFactor = 1.0f / 60.0f;
 }
 
 GameLoop::~GameLoop(void)
@@ -47,6 +49,10 @@ int		GameLoop::loadResources(void *arg)
 		this->_score.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_score.addActualSheet(0);
 		this->_score.setPosition(sf::Vector2f(10, 730));
+
+		this->_fps.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		this->_fps.addActualSheet(0);
+		this->_fps.setPosition(sf::Vector2f(900, 730));
 	}
 	catch (RuntimeException &e) {
 		this->_exception = e;
@@ -75,6 +81,11 @@ void		GameLoop::drawHUB(RenderWindow &win, float elapsed)
 	ss << "Score : ";
 	ss << this->_scoreNb;
 	this->_score.setText(ss.str());
+	ss.str("");
+	ss << "FPS : ";
+	ss << static_cast<int>(1.0f / elapsed);
+	this->_fps.setText(ss.str());
+	this->_fps.update(elapsed, win, 0);
 	this->_life.update(elapsed, win, 0);
 	this->_score.update(elapsed, win, 0);
 }

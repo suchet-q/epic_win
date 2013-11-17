@@ -16,12 +16,15 @@ class GameLoop
 	WidgetImage			_back2;
 	WidgetText			_life;
 	WidgetText			_score;
+	WidgetText			_fps;
 	int					_scoreNb;
 	int					_lifeNb;
 	unsigned char *		_idClient;
 	RuntimeException	_exception;
 	bool				_exceptionOccured;
 	Managewindow		*_manager;
+	float				_vsyncFactor;
+	float				_vsyncDelay;
 
 	void		drawHUB(RenderWindow &, float);
 	void		drawEntities(RenderWindow &, float);

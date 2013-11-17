@@ -15,9 +15,6 @@
 #include <map> 
 #include <string>
 #include "enum.h"
-#include "explosion.h"
-
-/* enum Move {L, R, T, D, N}; */
 
 #define FRAMETIME (250)
 
@@ -31,23 +28,27 @@ private:
   int		_Id;
   int		_Etat;
   unsigned char _Type;
+  int		_X;
+  int		_Y;
+  int		_Status;
 
 public:
 
   Entity(){};
   virtual ~Entity(){};
-  virtual void SetSprite(sf::Image *) = 0;
-  virtual void CutImage() = 0;
-  virtual sf::Sprite &GetSprite(int, int, unsigned int, Move) = 0;
-  virtual int	getId() = 0;
-  virtual int	getX() = 0;
-  virtual int	getY() = 0;
+  /* virtual void SetSprite(sf::Image *) = 0; */
+  /* virtual void CutImage() = 0; */
+  virtual void	GetSprite(int, int, unsigned int, Move) = 0;
+  virtual int	getId() const  = 0;
+  virtual int	getX() const = 0;
+  virtual int	getY() const = 0;
   virtual void	setX(int) = 0;
   virtual void	setY(int) = 0;
-  virtual bool  SpriteAlive() = 0;
-  virtual void		CheckEtat(Move, int, int) = 0;
-  virtual sf::Sprite	&FirstState(int x, int y, int) = 0;
-  virtual sf::Sprite	&CheckSize(int, int, int) = 0;
-  virtual unsigned char getType() = 0;
-  virtual int		getEtat() = 0;
+  virtual bool  SpriteAlive() const = 0;
+  virtual void	CheckEtat(Move, int, int) = 0;
+  virtual void	FirstState(int x, int y, int) = 0;
+  virtual void	CheckSize(int) = 0;
+  virtual int	getType() const = 0;
+  virtual int	getEtat() const = 0;
+  virtual int	getStatus() const = 0;
 };

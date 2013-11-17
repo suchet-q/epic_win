@@ -1,11 +1,7 @@
 #include "jumper.h"
 
-Jumper::Jumper(int id, sf::Image *img, sf::Image *explosion)
+Jumper::Jumper(int id)
 {
-  this->_JumperAnim = new sf::Sprite[3];
-  this->_Explosion = new Explosion(explosion);
-  this->SetSprite(img);
-  this->CutImage();
   this->_Status = 1;
   this->_Id = id;
   this->_FrameTime = FRAMETIME;
@@ -13,14 +9,14 @@ Jumper::Jumper(int id, sf::Image *img, sf::Image *explosion)
   this->_Etat = 1;
   this->_Size = 3;
   this->_EllapsedTime = 0;
-  this->_Type = 5;
+  this->_Type = 8;
 }
 
 Jumper::~Jumper()
 {  
 }
 
-bool		Jumper::SpriteAlive()
+bool		Jumper::SpriteAlive()  const
 {
   if (this->_Old == 0)
     return (false);
@@ -43,9 +39,10 @@ void		Jumper::CheckEtat(Move move, int x, int y)
     }
 }
 
-sf::Sprite	&Jumper::FirstState(int x, int y, int time)
+void		Jumper::FirstState(int x, int y, int time)
 {
-  
+  this->_X = x;
+  this->_Y = y;  
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -54,12 +51,10 @@ sf::Sprite	&Jumper::FirstState(int x, int y, int time)
       this->_Status += 1;
       this->_EllapsedTime = 0;
     }
-  this->_JumperAnim[this->_Status].SetPosition(x, y);
-  return (this->_JumperAnim[this->_Status]);
 }
 
 
-sf::Sprite	&Jumper::CheckSize(int x, int y, int time)
+void		Jumper::CheckSize(int time)
 {
   this->_EllapsedTime += time;
   switch (this->_Size)
@@ -68,88 +63,43 @@ sf::Sprite	&Jumper::CheckSize(int x, int y, int time)
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 12)
+	    if (this->_Status == 11)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 2:
       {
 	if ( this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 7)
+	    if (this->_Status == 6)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 3:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 4)
+	    if (this->_Status == 3)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }      
       }
     }
 }
 
-sf::Sprite	&Jumper::GetSprite(int x, int y, unsigned int time, Move move)
+void		Jumper::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
   if (this->_Etat == 1)
-    return (this->FirstState(x, y, time));
+    this->FirstState(x, y, time);
   else
-    return (this->CheckSize(x, y, time));
-}
-
-void	Jumper::SetSprite(sf::Image *img)
-{
-  int	x = 0;
-
-  while (x < 3)
-    {
-      this->_JumperAnim[x].SetImage(*img);
-      x++;
-    }
-}
-
-void	Jumper::CutImage()
-{
-  int	Width = 332;
-  int	Height = 94;
-  int	x = 0;
-
-  while (x < 3)
-    {
-      this->_JumperAnim[x].SetSubRect(sf::IntRect(Width/6 * x, 0, Width/6*(x+1),60));
-      x++;
-    }
+    this->CheckSize(time);
 }
 
 void	Jumper::setX(int x)
@@ -162,27 +112,32 @@ void	Jumper::setY(int Y)
   this->_Y = Y;
 }
 
-int	Jumper::getX()
+int	Jumper::getX()  const
 {
   return (this->_X);
 }
 
-int	Jumper::getY()
+int	Jumper::getY()  const
 {
   return (this->_Y);
 }
 
-int	Jumper::getId()
+int	Jumper::getId() const
 {
   return (this->_Id);
 }
 
-unsigned char Jumper::getType()
+int Jumper::getType()  const
 {
   return (this->_Type);
 }
 
-int	Jumper::getEtat()
+int	Jumper::getEtat()  const
 {
   return (this->_Etat);
+}
+
+int	Jumper::getStatus()  const
+{
+  return (this->_Status);
 }

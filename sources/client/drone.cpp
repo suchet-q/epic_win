@@ -1,14 +1,7 @@
 #include "drone.h"
 
-Drone::Drone(int id, sf::Image *img, sf::Image *explosion)
+Drone::Drone(int id)
 {
-  sf::Image	*tmp = new sf::Image;
-
-  *tmp = *img;
-  this->_DroneAnim = new sf::Sprite[8];
-  this->_Explosion = new Explosion(explosion);
-  this->SetSprite(tmp);
-  this->CutImage();
   this->_Status = 1;
   this->_Id = id;
   this->_FrameTime = FRAMETIME;
@@ -16,14 +9,14 @@ Drone::Drone(int id, sf::Image *img, sf::Image *explosion)
   this->_Size = 1;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 2;
+  this->_Type = 5;
 }
 
 Drone::~Drone()
 {
 }
 
-bool		Drone::SpriteAlive()
+bool		Drone::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
@@ -46,8 +39,10 @@ void		Drone::CheckEtat(Move move, int x, int y)
     }
 }
 
-sf::Sprite	&Drone::FirstState(int x, int y, int time)
+void		Drone::FirstState(int x, int y, int time)
 {
+  this->_X = x;
+  this->_Y = y;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -56,12 +51,9 @@ sf::Sprite	&Drone::FirstState(int x, int y, int time)
       this->_Status += 1;
       this->_EllapsedTime = 0;
     }
-  this->_DroneAnim[this->_Status].SetPosition(x, y);
-  return (this->_DroneAnim[this->_Status]);
 }
 
-
-sf::Sprite	&Drone::CheckSize(int x, int y, int time)
+void		Drone::CheckSize(int time)
 {
   this->_EllapsedTime += time;
   switch (this->_Size)
@@ -70,88 +62,43 @@ sf::Sprite	&Drone::CheckSize(int x, int y, int time)
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 12)
+	    if (this->_Status == 11)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 2:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 7)
+	    if (this->_Status == 6)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 3:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 4)
+	    if (this->_Status == 3)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }      
       }
     }
 }
-
-sf::Sprite	&Drone::GetSprite(int x, int y, unsigned int time, Move move)
+  
+void	Drone::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
   if (this->_Etat == 1)
-    return (this->FirstState(x, y, time));
+    this->FirstState(x, y, time);
   else
-    return (this->CheckSize(x, y, time));
-}
-
-void	Drone::SetSprite(sf::Image *img)
-{
-  int	x = 0;
-
-  while (x < 8)
-    {
-      this->_DroneAnim[x].SetImage(*img);
-      x++;
-    }
-}
-
-void	Drone::CutImage()
-{
-  int	Width = 533;
-  int	Height = 36;
-  int	x = 0;
-
-  while (x < 8)
-    {
-      this->_DroneAnim[x].SetSubRect(sf::IntRect(Width/16 * x, 0, Width/16*(x+1),36));
-      x++;
-    }
+    this->CheckSize(time);
 }
 
 void	Drone::setX(int x)
@@ -164,27 +111,32 @@ void	Drone::setY(int Y)
   this->_Y = Y;
 }
 
-int	Drone::getX()
+int	Drone::getX() const
 {
   return (this->_X);
 }
 
-int	Drone::getY()
+int	Drone::getY() const 
 {
   return (this->_Y);
 }
 
-int	Drone::getId()
+int	Drone::getId() const
 {
   return (this->_Id);
 }
 
-unsigned char Drone::getType()
+int Drone::getType() const
 {
   return (this->_Type);
 }
 
-int	Drone::getEtat()
+int	Drone::getEtat() const
 {
   return (this->_Etat);
+}
+
+int	Drone::getStatus() const
+{
+  return (this->_Status);
 }

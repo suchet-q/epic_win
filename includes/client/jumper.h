@@ -11,36 +11,33 @@ class Jumper : public Entity
 {
  private:
 
-  sf::Sprite	_JumperSprite;
   int		_Status;
   int		_Direction;
   int		_Id;
-  sf::Sprite	*_JumperAnim;
   unsigned int	_FrameTime;
   int		_X;
   int		_Y;
   int		_Old;
   int		_Etat;
   int		_Size;
-  int		_EllapsedTime;
-  unsigned char _Type;
+  unsigned int	_EllapsedTime;
+  int		_Type;
 
  public:
 
-  Jumper(int id, sf::Image *, sf::Image *);
+  Jumper(int id);
   ~Jumper();
-  void	SetSprite(sf::Image *);
-  void	CutImage();
-  sf::Sprite	&GetSprite(int, int, unsigned int, Move);
-  int		getX();
-  int		getY();
+  void		GetSprite(int, int, unsigned int, Move);
+  int		getX() const;
+  int		getY() const;
   void		setX(int);
   void		setY(int);
-  int		getId();
-  bool		SpriteAlive();
+  int		getId() const;
+  bool		SpriteAlive() const;
   void		CheckEtat(Move, int, int);
-  sf::Sprite	&FirstState(int x, int y, int);
-  sf::Sprite	&CheckSize(int, int, int);
-  unsigned char getType();
-  int		getEtat();
+  void		FirstState(int x, int y, int);
+  void		CheckSize(int);
+  int		getType() const;
+  int		getEtat() const;
+  int		getStatus() const;
 };

@@ -11,36 +11,35 @@ class Metroid : public Entity
 {
  private:
 
-  sf::Sprite	_MetroidSprite;
   int		_Status;
   int		_Direction;
   int		_Id;
-  sf::Sprite	*_MetroidAnim;
   unsigned int	_FrameTime;
   int		_X;
   int		_Y;
   int		_Old;
   int		_Etat;
   int		_Size;
-  int		_EllapsedTime;
-  unsigned char	_Type;
+  unsigned int	_EllapsedTime;
+  int		_Type;
 
  public:
 
-  Metroid(int id, sf::Image *, sf::Image *);
+  Metroid(int id);
   ~Metroid();
-  void	SetSprite(sf::Image *);
-  void	CutImage();
-  sf::Sprite	&GetSprite(int, int, unsigned int, Move);
-  int		getX();
-  int		getY();
+  void		SetSprite(sf::Image *);
+  void		CutImage();
+  void		GetSprite(int, int, unsigned int, Move);
+  int		getX() const;
+  int		getY() const;
   void		setX(int);
   void		setY(int);
-  int		getId();
-  bool		SpriteAlive();
+  int		getId() const;
+  bool		SpriteAlive() const;
   void		CheckEtat(Move, int, int);
-  sf::Sprite	&FirstState(int x, int y, int);
-  sf::Sprite	&CheckSize(int, int, int);
-  unsigned char getType();
-  int		getEtat();
+  void		FirstState(int x, int y, int);
+  void		CheckSize(int);
+  int		getType() const;
+  int		getEtat() const;
+  int		getStatus() const;
 };

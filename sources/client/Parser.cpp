@@ -52,7 +52,7 @@ void		Parser::parse(void* command, int size)
 
 	while (size > 0)
 	{
-		std::cout << "Parsing command of " << size << " bytes" << std::endl;
+		//std::cout << "Parsing command of " << size << " bytes" << std::endl;
 		memset(cmd, '\0', 512);
 		if (this->_cmdSize)
 		{
@@ -91,7 +91,7 @@ void		Parser::parseAFF(void *command, int size)
 	std::list<boost::any>			args;
 	std::list<cFunctor>::iterator	it;
 
-	std::cout << "Executing AFF on " << size << " bytes" << std::endl;
+	//std::cout << "Executing AFF on " << size << " bytes" << std::endl;
 	if (size == sizeof(t_aff_server) && this->_callbacks.find(CMD_AFF) != this->_callbacks.end())
 	{
 		memcpy(&cmd, command, size);
@@ -110,7 +110,7 @@ void		Parser::parseSCR(void *command, int size)
 	std::list<boost::any>			args;
 	std::list<cFunctor>::iterator	it;
 
-	std::cout << "Executing SCR on " << size << " bytes" << std::endl;
+	//std::cout << "Executing SCR on " << size << " bytes" << std::endl;
 	if (size == sizeof(t_scr_server) && this->_callbacks.find(CMD_SCR) != this->_callbacks.end())
 	{
 		memcpy(&cmd, command, size);
@@ -126,7 +126,7 @@ void		Parser::parseLIF(void *command, int size)
 	std::list<boost::any>			args;
 	std::list<cFunctor>::iterator	it;
 
-	std::cout << "Executing LIF on " << size << " bytes" << std::endl;
+	//std::cout << "Executing LIF on " << size << " bytes" << std::endl;
 	if (size == sizeof(t_lif_server) && this->_callbacks.find(CMD_LIF) != this->_callbacks.end())
 	{
 		memcpy(&cmd, command, size);
@@ -142,7 +142,7 @@ void		Parser::parseEVT(void *command, int size)
 	std::list<boost::any>			args;
 	std::list<cFunctor>::iterator	it;
 
-	std::cout << "Executing EVT on " << size << " bytes" << std::endl;
+	//std::cout << "Executing EVT on " << size << " bytes" << std::endl;
 	if (size == sizeof(t_evt_server) && this->_callbacks.find(CMD_EVT) != this->_callbacks.end())
 	{
 		memcpy(&cmd, command, size);

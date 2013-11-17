@@ -5,7 +5,7 @@
 ** Login   <heuzey_m@epitech.net>
 ** 
 ** Started on  Sat Oct 26 23:19:11 2013 mathieu heuzey
-** Last update Tue Nov 12 03:02:15 2013 mathieu heuzey
+** Last update Sun Nov 17 01:04:55 2013 mathieu heuzey
 */
 
 #pragma once
@@ -38,6 +38,8 @@ class Ship
   int		_X;
   int		_Y;
   Inputs	_Inputs;
+  int		_Size;
+  int		_Etat;
 
  public:
 
@@ -46,14 +48,13 @@ class Ship
   int		_EllapsedTime;
   Ship(int x, int y, int team, int id);
   ~Ship();
-  bool	SetSprite();
-  sf::Image GetImg();
-  sf::Sprite GetSprite(int, int, Inputs inp, int, Move);
-  void	CheckInputs(Inputs inp);
-  void  CheckNothing(std::pair<int, int> tmp);
-  void	CheckDown(std::pair<int, int> tmp);
-  void	CheckTop(std::pair<int, int> tmp);
-  void	CheckLeftAndRight(std::pair<int, int> tmp);
+  bool		SetSprite();
+  void		GetSprite(int, int, Inputs inp, int, Move);
+  void		CheckInputs(Inputs inp);
+  void		CheckNothing();
+  void		CheckDown();
+  void		CheckTop();
+  void		CheckLeftAndRight();
   unsigned char getType();
   int		getId();
   bool		SpriteAlive();
@@ -61,4 +62,9 @@ class Ship
   int		getY();
   Inputs	getInput();
   void		setInput(Inputs);
+  void		CheckEtat(Move move, int x, int y);
+  void		CheckSize(int time);
+  void		FirstState(int time, Inputs inp);
+  int		GetEtat();
+  int		GetStatus();
 };

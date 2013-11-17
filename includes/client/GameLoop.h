@@ -8,6 +8,7 @@
 #include	"Parser.h"
 #include	"GameSocket.h"
 #include	"RuntimeException.h"
+#include	"ManageWindow.h"
 
 class GameLoop
 {
@@ -20,6 +21,7 @@ class GameLoop
 	unsigned char *		_idClient;
 	RuntimeException	_exception;
 	bool				_exceptionOccured;
+	Managewindow		*_manager;
 
 	void		drawHUB(RenderWindow &, float);
 	void		drawEntities(RenderWindow &, float);

@@ -1,14 +1,7 @@
 #include "larve.h"
 
-Larve::Larve(int id, sf::Image *img, sf::Image *explosion)
+Larve::Larve(int id)
 {
-  sf::Image	*tmp = new sf::Image;
-
-  *tmp = *img;
-  this->_LarveAnim = new sf::Sprite[8];
-  this->_Explosion = new Explosion(explosion);
-  this->SetSprite(tmp);
-  this->CutImage();
   this->_Status = 1;
   this->_Id = id;
   this->_FrameTime = FRAMETIME;
@@ -16,14 +9,14 @@ Larve::Larve(int id, sf::Image *img, sf::Image *explosion)
   this->_Size = 3;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 8;
+  this->_Type = 11;
 }
 
 Larve::~Larve()
 {
 }
 
-bool		Larve::SpriteAlive()
+bool		Larve::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
@@ -46,8 +39,10 @@ void		Larve::CheckEtat(Move move, int x, int y)
     }
 }
 
-sf::Sprite	&Larve::FirstState(int x, int y, int time)
+void		Larve::FirstState(int x, int y, int time)
 {
+  this->_X = x;
+  this->_Y = y;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -56,12 +51,9 @@ sf::Sprite	&Larve::FirstState(int x, int y, int time)
       this->_Status += 1;
       this->_EllapsedTime = 0;
     }
-  this->_LarveAnim[this->_Status].SetPosition(x, y);
-  return (this->_LarveAnim[this->_Status]);
 }
 
-
-sf::Sprite	&Larve::CheckSize(int x, int y, int time)
+void		Larve::CheckSize(int time)
 {
   this->_EllapsedTime += time;
   switch (this->_Size)
@@ -70,88 +62,43 @@ sf::Sprite	&Larve::CheckSize(int x, int y, int time)
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 12)
+	    if (this->_Status == 11)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 2:
       {
 	if ( this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 7)
+	    if (this->_Status == 6)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 3:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 4)
+	    if (this->_Status == 3)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }      
       }
     }
 }
 
-sf::Sprite	&Larve::GetSprite(int x, int y, unsigned int time, Move move)
+void		Larve::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
   if (this->_Etat == 1)
-    return (this->FirstState(x, y, time));
+    this->FirstState(x, y, time);
   else
-    return (this->CheckSize(x, y, time));
-}
-
-void	Larve::SetSprite(sf::Image *img)
-{
-  int	x = 0;
-
-  while (x < 8)
-    {
-      this->_LarveAnim[x].SetImage(*img);
-      x++;
-    }
-}
-
-void	Larve::CutImage()
-{
-  int	Width = 522;
-  int	Height = 132;
-  int	x = 0;
-
-  while (x < 8)
-    {
-      this->_LarveAnim[x].SetSubRect(sf::IntRect(Width/8 * x, 0, Width/8*(x+1),132));
-      x++;
-    }
+    this->CheckSize(time);
 }
 
 void	Larve::setX(int x)
@@ -164,27 +111,32 @@ void	Larve::setY(int Y)
   this->_Y = Y;
 }
 
-int	Larve::getX()
+int	Larve::getX() const
 {
   return (this->_X);
 }
 
-int	Larve::getY()
+int	Larve::getY() const
 {
   return (this->_Y);
 }
 
-int	Larve::getId()
+int	Larve::getId() const
 {
   return (this->_Id);
 }
 
-unsigned char Larve::getType()
+int Larve::getType()const
 {
   return (this->_Type);
 }
 
-int	Larve::getEtat()
+int	Larve::getEtat() const
 {
   return (this->_Etat);
+}
+
+int	Larve::getStatus() const
+{
+  return (this->_Status);
 }

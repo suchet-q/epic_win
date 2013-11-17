@@ -23,7 +23,7 @@ float		&Sinus::getValue(Coord<> &coord)
 {
 	float result;
 
-	result = sin(coord.getX());
+	//result = sin(coord.getX());
 	result += 1;
 	result *= 50;
 	return (result);

@@ -1,14 +1,7 @@
 #include "balls.h"
 
-Balls::Balls(int id, sf::Image *img, sf::Image *explosion)
+Balls::Balls(int id)
 {
-  sf::Image	*tmp = new sf::Image;
- 
-  *tmp = *img;
-  this->_BallsAnim = new sf::Sprite[12];
-  this->_Explosion = new Explosion(explosion);
-  this->SetSprite(tmp);
-  this->CutImage();
   this->_Status = 1;
   this->_Id = id;
   this->_FrameTime = FRAMETIME;
@@ -16,14 +9,14 @@ Balls::Balls(int id, sf::Image *img, sf::Image *explosion)
   this->_Etat = 1;
   this->_Size = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 9;
+  this->_Type = 14;
 }
 
 Balls::~Balls()
 {  
 }
 
-bool		Balls::SpriteAlive()
+bool		Balls::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
@@ -46,8 +39,10 @@ void		Balls::CheckEtat(Move move, int x, int y)
     }
 }
 
-sf::Sprite	&Balls::FirstState(int x, int y, int time)
+void		Balls::FirstState(int x, int y, int time)
 {
+  this->_X = x;
+  this->_Y = y;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime && this->_Etat == 1)
     {
@@ -56,12 +51,9 @@ sf::Sprite	&Balls::FirstState(int x, int y, int time)
       this->_Status += 1;
       this->_EllapsedTime = 0;
     }
-  this->_BallsAnim[this->_Status].SetPosition(x, y);
-  return (this->_BallsAnim[this->_Status]);
 }
 
-
-sf::Sprite	&Balls::CheckSize(int x, int y, int time)
+void		Balls::CheckSize(int time)
 {
   this->_EllapsedTime += time;
   switch (this->_Size)
@@ -70,88 +62,43 @@ sf::Sprite	&Balls::CheckSize(int x, int y, int time)
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 12)
+	    if (this->_Status == 11)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 2:
       {
 	if ( this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 7)
+	    if (this->_Status == 6)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 3:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 4)
+	    if (this->_Status == 3)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }      
       }
     }
 }
 
-sf::Sprite	&Balls::GetSprite(int x, int y, unsigned int time, Move move)
+void	Balls::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
   if (this->_Etat == 1)
-    return (this->FirstState(x, y, time));
+    this->FirstState(x, y, time);
   else
-    return (this->CheckSize(x, y, time));
-}
-
-void	Balls::SetSprite(sf::Image *img)
-{
-  int	x = 0;
-
-  while (x < 12)
-    {
-      this->_BallsAnim[x].SetImage(*img);
-      x++;
-    }
-}
-
-void	Balls::CutImage()
-{
-  int	Width = 208;
-  int	Height = 18 ;
-  int	x = 0;
-
-  while (x < 12)
-    {
-      this->_BallsAnim[x].SetSubRect(sf::IntRect(Width/12 * x, 0, Width/12*(x+1),18));
-      x++;
-    }
+    this->CheckSize(time);
 }
 
 void	Balls::setX(int x)
@@ -164,27 +111,32 @@ void	Balls::setY(int Y)
   this->_Y = Y;
 }
 
-int	Balls::getX()
+int	Balls::getX() const
 {
   return (this->_X);
 }
 
-int	Balls::getY()
+int	Balls::getY() const
 {
   return (this->_Y);
 }
 
-int	Balls::getId()
+int	Balls::getId() const
 {
   return (this->_Id);
 }
 
-unsigned char Balls::getType()
+int	Balls::getType() const
 {
   return (this->_Type);
 }
 
-int	Balls::getEtat()
+int	Balls::getEtat() const
 {
   return (this->_Etat);
+}
+
+int	Balls::getStatus() const
+{
+  return (this->_Status);
 }

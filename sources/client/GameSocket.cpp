@@ -98,8 +98,9 @@ void			GameSocket::update(Parser &parser)
 		parser.parse(&rec, this->_socketUDP.recvFrom(rec, 512, this->_sin));
 		parser.setStartUDP();
 	}
-	if (this->_udpRunning && cmdUDP.first != NULL)
+	while (this->_udpRunning && cmdUDP.first != NULL)
 	{
 		this->_socketUDP.sendTo(cmdUDP.first, cmdUDP.second, this->_sin);
+		cmdUDP = parser.getQueuedUDP();
 	}
 }

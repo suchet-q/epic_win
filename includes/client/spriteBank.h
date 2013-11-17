@@ -5,7 +5,7 @@
 ** Login   <heuzey_m@epitech.net>
 ** 
 ** Started on  Thu Oct 31 04:16:18 2013 mathieu heuzey
-** Last update Mon Nov 11 15:38:19 2013 mathieu heuzey
+** Last update Sun Nov 17 00:59:12 2013 mathieu heuzey
 */
 
 #pragma once
@@ -22,7 +22,6 @@
 #include "jumper.h"
 #include "xwing.h"
 #include "metroid.h"
-#include "explosion.h"
 #include "larve.h"
 #include "fireball.h"
 #include "missil.h"

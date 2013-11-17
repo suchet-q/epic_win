@@ -1,11 +1,7 @@
 #include "metroid.h"
 
-Metroid::Metroid(int id, sf::Image *img, sf::Image *explosion)
+Metroid::Metroid(int id)
 {
-  this->_MetroidAnim = new sf::Sprite[5];
-  this->_Explosion = new Explosion(explosion);
-  this->SetSprite(img);
-  this->CutImage();
   this->_Status = 1;
   this->_Id = id;
   this->_FrameTime = FRAMETIME;
@@ -13,14 +9,14 @@ Metroid::Metroid(int id, sf::Image *img, sf::Image *explosion)
   this->_Etat = 1;
   this->_Size = 3;
   this->_EllapsedTime = 0;
-  this->_Type = 7;
+  this->_Type = 10;
 }
 
 Metroid::~Metroid()
 {  
 }
 
-bool		Metroid::SpriteAlive()
+bool		Metroid::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
@@ -43,9 +39,10 @@ void		Metroid::CheckEtat(Move move, int x, int y)
     }
 }
 
-sf::Sprite	&Metroid::FirstState(int x, int y, int time)
+void		Metroid::FirstState(int x, int y, int time)
 {
-  
+  this->_X = x;
+  this->_Y = y;  
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -54,12 +51,10 @@ sf::Sprite	&Metroid::FirstState(int x, int y, int time)
       this->_Status += 1;
       this->_EllapsedTime = 0;
     }
-  this->_MetroidAnim[this->_Status].SetPosition(x, y);
-  return (this->_MetroidAnim[this->_Status]);
 }
 
 
-sf::Sprite	&Metroid::CheckSize(int x, int y, int time)
+void		Metroid::CheckSize(int time)
 {
   this->_EllapsedTime += time;
   switch (this->_Size)
@@ -68,89 +63,45 @@ sf::Sprite	&Metroid::CheckSize(int x, int y, int time)
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 12)
+	    if (this->_Status == 11)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 2:
       {
 	if ( this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 7)
+	    if (this->_Status == 6)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
       }
     case 3:
       {
 	if (this->_EllapsedTime >= this->_FrameTime)
 	  {
-	    if (this->_Status == 4)
+	    if (this->_Status == 3)
 	      this->_Old = 0;
 	    this->_Status += 1;
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
 	    this->_EllapsedTime = 0;
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
 	  }
-	else
-	  {
-	    this->_Explosion->_ExplosionAnim[this->_Status].SetPosition(this->_X, this->_Y);
-	    return (this->_Explosion->_ExplosionAnim[this->_Status]);
-	  }      
       }
     }
 }
 
-sf::Sprite	&Metroid::GetSprite(int x, int y, unsigned int time, Move move)
+void	Metroid::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
   if (this->_Etat == 1)
-    return (this->FirstState(x, y, time));
+    this->FirstState(x, y, time);
   else
-    return (this->CheckSize(x, y, time));
+    this->CheckSize(time);
 }
 
-void	Metroid::SetSprite(sf::Image *img)
-{
-  int	x = 0;
-
-  while (x < 5)
-    {
-      this->_MetroidAnim[x].SetImage(*img);
-      x++;
-    }
-}
-
-void	Metroid::CutImage()
-{
-  int	Width = 326;
-  int	Height = 66;
-  int	x = 0;
-
-  while (x < 5)
-    {
-      this->_MetroidAnim[x].SetSubRect(sf::IntRect(Width/5 * x, 0, Width/5*(x+1),66));
-      x++;
-    }
-}
 
 void	Metroid::setX(int x)
 {
@@ -162,27 +113,32 @@ void	Metroid::setY(int Y)
   this->_Y = Y;
 }
 
-int	Metroid::getX()
+int	Metroid::getX() const
 {
   return (this->_X);
 }
 
-int	Metroid::getY()
+int	Metroid::getY() const
 {
   return (this->_Y);
 }
 
-int	Metroid::getId()
+int	Metroid::getId() const
 {
   return (this->_Id);
 }
 
-unsigned char Metroid::getType()
+int Metroid::getType() const
 {
   return (this->_Type);
 }
 
-int	Metroid::getEtat()
+int	Metroid::getEtat() const
 {
   return (this->_Etat);
+}
+
+int	Metroid::getStatus() const
+{
+  return (this->_Status);
 }

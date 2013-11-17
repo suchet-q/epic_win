@@ -26,7 +26,7 @@ public:
 	virtual void		handleEvents();
 	virtual void		clearWindow();
 	virtual void		refreshWindow();
-	virtual void		handleEventsGame(Parser &, unsigned char);
+	virtual void		handleEventsGame();
 	virtual void		drawSprite(sf::Sprite &);
 	virtual void		drawText(sf::String &);
 	const sf::Input&	getInput();

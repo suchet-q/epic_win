@@ -35,5 +35,6 @@ public:
 	void		exception();
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);
+	void		handleInputs(const sf::Input &, Parser &);
 };
 

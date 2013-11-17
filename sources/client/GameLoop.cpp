@@ -158,6 +158,30 @@ boost::any	GameLoop::aff(std::list<boost::any> &args)
 		return (0);
 }
 
+void		GameLoop::handleInputs(const sf::Input &input, Parser &parser)
+{
+	if (input.IsKeyDown(sf::Key::Left))
+	{
+		parser.addINP(*this->_idClient, INP_LEFT);
+	}
+	if (input.IsKeyDown(sf::Key::Right))
+	{
+		parser.addINP(*this->_idClient, INP_RIGHT);
+	}
+	if (input.IsKeyDown(sf::Key::Up))
+	{
+		parser.addINP(*this->_idClient, INP_UP);
+	}
+	if (input.IsKeyDown(sf::Key::Down))
+	{
+		parser.addINP(*this->_idClient, INP_DOWN);
+	}
+	if (input.IsKeyDown(sf::Key::Space))
+	{
+		parser.addINP(*this->_idClient, INP_FIRE);
+	}
+}
+
 bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 {
 	sf::Clock	clock;
@@ -189,6 +213,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		elapsed = clock.GetElapsedTime();
 		clock.Reset();
 	}
+	timer = 0.0;
 	while (win.isRunning())
 	{
 		win.clearWindow();
@@ -196,7 +221,12 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		this->drawEntities(win, elapsed);
 		this->drawHUB(win, elapsed);
 		win.refreshWindow();
-		win.handleEventsGame(parser, *this->_idClient);
+		win.handleEventsGame();
+		if ((timer += elapsed) >= 0.05)
+		{
+			this->handleInputs(win.getInput(), parser);
+			timer = 0.0;
+		}
 		sock.update(parser);
 		elapsed = clock.GetElapsedTime();
 		clock.Reset();

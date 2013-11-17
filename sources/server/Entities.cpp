@@ -24,6 +24,7 @@ void			Entity::setType(entityType type) {
   _type = type;
 }
 
-void			Entity::setVecDir(Coord<float> const &coord) {
-  _vecDir = coord;
+void			Entity::setVecDir(float x, float y) {
+	_vecDir.setX(x);
+	_vecDir.setY(y);
 }

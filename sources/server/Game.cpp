@@ -129,6 +129,7 @@ void			Game::initPlayersShip()
 	_resources.getShipList().back()->getFloatCoord().setX(30);
 	_resources.getShipList().back()->getFloatCoord().setY((768 - 100) / (_clients.size() + 1) * type);
     _resources.getShipList().back()->setType(static_cast<entityType>(type));
+	_resources.getShipList().back()->setShotPool(_resources.getShotPool());
     _clientToShip[*it] = _resources.getShipList().back();
     type++;
   }
@@ -222,8 +223,15 @@ void			Game::loop()
 		itEntity = this->_resources.getEntityList().begin();
 		for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
 		{
-			(*itEntity)->update(this->_resources.getEntityList()/*peut etre envoye iterator pour cheque colision*/);
 			tmp = (*itEntity)->getCoord();
+			if (tmp.getX() < 0 || tmp.getX() > 1024)
+			{
+				itEntity = this->_resources.getEntityList().erase(itEntity);
+				if (itEntity == this->_resources.getEntityList().end())
+					break;
+				tmp = (*itEntity)->getCoord();
+			}
+			(*itEntity)->update(this->_resources.getEntityList()/*peut etre envoye iterator pour cheque colision*/);
 			itRep = this->_repClient.begin();
 			for (; itRep != this->_repClient.end(); ++itRep)
 			{

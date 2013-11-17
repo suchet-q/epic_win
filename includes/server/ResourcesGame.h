@@ -23,6 +23,7 @@ public:
   
   std::list<Entity *>&	getEntityList();
   std::list<Ship *>&	getShipList();
+  Pool<Shot, 64>		&getShotPool();
 
   void			createPlayerShip();
 };

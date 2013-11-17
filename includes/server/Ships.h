@@ -6,11 +6,11 @@
 #include		"Shot.h"
 #include		"Pool.hpp"
 
-#define		LEFT			1
-#define		RIGHT			2
-#define		UP				4
-#define		DOWN			8
-#define		SHOOT			16
+#define		LEFT			(1)
+#define		RIGHT			(2)
+#define		UP				(4)
+#define		DOWN			(8)
+#define		SHOOT			(16)
 
 # define		CHECK_INPUT(in, st)	((in & st) ? (1) : (0))
 
@@ -28,6 +28,5 @@ public:
   void			setShotPool(Pool<Shot, 64>& pool);
   unsigned short	getInput() const;
   void				setInput(unsigned short);
-  virtual void			update(std::list<Entity *> &) = 0;
-//  void			shoot();
+  virtual void			update(std::list<Entity *> &);
 };

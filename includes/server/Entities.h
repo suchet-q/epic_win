@@ -33,7 +33,7 @@ public:
   Coord<>&			getCoord();
   Coord<float>&		getFloatCoord();
 
-  void			setVecDir(Coord<float> const &coord);
+  void			setVecDir(float x, float y);
   void			setType(entityType type);
 
   virtual void		update(std::list<Entity *> &) = 0;

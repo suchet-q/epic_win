@@ -18,11 +18,15 @@ void			Ship::setShotPool(Pool<Shot, 64>& pool) {
   _shotPool = &pool;
 }
 
-/*void			Ship::shoot()
+void			Ship::update(std::list<Entity *> &entityList)
 {
-  _entityList->push_back(_shotPool->getInstance());
-  // set vec dir
-}*/
+	_coord += _vecDir;
+//	shoot();
+	_vecDir.set(0, 0);
+	_shoot = false;
+}
+
+
 
 /*void			Ship::update()
 {

@@ -19,7 +19,7 @@ float		Sinus::calculNewVecY(float y, float yVec)
 	return (yVec - y);
 }
 
-float		&Sinus::getValue(Coord<> &coord)
+float		Sinus::getValue(Coord<> &coord)
 {
 	float result;
 

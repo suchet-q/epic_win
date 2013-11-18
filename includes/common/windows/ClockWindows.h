@@ -11,14 +11,14 @@ class		ClockWindows
 {
 	unsigned long int	_lastUpdate;
 	unsigned long int	_fromBeginning;
-	struct timeval	_buff;
+	struct timeval		_buff;
 
-	int			gettimeofday(struct timeval *tv) const;
+	int					gettimeofday(struct timeval *tv) const;
 public:
 	ClockWindows();
 	~ClockWindows();
-	void			start();
+	void				start();
 	unsigned long int	elapsedTime();
 	unsigned long int	elapsedTimeSinceStart();
-	void			stop();
+	void				stop();
 };

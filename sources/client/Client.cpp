@@ -58,7 +58,9 @@ void		Client::update()
 	{
 		try {
 			this->_win.clearWindow();
+			this->_win.lockMutex();
 			this->_menu.update(this->_win);
+			this->_win.unlockMutex();
 			this->_win.refreshWindow();
 			this->_win.handleEvents();
 			this->_socket.update(this->_parser);
@@ -119,13 +121,18 @@ void		Client::initializeThreads()
 	sf::Thread	update(&updateThread, this);
 	
 	update.Launch();
+	std::cout << "JE DOIS PASSER QUNE FOIS" << std::endl;
 	menuResources.Launch();
 	gameResources.Launch();
+	std::cout << "PAREIL POUR MOI" << std::endl;
 
 	try {
 		this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
+		//update.Terminate();
+		//menuResources.Terminate();
+		//gameResources.Terminate();
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
 	}

@@ -249,7 +249,9 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		win.refreshWindow();
 		if ((timer += elapsed) >= 0.05)
 		{
+			win.lockMutex();
 			this->handleInputs(win.getInput(), parser);
+			win.unlockMutex();
 			timer = 0.0;
 		}
 		sock.update(parser);

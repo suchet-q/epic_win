@@ -17,6 +17,8 @@ protected:
 	bool				_getNick;
 	bool				_getMsg;
 	std::list<sf::Event>	_events;
+	sf::Mutex				_mutex;
+	const sf::Input*		_lastInput;
 public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
@@ -30,6 +32,8 @@ public:
 	virtual void		drawSprite(sf::Sprite &);
 	virtual void		drawText(sf::String &);
 	virtual void		handleClosing();
+	virtual void		lockMutex();
+	virtual void		unlockMutex();
 	const sf::Input&	getInput();
 	std::string	getNickname();
 	std::string	getMsg();

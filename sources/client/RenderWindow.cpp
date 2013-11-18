@@ -48,12 +48,25 @@ void	RenderWindow::closeWindow()
 	}
 }
 
+void		RenderWindow::lockMutex()
+{
+	this->_mutex.Lock();
+}
+
+void		RenderWindow::unlockMutex()
+{
+	this->_mutex.Unlock();
+}
+
 void		RenderWindow::handleClosing()
 {
 	sf::Event	event;
 
 	while (42)
 	{
+		this->lockMutex();
+		this->_lastInput = &this->_win->GetInput();
+		this->unlockMutex();
 		while (this->_win->GetEvent(event))
 			if (event.Type == sf::Event::Closed)
 				{
@@ -62,7 +75,7 @@ void		RenderWindow::handleClosing()
 				}
 			else if (event.Type == sf::Event::TextEntered)
 				this->_events.push_back(event);
-		sf::Sleep(0.1f);
+		sf::Sleep(0.005f);
 	}
 }
 
@@ -112,7 +125,7 @@ void		RenderWindow::drawSprite(sf::Sprite &sprite)
 
 const sf::Input&		RenderWindow::getInput()
 {
-	return (this->_win->GetInput());
+	return (*this->_lastInput);
 }
 
 void					RenderWindow::clearMsg()

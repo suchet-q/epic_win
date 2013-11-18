@@ -19,8 +19,9 @@ class Client
 	Parser			_parser;
 	unsigned char	_clientID;
 
-	bool		menu(GameLoop &, MetaThreader<GameMenu, RenderWindow> &, MetaThreader<GameLoop, void> &);
-	void		loading(MetaThreader<GameMenu, RenderWindow> &, GameMenu &);
+	bool		menu(GameLoop &, MetaThreader<GameMenu, RenderWindow> &, MetaThreader<GameLoop, void> &, MetaMutex<> &);
+	void		loading(MetaThreader<GameMenu, RenderWindow> &, GameMenu &, MetaMutex<> &);
+	int			threadGame(MetaMutex<> *);
 public:
 	Client(void);
 	~Client(void);

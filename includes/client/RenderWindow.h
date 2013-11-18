@@ -7,15 +7,17 @@
 #include	"macros.h"
 #include	"RuntimeException.h"
 #include	"Parser.h"
+#include	"MetaMutex.h"
 
 class RenderWindow
 {
 protected:
-	sf::RenderWindow *	_win;
-	std::string			_nickname;
-	std::string			_msg;
-	bool				_getNick;
-	bool				_getMsg;
+	sf::RenderWindow *		_win;
+	std::string				_nickname;
+	std::string				_msg;
+	bool					_getNick;
+	bool					_getMsg;
+	std::list<sf::Event>	_eventList;
 public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
@@ -26,6 +28,7 @@ public:
 	virtual void		handleEvents();
 	virtual void		clearWindow();
 	virtual void		refreshWindow();
+	virtual int			eventsThread(MetaMutex<> *);
 	virtual void		handleEventsGame();
 	virtual void		drawSprite(sf::Sprite &);
 	virtual void		drawText(sf::String &);

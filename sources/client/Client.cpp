@@ -10,7 +10,7 @@ Client::~Client(void)
 {
 }
 
-void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &menu)
+void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &menu, MetaMutex<> &mutex)
 {
 	WidgetText	loading;
 	std::stringstream	ss;
@@ -32,32 +32,36 @@ void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &
 		while ((tmp -= 0.3f) >= 0.0f)
 			ss << ". ";
 		loading.setText(ss.str());
+		mutex.Lock();
 		this->_win.clearWindow();
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 		this->_win.handleEvents();
+		mutex.Unlock();
 	}
 	threader.waitThread();
 }
 
-bool		Client::menu(GameLoop& game, MetaThreader<GameMenu, RenderWindow> &threaderMenu, MetaThreader<GameLoop, void> &threaderGame)
+bool		Client::menu(GameLoop& game, MetaThreader<GameMenu, RenderWindow> &threaderMenu, MetaThreader<GameLoop, void> &threaderGame, MetaMutex<> &mutex)
 {
 	GameMenu	menu;
 
 	menu.initParser(this->_parser);
-	this->loading(threaderMenu, menu);
+	this->loading(threaderMenu, menu, mutex);
 	menu.exception();
 	threaderGame.start(&GameLoop::loadResources, &game, &(this->_clientID));
 	if (!(this->_socket.connectTCP()))
 		throw RuntimeException("[Client::launch]", "Couldn't connect to server");  
 	menu.rstClock();
-	while (this->_win.isRunning() && !(menu.finished()))
+	while (!(menu.finished()))
 	{
 		try {
+			mutex.Lock();
 			this->_win.clearWindow();
 			menu.update(this->_win);
 			this->_win.refreshWindow();
 			this->_win.handleEvents();
+			mutex.Unlock();
 			this->_socket.update(this->_parser);
 		}
 		catch (MinorException &e) {
@@ -70,11 +74,12 @@ bool		Client::menu(GameLoop& game, MetaThreader<GameMenu, RenderWindow> &threade
 	return (true);
 }
 
-bool		Client::launch(std::string const &ip, int port)
+int			Client::threadGame(MetaMutex<> *mutex)
 {
 	GameLoop		game;
 	MetaThreader<GameMenu, RenderWindow>	threaderMenu;
 	MetaThreader<GameLoop, void>			threaderGame;
+
 
 	try { 
 		this->_err.initialize();
@@ -82,16 +87,10 @@ bool		Client::launch(std::string const &ip, int port)
 	catch (RuntimeException &e) {
 		return (false);
 	}
-	if (this->_win.openWindow(WIN_X, WIN_Y, "R-Type") == false)
-	{
-		this->_err.displayError("[Client::launch]", "Couldn't open render window");
-		return (false);
-	}
 	try {
-		this->_socket.setValues(ip, port);
-		this->menu(game, threaderMenu, threaderGame);
+		this->menu(game, threaderMenu, threaderGame, *mutex);
 		game.exception();
-		game.loop(this->_win, this->_parser, this->_socket);
+		game.loop(this->_win, this->_parser, this->_socket, *mutex);
 	}
 	catch (RuntimeException &e) {
 		threaderMenu.killThread();
@@ -100,6 +99,22 @@ bool		Client::launch(std::string const &ip, int port)
 		this->_win.closeWindow();
 		return (false);
 	}
+	return (0);
+}
+
+bool		Client::launch(std::string const &ip, int port)
+{
+	MetaMutex<>								eventMutex;
+
+	this->_socket.setValues(ip, port);
+	eventMutex.initMutex();
+
+	if (this->_win.openWindow(WIN_X, WIN_Y, "R-Type") == false)
+	{
+		this->_err.displayError("[Client::launch]", "Couldn't open render window");
+		return (false);
+	}
+	this->_threadGame(&eventMutex);
 	
 	return (true);
 }

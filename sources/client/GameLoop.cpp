@@ -16,6 +16,8 @@ GameLoop::~GameLoop(void)
 
 int		GameLoop::loadResources(void *arg)
 {
+	sf::Context		context;
+
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
@@ -226,7 +228,6 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		win.clearWindow();
 		this->drawBackground(win, elapsed);
 		win.refreshWindow();
-		win.handleEvents();
 		sock.update(parser);
 		elapsed = clock.GetElapsedTime();
 		timer += elapsed;
@@ -246,7 +247,6 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		this->drawEntities(win, elapsed);
 		this->drawHUB(win, elapsed);
 		win.refreshWindow();
-		win.handleEventsGame();
 		if ((timer += elapsed) >= 0.05)
 		{
 			this->handleInputs(win.getInput(), parser);

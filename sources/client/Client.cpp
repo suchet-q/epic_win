@@ -3,6 +3,7 @@
 
 Client::Client(void)
 {
+	this->_finishedLoading = false;
 }
 
 
@@ -10,20 +11,92 @@ Client::~Client(void)
 {
 }
 
-void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &menu)
+void		menuResourcesThread(void *client)
 {
-	WidgetText	loading;
+	(static_cast<Client *>(client))->menuResources();
+}
+
+void		gameResourcesThread(void *client)
+{
+	(static_cast<Client *>(client))->gameResources();
+}
+
+void		updateThread(void *client)
+{
+	(static_cast<Client *>(client))->update();
+}
+
+void		Client::menuResources()
+{
+	this->_menu.initParser(this->_parser);
+	this->_menu.loadResources(&this->_win);
+	this->_finishedLoading = true;
+}
+
+void		Client::gameResources()
+{
+	while (!this->_finishedLoading)
+		sf::Sleep(0.25f);
+	this->_game.loadResources(&(this->_clientID));
+}
+
+void		Client::update()
+{
+	this->loadingScreen();
+	if (!(this->_socket.connectTCP()))
+		throw RuntimeException("[Client::launch]", "Couldn't connect to server");  
+	this->_menu.rstClock();
+	try {
+		this->_menu.exception();
+		this->_game.exception();
+	}
+	catch (RuntimeException &e) {
+		this->_err.displayError(e.method(), e.what());
+		this->_win.closeWindow();
+	}
+	while (this->_win.isRunning() && !(this->_menu.finished()))
+	{
+		try {
+			this->_win.clearWindow();
+			this->_menu.update(this->_win);
+			this->_win.refreshWindow();
+			this->_win.handleEvents();
+			this->_socket.update(this->_parser);
+		}
+		catch (MinorException &e) {
+			this->_err.displayError(e.method(), e.what());
+		}
+	}
+	this->_socket.setUDPPort(this->_menu.getUDPPort());
+	this->_clientID = this->_menu.getPlayerID();
+	try {
+		this->_game.loop(this->_win, this->_parser, this->_socket);
+	}
+	catch (RuntimeException &e) {
+		this->_err.displayError(e.method(), e.what());
+		this->_win.closeWindow();
+	}
+	
+}
+
+void		Client::loadingScreen()
+{
+	WidgetText			loading;
 	std::stringstream	ss;
 	sf::Clock			clock;
 	float				tmp;
 
-	threader.start(&GameMenu::loadResources, &menu, &(this->_win));
+	this->_win.getWindow()->SetActive(true);
 	loading.setStyle(sf::String::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
+	
 	clock.Reset();
-	while (this->_win.isRunning() && threader.isAlive())
+	
+	while (this->_win.isRunning())
 	{
+		if (this->_finishedLoading)
+			break;
 		tmp = clock.GetElapsedTime();
 		if (clock.GetElapsedTime() >= 1.2)
 			clock.Reset();
@@ -35,47 +108,31 @@ void		Client::loading(MetaThreader<GameMenu, RenderWindow> &threader, GameMenu &
 		this->_win.clearWindow();
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
-		this->_win.handleEvents();
+		//this->_win.handleEvents();
 	}
-	threader.waitThread();
 }
 
-bool		Client::menu(GameLoop& game, MetaThreader<GameMenu, RenderWindow> &threaderMenu, MetaThreader<GameLoop, void> &threaderGame)
+void		Client::initializeThreads()
 {
-	GameMenu	menu;
+	sf::Thread	gameResources(&gameResourcesThread, this);
+	sf::Thread	menuResources(&menuResourcesThread, this);
+	sf::Thread	update(&updateThread, this);
+	
+	update.Launch();
+	menuResources.Launch();
+	gameResources.Launch();
 
-	menu.initParser(this->_parser);
-	this->loading(threaderMenu, menu);
-	menu.exception();
-	threaderGame.start(&GameLoop::loadResources, &game, &(this->_clientID));
-	if (!(this->_socket.connectTCP()))
-		throw RuntimeException("[Client::launch]", "Couldn't connect to server");  
-	menu.rstClock();
-	while (this->_win.isRunning() && !(menu.finished()))
-	{
-		try {
-			this->_win.clearWindow();
-			menu.update(this->_win);
-			this->_win.refreshWindow();
-			this->_win.handleEvents();
-			this->_socket.update(this->_parser);
-		}
-		catch (MinorException &e) {
-			this->_err.displayError(e.method(), e.what());
-		}
+	try {
+		this->_win.handleClosing();
 	}
-	this->_socket.setUDPPort(menu.getUDPPort());
-	this->_clientID = menu.getPlayerID();
-	std::cout << "Before thread id " << (int)this->_clientID << std::endl;
-	return (true);
+	catch (RuntimeException &e) {
+		this->_err.displayError(e.method(), e.what());
+		this->_win.closeWindow();
+	}
 }
 
 bool		Client::launch(std::string const &ip, int port)
 {
-	GameLoop		game;
-	MetaThreader<GameMenu, RenderWindow>	threaderMenu;
-	MetaThreader<GameLoop, void>			threaderGame;
-
 	try { 
 		this->_err.initialize();
 	}
@@ -87,19 +144,8 @@ bool		Client::launch(std::string const &ip, int port)
 		this->_err.displayError("[Client::launch]", "Couldn't open render window");
 		return (false);
 	}
-	try {
-		this->_socket.setValues(ip, port);
-		this->menu(game, threaderMenu, threaderGame);
-		game.exception();
-		game.loop(this->_win, this->_parser, this->_socket);
-	}
-	catch (RuntimeException &e) {
-		threaderMenu.killThread();
-		threaderGame.killThread();
-		this->_err.displayError(e.method(), e.what());
-		this->_win.closeWindow();
-		return (false);
-	}
-	
+	this->_socket.setValues(ip, port);
+	this->_win.getWindow()->SetActive(false);
+	this->initializeThreads();
 	return (true);
 }

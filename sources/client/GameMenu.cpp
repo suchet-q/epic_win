@@ -37,6 +37,7 @@ GameMenu::~GameMenu(void)
 
 void		GameMenu::loadImages()
 {
+	sf::Context	context;
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
@@ -132,6 +133,7 @@ int			GameMenu::getUDPPort()
 
 void		GameMenu::loadButtons(RenderWindow *win)
 {
+	sf::Context	context;
 	WidgetButton*	play = new WidgetButton, *options = new WidgetButton, *quit = new WidgetButton, *back = new WidgetButton, *refresh = new WidgetButton, 
 	*create = new WidgetButton, *join = new WidgetButton, *prev = new WidgetButton, *next = new WidgetButton;
 	WidgetSwitch*	musicOn = new WidgetSwitch, *musicOff = new WidgetSwitch, *soundOn = new WidgetSwitch, *soundOff = new WidgetSwitch;
@@ -445,6 +447,7 @@ void		GameMenu::loadButtons(RenderWindow *win)
 
 void		GameMenu::loadText(RenderWindow *win)
 {
+	sf::Context	context;
 	WidgetText	*statistics = new WidgetText, *players = new WidgetText, *lobbies = new WidgetText, *nickname = new WidgetText, *highscore = new WidgetText;
 	WidgetButton *input = new WidgetButton;
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
@@ -536,6 +539,7 @@ void		GameMenu::loadText(RenderWindow *win)
 
 void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 {
+	sf::Context	context;
 	WidgetSwitch	*lobbyOff, *lobbyOn, *input = new WidgetSwitch;
 	WidgetText		*text;
 	WidgetImage		*lobby_top_left = new WidgetImage, *lobby_top_right = new WidgetImage, *lobby_bot_left = new WidgetImage, *lobby_bot_right = new WidgetImage, *juda = new WidgetImage;

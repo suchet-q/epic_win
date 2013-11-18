@@ -48,47 +48,44 @@ void	RenderWindow::closeWindow()
 	}
 }
 
-void		RenderWindow::handleEvents()
+void		RenderWindow::handleClosing()
 {
 	sf::Event	event;
-	std::string	str;
-	unsigned int		maxSize;
 
-	if (this->isRunning())
+	while (42)
 	{
 		while (this->_win->GetEvent(event))
-		{
 			if (event.Type == sf::Event::Closed)
-			{
-				throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
-				break;
-			}
-			if (this->_getNick || this->_getMsg)
-			{
-				(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
-				(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
-				if (event.Type == sf::Event::TextEntered)
 				{
-					if (event.Text.Unicode == '\b' && str.size() > 0)
-						str.erase(str.size() - 1, 1);
-					else if (event.Text.Unicode < 128 && str.size() < maxSize)
-						str += static_cast<char>(event.Text.Unicode);
+					throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
+					break;
 				}
-				(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
-			}
-		}
+			else if (event.Type == sf::Event::TextEntered)
+				this->_events.push_back(event);
+		sf::Sleep(0.1f);
 	}
 }
 
-void		RenderWindow::handleEventsGame()
+void		RenderWindow::handleEvents()
 {
-	sf::Event	event;
+	std::string	str;
+	unsigned int		maxSize;
+	std::list<sf::Event>::iterator it;
 
-	while (this->_win->GetEvent(event))
-	{
-		if (event.Type == sf::Event::Closed)
-			throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
-	}
+	for (it = this->_events.begin(); it != this->_events.end(); ++it)
+		if (this->_getNick || this->_getMsg)
+			{
+				(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
+				(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
+				if ((*it).Type == sf::Event::TextEntered)
+				{
+					if ((*it).Text.Unicode == '\b' && str.size() > 0)
+						str.erase(str.size() - 1, 1);
+					else if ((*it).Text.Unicode < 128 && str.size() < maxSize)
+						str += static_cast<char>((*it).Text.Unicode);
+				}
+				(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
+			}
 }
 
 void		RenderWindow::clearWindow()

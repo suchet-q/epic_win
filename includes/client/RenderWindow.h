@@ -16,6 +16,7 @@ protected:
 	std::string			_msg;
 	bool				_getNick;
 	bool				_getMsg;
+	std::list<sf::Event>	_events;
 public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
@@ -26,9 +27,9 @@ public:
 	virtual void		handleEvents();
 	virtual void		clearWindow();
 	virtual void		refreshWindow();
-	virtual void		handleEventsGame();
 	virtual void		drawSprite(sf::Sprite &);
 	virtual void		drawText(sf::String &);
+	virtual void		handleClosing();
 	const sf::Input&	getInput();
 	std::string	getNickname();
 	std::string	getMsg();

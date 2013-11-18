@@ -48,42 +48,17 @@ void	RenderWindow::closeWindow()
 	}
 }
 
-int		RenderWindow::eventsThread(MetaMutex<> *mutex)
-{
-	sf::Event	event;
-
-	while (42)
-	{
-		std::cout << "In Thread" << std::endl;
-		
-		while (this->_win->GetEvent(event))
-		{
-			std::cout << "Received Event" << std::endl;
-			if ((event.Type == sf::Event::Closed) || (event.Type == sf::Event::TextEntered))
-			{
-				mutex->Lock();
-				std::cout << "Pushing Event" << std::endl;
-				this->_eventList.push_back(event);
-				mutex->Unlock();
-			}
-		}
-		
-		Sleep(250);
-	}
-	return (0);
-}
-
 void		RenderWindow::handleEvents()
 {
+	sf::Event	event;
 	std::string	str;
 	unsigned int		maxSize;
-	std::list<sf::Event>::iterator it;
 
 	if (this->isRunning())
 	{
-		for (it = this->_eventList.begin(); it != this->_eventList.end(); ++it)
+		while (this->_win->GetEvent(event))
 		{
-			if ((*it).Type == sf::Event::Closed)
+			if (event.Type == sf::Event::Closed)
 			{
 				throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 				break;
@@ -92,30 +67,28 @@ void		RenderWindow::handleEvents()
 			{
 				(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
 				(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
-				if ((*it).Type == sf::Event::TextEntered)
+				if (event.Type == sf::Event::TextEntered)
 				{
-					if ((*it).Text.Unicode == '\b' && str.size() > 0)
+					if (event.Text.Unicode == '\b' && str.size() > 0)
 						str.erase(str.size() - 1, 1);
-					else if ((*it).Text.Unicode < 128 && str.size() < maxSize)
-						str += static_cast<char>((*it).Text.Unicode);
+					else if (event.Text.Unicode < 128 && str.size() < maxSize)
+						str += static_cast<char>(event.Text.Unicode);
 				}
 				(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
 			}
 		}
 	}
-	this->_eventList.clear();
 }
 
 void		RenderWindow::handleEventsGame()
 {
-	std::list<sf::Event>::iterator it;
+	sf::Event	event;
 
-	for (it = this->_eventList.begin(); it != this->_eventList.end(); ++it)
+	while (this->_win->GetEvent(event))
 	{
-		if ((*it).Type == sf::Event::Closed)
+		if (event.Type == sf::Event::Closed)
 			throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 	}
-	this->_eventList.clear();
 }
 
 void		RenderWindow::clearWindow()

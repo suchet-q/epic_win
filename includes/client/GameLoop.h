@@ -38,7 +38,7 @@ public:
 	boost::any	life(std::list<boost::any> &);
 	boost::any	score(std::list<boost::any> &);
 	void		exception();
-	bool		loop(RenderWindow &, Parser &, GameSocket &, MetaMutex<> &);
+	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);
 	void		handleInputs(const sf::Input &, Parser &);
 };

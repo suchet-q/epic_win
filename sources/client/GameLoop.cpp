@@ -205,7 +205,7 @@ boost::any	GameLoop::score(std::list<boost::any> &args)
 	return (0);
 }
 
-bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock, MetaMutex<> &mutex)
+bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 {
 	sf::Clock	clock;
 	float		elapsed = 0.0;
@@ -221,14 +221,12 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock, MetaMu
 	this->_manager->InitDrawer();
 
 	clock.Reset();
-	while (!(parser.getStartUDP()))
+	while (win.isRunning() && !(parser.getStartUDP()))
 	{
 		win.clearWindow();
 		this->drawBackground(win, elapsed);
 		win.refreshWindow();
-		mutex.Lock();
 		win.handleEvents();
-		mutex.Unlock();
 		sock.update(parser);
 		elapsed = clock.GetElapsedTime();
 		timer += elapsed;
@@ -241,16 +239,14 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock, MetaMu
 		clock.Reset();
 	}
 	timer = 0.0;
-	while (42)
+	while (win.isRunning())
 	{
 		win.clearWindow();
 		this->drawBackground(win, elapsed);
 		this->drawEntities(win, elapsed);
 		this->drawHUB(win, elapsed);
 		win.refreshWindow();
-		mutex.Lock();
 		win.handleEventsGame();
-		mutex.Unlock();
 		if ((timer += elapsed) >= 0.05)
 		{
 			this->handleInputs(win.getInput(), parser);

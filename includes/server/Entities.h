@@ -15,7 +15,6 @@ enum			entityType
     LANDSCAPE
   };
 
-
 class			Entity
 {
 protected:

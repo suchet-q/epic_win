@@ -1,9 +1,9 @@
 #pragma once
 
 #ifdef	_WIN32
-# include "windows/ClockWindows.h"
+# include "Windows/ClockWindows.h"
 #else
-# include "linux/ClockLinux.h"
+# include "Linux/ClockLinux.h"
 #endif
 
 

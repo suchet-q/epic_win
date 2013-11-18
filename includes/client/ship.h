@@ -40,7 +40,8 @@ class Ship
   Inputs	_Inputs;
   int		_Size;
   int		_Etat;
-
+  int		_Timer;
+  int		_Timer2;
  public:
 
 

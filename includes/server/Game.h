@@ -13,7 +13,7 @@
 # include			"StructCommands.h"
 # include			"MetaClock.hpp"
 
-# define			REFRESH_TIME	(33)
+# define			REFRESH_TIME	(33000)
 
 class				Client;
 

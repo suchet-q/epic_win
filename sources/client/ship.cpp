@@ -24,6 +24,7 @@ Ship::Ship(int x, int y, int team, int id)
   this->_Inputs = NOTHING;
   this->_Etat = 1;
   this->_Size = 2;
+  this->_Timer= 0;
 }
 
 bool		Ship::SpriteAlive()
@@ -94,6 +95,8 @@ void		Ship::CheckSize(int time)
 
 void		Ship::FirstState(int time, Inputs inp)
 {
+	this->_Timer += time;
+	this->_Timer2 += time;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -116,7 +119,7 @@ void		Ship::GetSprite(int x, int y, Inputs inp, int time, Move move)
 
 void	Ship::CheckLeftAndRight()
 {
-  switch(this->_Status)
+	switch (this->_Status)
     {
     case 0:
       {
@@ -147,6 +150,7 @@ void	Ship::CheckLeftAndRight()
 
 void	Ship::CheckTop()
 {
+	this->_Timer = 0;
   switch(this->_Status)
     {
     case 0:
@@ -179,6 +183,7 @@ void	Ship::CheckTop()
 
 void	Ship::CheckDown()
 {
+	this->_Timer2 = 0;
   switch(this->_Status)
     {
     case 0:
@@ -215,12 +220,20 @@ void	Ship::CheckNothing()
     {
     case 0:
       {
-	this->_Status = 1;
+			  if (this->_Timer2 > 500)
+			  {
+				  this->_Status = 1;
+				  this->_Timer2 = 0;
+			  }
 	break;
       }
     case 1:
       {
-	this->_Status = 2;
+			  if (this->_Timer2 > 500)
+			  {
+				  this->_Status = 2;
+				  this->_Timer2 = 0;
+			  }
 	break;
       }
     case 2:
@@ -230,12 +243,21 @@ void	Ship::CheckNothing()
       }
     case 3:
       {
-	this->_Status = 2;
+		  if (this->_Timer > 500)
+		  {
+			  this->_Status = 2;
+			  this->_Timer = 0;
+		  }
 	break;
       }
     case 4:
       {
-	this->_Status = 3;
+			  if (this->_Timer > 500)
+			  {
+				  this->_Status = 3;
+				  this->_Timer = 0;
+			  }
+	
 	break;
       }
     }

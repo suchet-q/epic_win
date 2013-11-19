@@ -1,9 +1,9 @@
 #pragma once
 
 #ifdef _WIN32
-# include "LoadLibWindows.h"
+# include "windows/LoadLibWindows.h"
 #else
-# include "LoadLibLinux.h"
+# include "linux/LoadLibLinux.h"
 #endif
 
 template<class T = 

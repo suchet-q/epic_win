@@ -62,7 +62,7 @@ if ( CMAKE_COMPILER_IS_GNUCXX )
 		${linux_client_files}
 	) 
 
-	set(CMAKE_CXX_FLAGS "-o3 -std=gnu++0x")
+	set(CMAKE_CXX_FLAGS "-o3 -std=gnu++0x -ldl")
 	set(EXECUTABLE_OUTPUT_PATH ../../bin)
 
 	include_directories(../lib/sfml/linux/include)

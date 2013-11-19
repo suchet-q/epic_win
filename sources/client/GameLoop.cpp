@@ -55,6 +55,9 @@ int		GameLoop::loadResources(void *arg)
 		this->_fps.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_fps.addActualSheet(0);
 		this->_fps.setPosition(sf::Vector2f(900, 730));
+
+
+		
 	}
 	catch (RuntimeException &e) {
 		this->_exception = e;
@@ -219,9 +222,10 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	parser.addCallback(CMD_AFF, boost::bind(&GameLoop::aff, this, _1));
 	parser.addCallback(CMD_LIF, boost::bind(&GameLoop::life, this, _1));
 	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
+	
 	this->_manager = new Managewindow(win.getWindow(), win.getMutex());
 	this->_manager->InitDrawer();
-
+	
 	clock.Reset();
 	while (win.isRunning() && !(parser.getStartUDP()))
 	{

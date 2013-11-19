@@ -126,6 +126,7 @@ bool	Drawer::SetImg()
     return (false);
   if (!this->_ShipImg->LoadFromFile("./sprites/r-typesheet42.png"))
     return (false);
+  this->_ShipImg->CreateMaskFromColor(sf::Color(0,0,0));
   if (!this->_LaserImg->LoadFromFile("./sprites/r-typesheet2.png"))
     return (false);
   return true;
@@ -240,9 +241,13 @@ void	Drawer::CutImg()
 
   for (x = 0; x < 5; ++x)
     {
+	this->_Ship1Anim[x].SetScale(2.0f, 2.0f);
       this->_Ship1Anim[x].SetSubRect(sf::IntRect((166 / 5) * x,0,(166/5) * (x+1),86 / 5));
+	  this->_Ship2Anim[x].SetScale(2.0f, 2.0f);
       this->_Ship2Anim[x].SetSubRect(sf::IntRect((166 / 5) * x, 86 / 5 ,(166/5) * (x+1), (86/5) * 2));
+	  this->_Ship3Anim[x].SetScale(2.0f, 2.0f);
       this->_Ship3Anim[x].SetSubRect(sf::IntRect((166 / 5) * x, (86 / 5) * 2 ,(166/5) * (x+1), (86/5) * 3));
+	  this->_Ship4Anim[x].SetScale(2.0f, 2.0f);
       this->_Ship4Anim[x].SetSubRect(sf::IntRect((166 / 5) * x, (86 / 5) * 3 ,(166/5) * (x+1), (86/5) * 4));
     }
   this->_LaserAnim[0].SetSubRect(sf::IntRect(38,471,100,502));

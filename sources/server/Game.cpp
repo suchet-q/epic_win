@@ -37,8 +37,6 @@ bool			Game::getIsInit() const {
   return this->_isInit;
 }
 
-
-
 void			Game::setID(int id) {
   this->_id = id;
 }

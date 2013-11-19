@@ -16,6 +16,16 @@ Coord<>&		Entity::getCoord()
   return _intCoord;
 }
 
+entityGlobalType	Entity::getGlobalType() const
+{
+	return _globalType;
+}
+
+void				Entity::setGlobalType(entityGlobalType type)
+{
+	this->_globalType = type;
+}
+
 Coord<float>&		Entity::getFloatCoord() 
 {
 	return _coord;

@@ -130,6 +130,10 @@ if ( MSVC )
     	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
     	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
 
+	set_target_properties(Server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+    	set_target_properties(Server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+    	set_target_properties(Server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
 	set_target_properties(Server PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
 	set_property(TARGET Server APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
 
@@ -306,6 +310,34 @@ set_property(TARGET libMetroid APPEND PROPERTY INCLUDE_DIRECTORIES ../../include
 set_target_properties(libXwing PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
 set_property(TARGET libXwing APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Xwing-DLL)
 set_property(TARGET libXwing APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libAlien PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libAlien PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libAlien PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libDog PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libDog PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libDog PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libDrone PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libDrone PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libDrone PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libJumper PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libJumper PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libJumper PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libLarve PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libLarve PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libLarve PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libMetroid PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libMetroid PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libMetroid PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
+
+set_target_properties(libXwing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )
+set_target_properties(libXwing PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../../bin )
+set_target_properties(libXwing PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../../bin )
 
 endif ( MSVC )
 

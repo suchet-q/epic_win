@@ -25,6 +25,7 @@ class GameLoop
 	Managewindow		*_manager;
 	float				_vsyncFactor;
 	float				_vsyncDelay;
+	sf::Mutex			_resources;
 
 	void		drawHUB(RenderWindow &, float);
 	void		drawEntities(RenderWindow &, float);
@@ -41,5 +42,6 @@ public:
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);
 	void		handleInputs(const sf::Input &, Parser &);
+	void		lockResources(bool);
 };
 

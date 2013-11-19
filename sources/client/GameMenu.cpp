@@ -35,6 +35,14 @@ GameMenu::~GameMenu(void)
 	//delete this->_lobbiesLabel;
 }
 
+void		GameMenu::lockResources(bool lock)
+{
+	if (lock)
+		this->_resources.Lock();
+	else
+		this->_resources.Unlock();
+}
+
 void		GameMenu::loadImages()
 {
   //	sf::Context	context;
@@ -61,6 +69,7 @@ void		GameMenu::loadImages()
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
+	this->_resources.Lock();
 	logo->loadImage("Images/rtype-logo.bmp");
 	logo->loadSprites(subRects);
 	logo->setPosition(pos);
@@ -98,7 +107,7 @@ void		GameMenu::loadImages()
 	transition->addActualSheet(1);
 	transition->addActualSheet(2);
 	transition->addActualSheet(3);
-
+	this->_resources.Unlock();
 	this->_widgets.push_back(logo);
 	this->_widgets.push_back(transition);
 	this->_widgets.push_back(fullLogo);
@@ -149,6 +158,7 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	pos.push_back(sf::Vector2f(WIN_X, WIN_Y));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 100, WIN_Y / 2 - 25 + 80), 0.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 100, WIN_Y / 4 - 25 + 80), 0.5f));
+	this->_resources.Lock();
 	play->loadImage("Images/play.png");
 	play->loadSprites(subRects);
 	play->setPosition(pos);
@@ -226,7 +236,8 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	musicOff->setCallback("click", musicOn, &WidgetSwitch::setClickable);
 	musicOff->setCallback("click", musicOn, &WidgetSwitch::cancelAnimations);
 	musicOff->setCallback("click", SoundPool::getInstance(), &SoundPool::enableMusic);
-
+	this->_resources.Unlock();
+	this->_resources.Lock();
 	anims.clear();
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 200, WIN_Y / 2 - 25 + 80), 0.5f));
 	soundOn->loadImage("Images/soundOn.png");
@@ -316,7 +327,8 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	prev->setAnimations(anims);
 	prev->addActualSheet(2);
 	prev->setCallback("animationFinished", prev, &WidgetButton::setClickable);
-
+	this->_resources.Unlock();
+	this->_resources.Lock();
 	pos.clear();
 	pos.push_back(sf::Vector2f(302, 768 + 50));
 	pos.push_back(sf::Vector2f(WIN_X, WIN_Y));
@@ -387,6 +399,7 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	statFrame->setAnimations(anims);
 	statFrame->addActualSheet(2);
 
+	this->_resources.Unlock();
 	sheet->addWidgetToSheet(0, play,  &WidgetButton::resetWidget);
 	sheet->addWidgetToSheet(0, play,  &WidgetButton::setUnclickable);
 	sheet->addWidgetToSheet(0, options,  &WidgetButton::resetWidget);
@@ -453,7 +466,7 @@ void		GameMenu::loadText(RenderWindow *win)
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<sf::Vector2f>								pos;
 	Sheets *sheet = &(this->_sheets);
-
+	this->_resources.Lock();
 	statistics->setText("Statistics : ");
 	statistics->setPosition(sf::Vector2f(740, 50));
 	statistics->addActualSheet(2);
@@ -516,7 +529,7 @@ void		GameMenu::loadText(RenderWindow *win)
 	input->setCallback("click", win, &RenderWindow::switchNick);
 	input->setCallback("click", this->_typingBar, &WidgetTypingBar::switchActivate);
 	input->setCallback("click", this, &GameMenu::setNickname);
-
+	this->_resources.Unlock();
 	sheet->addWidgetToSheet(2, statistics, &WidgetText::resetWidget);
 	sheet->addWidgetToSheet(2, highscore, &WidgetText::resetWidget);
 	sheet->addWidgetToSheet(2, lobbies, &WidgetText::resetWidget);
@@ -554,7 +567,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(545, 50)));
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(545, 0), sf::Vector2i(1090, 50)));
-	
+	this->_resources.Lock();
 	for (int i = 0; i <= 10; ++i)
 	{
 		lobbyOff = new WidgetSwitch;
@@ -600,6 +613,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 		this->_lobbiesText.push_back(text);
 		this->_lobbiesFrame.push_back(std::pair<WidgetSwitch *, WidgetSwitch *>(lobbyOn, lobbyOff));	
 	}
+	this->_resources.Unlock();
 	for (it = this->_lobbiesFrame.begin(); it != this->_lobbiesFrame.end(); ++it)
 		for (it2 = this->_lobbiesFrame.begin(); it2 != this->_lobbiesFrame.end(); ++it2)
 			if (it != it2)
@@ -607,7 +621,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 				(*it).first->setCallback("click", (*it2).second, &WidgetSwitch::setUnvisible);
 				(*it).first->setCallback("click", (*it2).first, &WidgetSwitch::setVisible);
 			}
-	
+	this->_resources.Lock();
 	for (int i = 0; i <= 3; ++i)
 	{
 		lobbyOn = new WidgetSwitch;
@@ -653,7 +667,8 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 
 		this->_msgText.push_back(text);
 	}
-
+	this->_resources.Unlock();
+	this->_resources.Lock();
 	subRects.clear();
 	pos.clear();
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(1000, 800)));
@@ -795,7 +810,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 	this->_inputMsg->setStyle(sf::String::Bold, 22, "Images/charlie_dotted.ttf", 0, 0, 0);
 	this->_inputMsg->setDelay(1.2f);
 	this->_inputMsg->setResetParameters(1.2f);
-
+	this->_resources.Unlock();
 	sheet->addWidgetToSheet(3, lobby_topright, &WidgetImage::resetWidget);
 	sheet->addWidgetToSheet(3, lobby_botright, &WidgetImage::resetWidget);
 	sheet->addWidgetToSheet(3, lobby_botleft, &WidgetImage::resetWidget);

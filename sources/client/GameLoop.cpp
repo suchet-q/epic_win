@@ -1,6 +1,5 @@
 #include "GameLoop.h"
 
-
 GameLoop::GameLoop(void)
 {
 	this->_lifeNb = 3;
@@ -14,14 +13,21 @@ GameLoop::~GameLoop(void)
 {
 }
 
+void	GameLoop::lockResources(bool lock)
+{
+	if (lock)
+		this->_resources.Lock();
+	else
+		this->_resources.Unlock();
+}
+
 int		GameLoop::loadResources(void *arg)
 {
-  //	sf::Context		context;
-
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
 
+	this->_resources.Lock();
 	try {
 		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(1024, 768)));
 		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(1024, 0), sf::Vector2i(2048, 768)));
@@ -55,15 +61,13 @@ int		GameLoop::loadResources(void *arg)
 		this->_fps.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_fps.addActualSheet(0);
 		this->_fps.setPosition(sf::Vector2f(900, 730));
-
-
-		
 	}
 	catch (RuntimeException &e) {
 		this->_exception = e;
 		this->_exceptionOccured = true;
 		return (-1);
 	}
+	this->_resources.Unlock();
 	this->_idClient = (unsigned char *)arg;
 	return (0);
 }

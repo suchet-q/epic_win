@@ -2,10 +2,10 @@
 
 # include			<array>
 
-//# define			NB_ELEM		(64)
+# include			"APool.hpp"
 
 template<typename T, unsigned int NB_ELEM>
-class				Pool
+class				Pool : public APool<T>
 {
 private:
   std::array<bool, NB_ELEM>	_idArray;

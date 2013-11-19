@@ -142,6 +142,8 @@ file(
 	lib_alien_src
 	../sources/libraries/Alien-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Alien-DLL/*
@@ -152,6 +154,8 @@ file(
 	lib_dog_src
 	../sources/libraries/Dog-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Dog-DLL/*
@@ -162,6 +166,8 @@ file(
 	lib_drone_src
 	../sources/libraries/Drone-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Drone-DLL/*
@@ -172,6 +178,8 @@ file(
 	lib_jumper_src
 	../sources/libraries/Jumper-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Jumper-DLL/*
@@ -182,6 +190,8 @@ file(
 	lib_larve_src
 	../sources/libraries/Larve-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Larve-DLL/*
@@ -192,6 +202,8 @@ file(
 	lib_metroid_src
 	../sources/libraries/Metroid-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Metroid-DLL/*
@@ -202,6 +214,8 @@ file(
 	lib_xwing_src
 	../sources/libraries/XWing-DLL/*
 	../sources/server/Ships.cpp
+	../sources/server/Sinus.cpp
+	../sources/server/Entities.cpp
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/XWing-DLL/*

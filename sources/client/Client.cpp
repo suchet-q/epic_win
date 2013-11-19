@@ -128,7 +128,7 @@ void		Client::initializeThreads()
 	std::cout << "PAREIL POUR MOI" << std::endl;
 
 	try {
-	  		this->_win.handleClosing();
+	  	this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
 		//update.Terminate();

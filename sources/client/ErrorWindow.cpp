@@ -39,8 +39,10 @@ void		ErrorWindow::displayError(const std::string &method, const std::string &er
 	this->_method.setPosition(sf::Vector2f((450 - this->_method.getRect().Right) / 2, 15));
 	this->_msg.setText(error);
 	this->_msg.setPosition(sf::Vector2f((450 - this->_msg.getRect().Right) / 2, 45));
+
 	while (this->isRunning())
 	{
+		this->setActive(true);
 		this->clearWindow();
 		this->_msg.update(0.05f, (*this), 0);
 		this->_method.update(0.05f, (*this), 0);

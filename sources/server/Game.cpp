@@ -122,7 +122,8 @@ void			Game::initPlayersShip()
 {
   unsigned int		type = PLAYER1;
 
-  for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+  for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) 
+  {
     _resources.createPlayerShip();
 	_resources.getShipList().back()->getFloatCoord().setX(30);
 	_resources.getShipList().back()->getFloatCoord().setY((768 - 100) / (_clients.size() + 1) * type);

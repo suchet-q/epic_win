@@ -28,7 +28,11 @@ enum			entityType
 	LARVE,
 	FIREBALL,
 	BASIC_SHOT,
-	BALLS
+	BALLS,
+	MEDIUM_SHOT,
+	BIG_SHOT,
+	BIGGEST_SHOT,
+
   };
 
 class			Entity

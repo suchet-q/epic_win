@@ -1,8 +1,11 @@
 #pragma once
+
 #include	<fstream>
 #include	<map>
 #include	<sstream>
 #include	<string>
+#include	<cstring>
+
 #include	"Entities.h"
 
 struct		t_tab_hit_box

@@ -5,7 +5,7 @@
 ** Login   <suchet_q@epitech.net>
 ** 
 ** Started on  Sat Oct 12 14:35:56 2013 quentin suchet
-// Last update Sat Nov 16 22:16:06 2013 geoffrey michelini
+// Last update Tue Nov 19 23:39:11 2013 geoffrey michelini
 */
 
 #pragma once
@@ -59,6 +59,6 @@ public:
 
   int			Recv(void *buffer, int size);
   int			Send(const void *buffer, int size);
-  int			sendTo(void *to_send, int size, struct sockaddr_in *dest);
+  int			sendTo(const void *to_send, int size, struct sockaddr_in *dest);
   int			recvFrom(void *buff, int size, struct sockaddr_in *sender);
 };

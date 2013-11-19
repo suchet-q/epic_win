@@ -17,36 +17,46 @@
 class				EntitiesPoolContainer
 {
 private:
-  std::map<entityType, IPool *>	_poolMap;
+  std::map<entityType, IPool<Entity *> *>	_poolMap;
+  std::map<entityType, unsigned int>		_poolSizeMap;
+  //  std::map<entityType, >			_poolMap;
 
 public:
   EntitiesPoolContainer() {}
-  ~EntitiesPoolContainer() {}
+
+  ~EntitiesPoolContainer()
+  {
+    for (std::map<entityType, IPool<Entity* >* >::iterator it = _poolMap.begin();
+	 it != _poolMap.end(); ++it)
+      {
+	for (unsigned int i = 0; i < _poolSizeMap[(*it).first]; ++i)
+	  delete *((*it).second->getElem(i));
+	delete (*it).second;
+      }
+  }
 
   template <typename T, unsigned int SIZE>
   bool				addPool(entityType type)
   {
+    Pool<T *, SIZE>*		pool;
+
     if (_poolMap[type])
       return false;
-    _poolMap[type] = new Pool<T, SIZE>;
+    pool = new Pool<T *, SIZE>;
+    //for (unsigned int i = 0; i < SIZE; ++i)
+      //      pool->getArray()[i] = 
+    _poolMap[type] = pool;
+    _poolSizeMap[type] = SIZE;
     return true;
   }
 
   template <typename T>
-  T*				getInstance(entityType type)
-  {
-    APool<T>*			pool;
-    
-    pool = dynamic_cast<APool<T>* >(_poolMap[type]);
-    return pool.getInstance();
+  T*				getInstance(entityType type) {
+    return *(_poolMap[type]->getInstance());
   }
   
   template <typename T>
-  void				freeInstance(T* instance)
-  {
-    APool<T>*			pool;
-    
-    pool = dynamic_cast<APool<T>* >(_poolMap[type]);
-    return pool.freeInstance();
+  void				freeInstance(T* instance) {
+    _poolMap[instance->getType()].freeInstance();
   }
 };

@@ -2,10 +2,10 @@
 
 # include			<array>
 
-# include			"APool.hpp"
+# include			"IPool.hpp"
 
 template<typename T, unsigned int NB_ELEM>
-class				Pool : public APool<T>
+class				Pool : public IPool<T>
 {
 private:
   std::array<bool, NB_ELEM>	_idArray;
@@ -31,5 +31,13 @@ public:
 
     for (; i < NB_ELEM && &(this->_pool[i]) != instance; ++i);
       this->_idArray[i] = false;
+  }
+
+  std::array<T, NB_ELEM>&	getArray() {
+    return this->_pool;
+  }
+
+  T*				getElem(unsigned int i) {
+    return &(this->_pool[i]);
   }
 };

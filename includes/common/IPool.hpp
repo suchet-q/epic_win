@@ -2,15 +2,15 @@
 
 # include			<array>
 
-# include			"IPool.h"
-
 template<typename T>
-class				APool : public IPool
+class				IPool
 {
 public:
-  APool() {}
-  virtual ~APool() {}
+  IPool() {}
+  virtual ~IPool() {}
 
   virtual T*			getInstance() = 0;
   virtual void			freeInstance(T* instance) = 0;
+
+  virtual T*			getElem(unsigned int i) = 0;
 };

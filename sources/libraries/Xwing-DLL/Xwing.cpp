@@ -4,59 +4,15 @@ Xwing::Xwing() {}
 
 Xwing::~Xwing() {}
 
-bool		Xwing::setHitBox()
+bool		Xwing::update(ResourcesGame &game, unsigned int time)
 {
-	std::ifstream	file;
-	int		i = 0;
+	float	vecY;
 
-	try
-	{
-		file.open("Xwing.txt", std::ifstream::in);
-		if (!file.is_open())
-			throw new std::exception("Can't open file Drone.txt");
-	}
-	catch (std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	while (file.eof())
-	{
-		this->_hitBox[i++] = file.getline;
-		return (false)
-	}
-	this->_x = 32;
-	this->_y = 28;
-	this->_yStart = 8;
-	this->_yEnd = 26;
+	vecY = this->_sinus.getValue(this->_coord);
+	/*for new  vec_coord call this->_sinus.calculNewVecX(x)
+	and this->_sinus.calculNewVecY(y, vecY)*/
+	if (this->getInput() == 0)
+		this->setInput(LEFT);
 	return (true);
-}
-
-int			Xwing::getX()
-{
-	return (this->_x);
-}
-
-int			Xwing::getY()
-{
-	return (this->_y);
-}
-
-int			Xwing::getYStart()
-{
-	return (this->_yStart);
-}
-
-int			Xwing::getYEnd()
-{
-	return (this->_yEnd);
-}
-
-bool		Xwing::checkHitBox()
-{
-	return (true);
-}
-
-char		**Xwing::getHitBox()
-{
-	return (this->_hitBox);
 }
 

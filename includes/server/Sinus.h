@@ -9,7 +9,7 @@ class Sinus
 public:
 	Sinus();
 	~Sinus();
-	float		getValue(Coord<> &coord);
+	float		getValue(Coord<float> &coord);
 	float		calculNewVecX(float);
 	float		calculNewVecY(float, float);
 };

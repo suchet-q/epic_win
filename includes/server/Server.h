@@ -3,13 +3,15 @@
 #include		<iostream>
 #include		<string>
 #include		<list>
+#include		<fstream>
 #include		<array>
-
+#include		<map>
 #include		"Clients.h"
 #include		"Network.h"
 #include		"Resource.h"
 #include		"StructCommands.h"
 #include		"Executer.h"
+#include		"ResourcesChecker.h"
 
 class			Server
 {
@@ -18,7 +20,8 @@ private:
   Resource		_resources;
   Executer		_executer;
   std::array<bool, 255>		_idArray;
-  
+  std::map<entityType, t_tab_hit_box>		_tabHitBox;
+  ResourcesChecker		_resourcesChecker;
 public:
   Server();
   ~Server();

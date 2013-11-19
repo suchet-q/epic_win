@@ -6,6 +6,5 @@ class Larve : Ship
 public:
 	Larve();
 	~Larve();
-	bool		checkHitBox();
 };
 

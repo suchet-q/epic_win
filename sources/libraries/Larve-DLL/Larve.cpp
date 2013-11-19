@@ -3,8 +3,3 @@
 Larve::Larve() {}
 
 Larve::~Larve() {}
-
-bool		Larve::checkHitBox()
-{
-	return (true);
-}

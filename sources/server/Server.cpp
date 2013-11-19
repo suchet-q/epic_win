@@ -6,12 +6,21 @@ Server::~Server() {}
 
 bool			Server::init(int port)
 {
-  if (!this->_network.initSocket(port))
-    return false;
-  this->_executer.setResource(&this->_resources);
-  for (int i = 0; i < 255; ++i)
-	_idArray[i] = false; 
-  return true;
+	if (!this->_network.initSocket(port))
+		return false;
+	this->_executer.setResource(&this->_resources);
+	for (int i = 0; i < 255; ++i)
+		this->_idArray[i] = false;
+	
+	try {
+		this->_tabHitBox = this->_resourcesChecker.getFileResources();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+		return (false);
+	}
+	return true;
 }
 
 void			Server::addClient(MetaSocket<> *sockClient)

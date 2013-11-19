@@ -29,3 +29,17 @@
 #define		INP_UP		4
 #define		INP_DOWN	8
 #define		INP_FIRE	16
+
+#ifdef _WIN32
+
+#define		WIN_LOCK	;
+#define		WIN_UNLOCK	;
+
+#else
+
+#define		WIN_LOCK	this->_winMutex.Lock();
+#define		WIN_UNLOCK	this->_winMutex.Unlock();
+
+#endif
+
+

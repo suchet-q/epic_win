@@ -114,15 +114,20 @@ void			Sprite::loadAnimationsBackup()
 bool			Sprite::updateAnimation(float elapsed)
 {
 	int			x, y;
+	float		tmp;
 
 	if (!(this->_animations.empty()))
 	{
+		tmp = (elapsed - this->_animations.front().second);
 		if ((this->_animations.front().second -= elapsed) <= 0.0)
 		{
 			this->place(SP_POS, sf::Vector2f(this->_animations.front().first.x, this->_animations.front().first.y), sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0);
 			this->_floatPos.x = this->_animations.front().first.x;
 			this->_floatPos.y = this->_animations.front().first.y;
+			
 			this->_animations.pop_front();
+			if (!(this->_animations.empty()))
+				this->updateAnimation(tmp);
 		}
 		else
 		{

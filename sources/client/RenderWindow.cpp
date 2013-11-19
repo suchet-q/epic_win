@@ -80,16 +80,24 @@ void		RenderWindow::handleClosing()
       this->lockMutex();
       this->_winMutex.Lock();
       this->_lastInput = &this->_win->GetInput();
-      this->unlockMutex();
-      while (this->_win->GetEvent(event))
-	if (event.Type == sf::Event::Closed)
-	  {
-	    throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
-	    break;
-	  }
-	else if (event.Type == sf::Event::TextEntered)
-	  this->_events.push_back(event);
       this->_winMutex.Unlock();
+	  this->unlockMutex();
+      while (42)
+	  {
+		  WIN_LOCK;
+		  if (!this->_win->GetEvent(event))
+				break;
+			WIN_UNLOCK;
+		  
+			if (event.Type == sf::Event::Closed)
+			{
+				throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
+				break;
+			}
+			else if (event.Type == sf::Event::TextEntered)
+			this->_events.push_back(event);
+	  }
+     WIN_UNLOCK;
     }
 }
 

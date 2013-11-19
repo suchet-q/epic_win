@@ -5,7 +5,7 @@
 // Login   <suchet_q@epitech.net>
 // 
 // Started on  Sat Oct 12 14:35:59 2013 quentin suchet
-// Last update Sat Nov 16 22:17:21 2013 geoffrey michelini
+// Last update Tue Nov 19 20:18:01 2013 quentin suchet
 //
 
 #include		<unistd.h>
@@ -188,7 +188,7 @@ int			SocketLinux::Send(const void *buffer, int size)
   return send(this->_socket, buffer, size, 0);
 }
 
-int		SocketLinux::sendTo(void *to_send, int size, struct sockaddr_in *dest)
+int		SocketLinux::sendTo(void const *to_send, int size, struct sockaddr_in *dest)
 {
   unsigned int		sended;
 
@@ -207,6 +207,7 @@ int		SocketLinux::recvFrom(void *buff, int size, struct sockaddr_in *sender)
   if (this->_ifClosed)
     return (UNINITIALIZED_SOCKET);
   
+  size_sin = sizeof(*sender);
   readed = recvfrom(this->_socket, buff, size, 0, reinterpret_cast<struct sockaddr *>(sender), &size_sin);
   return (readed);
 }

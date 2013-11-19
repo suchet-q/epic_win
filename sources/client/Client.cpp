@@ -43,12 +43,12 @@ void		Client::gameResources()
 void		Client::update()
 {
 	this->loadingScreen();
-	if (!(this->_socket.connectTCP()))
-		throw RuntimeException("[Client::launch]", "Couldn't connect to server");  
 	this->_menu.rstClock();
 	try {
 		this->_menu.exception();
-		this->_game.exception();
+		//this->_game.exception();		A mettre avant laancement game
+		if (!(this->_socket.connectTCP()))
+			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
 	}
 	catch (RuntimeException &e) {
 		this->_err.displayError(e.method(), e.what());
@@ -110,7 +110,6 @@ void		Client::loadingScreen()
 		this->_win.clearWindow();
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
-		//this->_win.handleEvents();
 	}
 }
 
@@ -120,7 +119,6 @@ void		Client::initializeThreads()
 	sf::Thread	menuResources(&menuResourcesThread, this);
 	sf::Thread	update(&updateThread, this);
 	
-	//this->menuResources();
 	menuResources.Launch();
 	update.Launch();
 	std::cout << "JE DOIS PASSER QUNE FOIS" << std::endl;
@@ -131,11 +129,10 @@ void		Client::initializeThreads()
 	  	this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
-		//update.Terminate();
-		//menuResources.Terminate();
-		//gameResources.Terminate();
+		update.Terminate();
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		std::cout << "Waiting Threads" << std::endl;
 	}
 }
 

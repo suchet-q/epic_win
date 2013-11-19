@@ -52,6 +52,7 @@ class GameMenu
 	bool					_sheetSkipped;
 	int						_sheetSkippedval;
 	bool					_antiSpam;
+	sf::Mutex				_resources;
 
 	void					loadText(RenderWindow *);
 	void					loadImages();
@@ -62,6 +63,7 @@ public:
 	GameMenu(void);
 	~GameMenu(void);
 
+	void		lockResources(bool);
 	void		exception();
 	void		startGame();
 	void		sendMsg();

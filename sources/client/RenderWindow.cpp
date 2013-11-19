@@ -57,7 +57,7 @@ bool		RenderWindow::openWindow(int x, int y, const std::string & name)
 
 void	RenderWindow::closeWindow()
 {
-	if (this->isRunning())
+	if (this->_win != NULL && this->_win->IsOpened())
 	{
 		this->_win->Close();
 		delete this->_win;

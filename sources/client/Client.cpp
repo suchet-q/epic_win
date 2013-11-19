@@ -35,8 +35,8 @@ void		Client::menuResources()
 
 void		Client::gameResources()
 {
-  //  while (!this->_finishedLoading)
-  //sf::Sleep(0.25f);
+	while (!this->_finishedLoading)
+		sf::Sleep(0.25f);
 	this->_game.loadResources(&(this->_clientID));
 }
 
@@ -124,8 +124,7 @@ void		Client::initializeThreads()
 	menuResources.Launch();
 	update.Launch();
 	std::cout << "JE DOIS PASSER QUNE FOIS" << std::endl;
-	
-		gameResources.Launch();
+	gameResources.Launch();
 	std::cout << "PAREIL POUR MOI" << std::endl;
 
 	try {

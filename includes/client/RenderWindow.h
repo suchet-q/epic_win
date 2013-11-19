@@ -18,6 +18,7 @@ protected:
 	bool				_getMsg;
 	std::list<sf::Event>	_events;
 	sf::Mutex				_mutex;
+	sf::Mutex				_winMutex;
 	const sf::Input*		_lastInput;
 public:
 	RenderWindow(void);
@@ -34,7 +35,8 @@ public:
 	virtual void		handleClosing();
 	virtual void		lockMutex();
 	virtual void		unlockMutex();
-	const sf::Input&	getInput();
+	virtual void   		setActive(bool);
+  const sf::Input&	getInput();
 	std::string	getNickname();
 	std::string	getMsg();
 	void		switchNick();

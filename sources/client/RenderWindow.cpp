@@ -13,16 +13,29 @@ RenderWindow::~RenderWindow(void)
 {
 }
 
+/*
 sf::RenderWindow*	RenderWindow::getWindow()
 {
 	return (this->_win);
 }
+*/
+
+void		RenderWindow::setActive(bool active)
+{
+  this->_winMutex.Lock();
+  this->_win->SetActive(active);
+  this->_winMutex.Unlock();
+}
 
 bool		RenderWindow::isRunning()
 {
-	if (this->_win != NULL && this->_win->IsOpened())
-		return (true);
-	return (false);
+  bool		ret = false;
+
+  this->_winMutex.Lock();
+  if (this->_win != NULL && this->_win->IsOpened())
+    ret = true;
+  this->_winMutex.Unlock();
+  return (ret);
 }
 
 bool		RenderWindow::openWindow(int x, int y, const std::string & name)
@@ -60,23 +73,24 @@ void		RenderWindow::unlockMutex()
 
 void		RenderWindow::handleClosing()
 {
-	sf::Event	event;
-
-	while (42)
-	{
-		this->lockMutex();
-		this->_lastInput = &this->_win->GetInput();
-		this->unlockMutex();
-		while (this->_win->GetEvent(event))
-			if (event.Type == sf::Event::Closed)
-				{
-					throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
-					break;
-				}
-			else if (event.Type == sf::Event::TextEntered)
-				this->_events.push_back(event);
-		sf::Sleep(0.005f);
-	}
+  sf::Event	event;
+  
+  while (42)
+    {
+      this->lockMutex();
+      this->_winMutex.Lock();
+      this->_lastInput = &this->_win->GetInput();
+      this->unlockMutex();
+      while (this->_win->GetEvent(event))
+	if (event.Type == sf::Event::Closed)
+	  {
+	    throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
+	    break;
+	  }
+	else if (event.Type == sf::Event::TextEntered)
+	  this->_events.push_back(event);
+      this->_winMutex.Unlock();
+    }
 }
 
 void		RenderWindow::handleEvents()
@@ -86,26 +100,28 @@ void		RenderWindow::handleEvents()
 	std::list<sf::Event>::iterator it;
 
 	for (it = this->_events.begin(); it != this->_events.end(); ++it)
-		if (this->_getNick || this->_getMsg)
-			{
-				(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
-				(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
-				if ((*it).Type == sf::Event::TextEntered)
-				{
-					if ((*it).Text.Unicode == '\b' && str.size() > 0)
-						str.erase(str.size() - 1, 1);
-					else if ((*it).Text.Unicode < 128 && str.size() < maxSize)
-						str += static_cast<char>((*it).Text.Unicode);
-				}
-				(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
-			}
+	  if (this->_getNick || this->_getMsg)
+	    {
+	      (this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
+	      (this->_getNick) ? (maxSize = 15) : (maxSize = 50);
+	      if ((*it).Type == sf::Event::TextEntered)
+		{
+		  if ((*it).Text.Unicode == '\b' && str.size() > 0)
+		    str.erase(str.size() - 1, 1);
+		  else if ((*it).Text.Unicode < 128 && str.size() < maxSize)
+		    str += static_cast<char>((*it).Text.Unicode);
+		}
+	      (this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
+	    }
 }
 
 void		RenderWindow::clearWindow()
 {
 	if (this->isRunning())
 	{
-		this->_win->Clear();
+	  this->_winMutex.Lock();
+	  this->_win->Clear();
+	  this->_winMutex.Unlock();
 	}
 }
 
@@ -113,14 +129,19 @@ void		RenderWindow::refreshWindow()
 {
 	if (this->isRunning())
 	{
-		this->_win->Display();
+	  this->_winMutex.Lock();
+	  this->_win->Display();
+	  this->_winMutex.Unlock();
 	}
 }
 
 void		RenderWindow::drawSprite(sf::Sprite &sprite)
 {
-	if (this->isRunning())
-		this->_win->Draw(sprite);
+  if (this->isRunning()) {
+    this->_winMutex.Lock();
+    this->_win->Draw(sprite);
+    this->_winMutex.Unlock();
+  }
 }
 
 const sf::Input&		RenderWindow::getInput()
@@ -135,7 +156,9 @@ void					RenderWindow::clearMsg()
 
 void					RenderWindow::drawText(sf::String &text)
 {
-	this->_win->Draw(text);
+  this->_winMutex.Lock();
+  this->_win->Draw(text);
+  this->_winMutex.Unlock();
 }
 
 std::string				RenderWindow::getNickname()
@@ -150,22 +173,30 @@ std::string				RenderWindow::getMsg()
 
 void					RenderWindow::switchNick()
 {
-	this->_getNick = !(this->_getNick);
+  this->_winMutex.Lock();
+  this->_getNick = !(this->_getNick);
+  this->_winMutex.Unlock();
 }
 
 void					RenderWindow::switchMsg()
 {
-	this->_getMsg = !(this->_getMsg);
+  this->_winMutex.Lock();
+  this->_getMsg = !(this->_getMsg);
+  this->_winMutex.Unlock();
 }
 
 void					RenderWindow::disableNick()
 {
-	this->_getNick = false;
+  this->_winMutex.Lock();
+  this->_getNick = false;
+  this->_winMutex.Unlock();
 }
 
 void					RenderWindow::disableMsg()
 {
+  this->_winMutex.Lock();
 	this->_getMsg = false;
+	this->_winMutex.Unlock();
 }
 
 bool				RenderWindow::nickActive()

@@ -35,8 +35,8 @@ void		Client::menuResources()
 
 void		Client::gameResources()
 {
-	while (!this->_finishedLoading)
-		sf::Sleep(0.25f);
+  //  while (!this->_finishedLoading)
+  //sf::Sleep(0.25f);
 	this->_game.loadResources(&(this->_clientID));
 }
 
@@ -88,7 +88,7 @@ void		Client::loadingScreen()
 	sf::Clock			clock;
 	float				tmp;
 
-	this->_win.getWindow()->SetActive(true);
+	this->_win.setActive(true);
 	loading.setStyle(sf::String::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
@@ -97,8 +97,8 @@ void		Client::loadingScreen()
 	
 	while (this->_win.isRunning())
 	{
-		if (this->_finishedLoading)
-			break;
+	  if (this->_finishedLoading)
+	    break;
 		tmp = clock.GetElapsedTime();
 		if (clock.GetElapsedTime() >= 1.2)
 			clock.Reset();
@@ -120,14 +120,16 @@ void		Client::initializeThreads()
 	sf::Thread	menuResources(&menuResourcesThread, this);
 	sf::Thread	update(&updateThread, this);
 	
+	//this->menuResources();
+	menuResources.Launch();
 	update.Launch();
 	std::cout << "JE DOIS PASSER QUNE FOIS" << std::endl;
-	menuResources.Launch();
-	gameResources.Launch();
+	
+		gameResources.Launch();
 	std::cout << "PAREIL POUR MOI" << std::endl;
 
 	try {
-		this->_win.handleClosing();
+	  		this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
 		//update.Terminate();
@@ -152,7 +154,7 @@ bool		Client::launch(std::string const &ip, int port)
 		return (false);
 	}
 	this->_socket.setValues(ip, port);
-	this->_win.getWindow()->SetActive(false);
+	this->_win.setActive(false);
 	this->initializeThreads();
 	return (true);
 }

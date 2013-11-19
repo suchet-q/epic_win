@@ -23,12 +23,13 @@ public:
     unsigned int		i = 0;
 
     for (; i < NB_ELEM && this->_idArray[i]; ++i);
+    this->_idArray[i] = true;
     return &(this->_pool[i]);
   }
   void				freeInstance(T* instance) {
     unsigned int		i = 0;
 
-    for (; i < NB_ELEM && this->_pool[i] != *instance; ++i);
+    for (; i < NB_ELEM && &(this->_pool[i]) != instance; ++i);
       this->_idArray[i] = false;
   }
 };

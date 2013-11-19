@@ -16,7 +16,7 @@ GameLoop::~GameLoop(void)
 
 int		GameLoop::loadResources(void *arg)
 {
-	sf::Context		context;
+  //	sf::Context		context;
 
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
@@ -219,7 +219,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	parser.addCallback(CMD_AFF, boost::bind(&GameLoop::aff, this, _1));
 	parser.addCallback(CMD_LIF, boost::bind(&GameLoop::life, this, _1));
 	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
-	this->_manager = new Managewindow(win.getWindow());
+	this->_manager = new Managewindow(NULL);
 	this->_manager->InitDrawer();
 
 	clock.Reset();

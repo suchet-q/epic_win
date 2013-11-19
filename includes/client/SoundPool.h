@@ -14,6 +14,7 @@ class SoundPool
 
 	SoundPool(void);
 	~SoundPool(void);
+
 	void									initialize();
 public:
 

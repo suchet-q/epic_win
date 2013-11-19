@@ -1,5 +1,6 @@
 #include "WidgetText.h"
 
+sf::Mutex	WidgetText::_mutex;
 
 WidgetText::WidgetText(void) : AWidget()
 {
@@ -62,14 +63,17 @@ void		WidgetText::setText(const std::string &text)
 	this->_text.SetText(text);
 }
 
-void		WidgetText::setStyle(unsigned long style, int size, std::string const &font, unsigned char r, unsigned char g, unsigned char b)
+void		WidgetText::setStyle(unsigned long style, int size, std::string const &font,
+				     unsigned char r, unsigned char g, unsigned char b)
 {
 	this->_text.SetStyle(style);
 	this->_text.SetSize(static_cast<float>(size));
 	if (font != "")
 	{
-		this->_font.LoadFromFile(font);
-		this->_text.SetFont(this->_font);
+	  this->_mutex.Lock();
+	  this->_font.LoadFromFile(font);
+	  this->_text.SetFont(this->_font);
+	  this->_mutex.Unlock();
 	}
 	this->_text.SetColor(sf::Color(r, g, b));
 }

@@ -96,7 +96,7 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 		  (*it)->lockSocket();
 		  if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
 		  {
-	//		  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
+			  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
 			  this->recvFromUDP(*it);
 		  }
 		  (*it)->unlockSocket();

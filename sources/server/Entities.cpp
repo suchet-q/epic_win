@@ -1,6 +1,9 @@
 #include		"Entities.h"
 
-Entity::Entity() {}
+Entity::Entity()
+{
+
+}
 
 Entity::~Entity() {}
 
@@ -11,8 +14,8 @@ entityType		Entity::getType() const {
 
 Coord<>&		Entity::getCoord()
 {
-	_intCoord.set((_coord.getX() - static_cast<float>(static_cast<unsigned short int>(_coord.getX())) > 0) ? static_cast<unsigned short int>(_coord.getX()) + 1 : static_cast<unsigned short int>(_coord.getX()),
-		(_coord.getY() - static_cast<float>(static_cast<unsigned short int>(_coord.getY())) > 0) ? static_cast<unsigned short int>(_coord.getY()) + 1 : static_cast<unsigned short int>(_coord.getY()));
+	_intCoord.set((_coord.getX() - static_cast<float>(static_cast<unsigned short int>(_coord.getX())) > 0,5) ? static_cast<unsigned short int>(_coord.getX()) + 1 : static_cast<unsigned short int>(_coord.getX()),
+		(_coord.getY() - static_cast<float>(static_cast<unsigned short int>(_coord.getY())) > 0,5) ? static_cast<unsigned short int>(_coord.getY()) + 1 : static_cast<unsigned short int>(_coord.getY()));
   return _intCoord;
 }
 

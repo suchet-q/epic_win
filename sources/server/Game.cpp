@@ -264,7 +264,7 @@ void			Game::loop()
 	  lifServer.life = (*itRep).second.life;
 	  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
 	  (*itRep).second.size += sizeof(lifServer);
-	  for (int i = 0; i < nbUpdate; ++i)
+	  if (nbUpdate)
 	    this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
 				    (*itRep).second.size, &(*itRep).first->getUDPsin());
 	  (*itRep).second.size = 0;

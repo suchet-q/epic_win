@@ -1,14 +1,14 @@
 #include "AIDog.h"
 
-AIDrone::AIDog(Ship &entity)
+AIDog::AIDog(Ship &entity)
 {
 	this->_ship = &entity;
 }
 
-AIDrone::AIDog() {}
+AIDog::AIDog() {}
 
 
-AIDrone::~AIDog() {}
+AIDog::~AIDog() {}
 
 bool		AIDog::update(ResourcesGame &game, unsigned int time)
 {

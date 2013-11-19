@@ -2,7 +2,7 @@
 #include	<string.h>
 #include	<fstream>
 #include	<iostream>
-#include	"Ship.h"
+#include	"Ships.h"
 /*mettre la methode getitBox dans entities*/
 class Drone : Ship
 {
@@ -15,6 +15,7 @@ private:
 public:
 	Drone();
 	~Drone();
+	bool		setHitBox();
 	bool		checkHitBox();
 	char		**getHitBox();
 	int			getX();

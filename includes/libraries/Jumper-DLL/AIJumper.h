@@ -1,6 +1,6 @@
 #pragma once
 #include	"IAI.h"
-#include	"Ship.h"
+#include	"Ships.h"
 #include	"Sinus.h"
 
 class AIJumper : IAI

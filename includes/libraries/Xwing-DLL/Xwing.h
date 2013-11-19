@@ -2,7 +2,7 @@
 #include	<string.h>
 #include	<fstream>
 #include	<iostream>
-#include	"Ship.h"
+#include	"Ships.h"
 
 class Xwing : Ship
 {

@@ -134,3 +134,165 @@ if ( MSVC )
 	set_property(TARGET Server APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
 
 endif ( MSVC )
+
+
+
+file(
+	GLOB_RECURSE
+	lib_alien_src
+	../sources/libraries/Alien-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Alien-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_dog_src
+	../sources/libraries/Dog-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Dog-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_drone_src
+	../sources/libraries/Drone-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Drone-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_jumper_src
+	../sources/libraries/Jumper-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Jumper-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_larve_src
+	../sources/libraries/Larve-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Larve-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_metroid_src
+	../sources/libraries/Metroid-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/Metroid-DLL/*
+)
+
+file(
+	GLOB_RECURSE
+	lib_xwing_src
+	../sources/libraries/XWing-DLL/*
+	../sources/server/Ships.cpp
+	../includes/server/IAI.h
+	../includes/server/Ships.h
+	../includes/libraries/XWing-DLL/*
+)
+
+add_library(
+    libAlien
+    SHARED
+    ${lib_alien_src}
+)
+
+add_library(
+    libDog
+    SHARED
+    ${lib_dog_src}
+)
+
+add_library(
+    libDrone
+    SHARED
+    ${lib_drone_src}
+)
+
+add_library(
+    libJumper
+    SHARED
+    ${lib_jumper_src}
+)
+
+add_library(
+    libLarve
+    SHARED
+    ${lib_larve_src}
+)
+
+add_library(
+    libMetroid
+    SHARED
+    ${lib_metroid_src}
+)
+
+add_library(
+    libXwing
+    SHARED
+    ${lib_xwing_src}
+)
+
+
+if ( CMAKE_COMPILER_IS_GNUCXX )
+
+include_directories(../includes/server)
+include_directories(../includes/libraries/Alien-DLL)
+include_directories(../includes/libraries/Dog-DLL)
+include_directories(../includes/libraries/Drone-DLL)
+include_directories(../includes/libraries/Jumper-DLL)
+include_directories(../includes/libraries/Larve-DLL)
+include_directories(../includes/libraries/Metroid-DLL)
+include_directories(../includes/libraries/Xwing-DLL)
+
+endif ( CMAKE_COMPILER_IS_GNUCXX )
+
+if ( MSVC )
+
+set_target_properties(libAlien PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libAlien APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Alien-DLL)
+set_property(TARGET libAlien APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libDog PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libDog APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Dog-DLL)
+set_property(TARGET libDog APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libDrone PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libDrone APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Drone-DLL)
+set_property(TARGET libDrone APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libJumper PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libJumper APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Jumper-DLL)
+set_property(TARGET libJumper APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libLarve PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libLarve APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Larve-DLL)
+set_property(TARGET libLarve APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libMetroid PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libMetroid APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Metroid-DLL)
+set_property(TARGET libMetroid APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+set_target_properties(libXwing PROPERTIES INCLUDE_DIRECTORIES ../../includes/server )
+set_property(TARGET libXwing APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/libraries/Xwing-DLL)
+set_property(TARGET libXwing APPEND PROPERTY INCLUDE_DIRECTORIES ../../includes/common)
+
+endif ( MSVC )
+
+

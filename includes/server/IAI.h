@@ -1,7 +1,7 @@
 #pragma once
 #include	"ResourcesGame.h"
-#include	"Entity.h"
-#include	"Ship.h"
+#include	"Entities.h"
+#include	"Ships.h"
 
 class IAI
 {

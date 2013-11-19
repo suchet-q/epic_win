@@ -24,7 +24,7 @@ class Alien : public Entity
 
  public:
 
-  Alien(int id);
+  Alien();
   ~Alien();
   void		GetSprite(int, int, unsigned int, Move);
   int		getX() const;
@@ -39,4 +39,6 @@ class Alien : public Entity
   int		getType() const;
   int		getEtat() const; 
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

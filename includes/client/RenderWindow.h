@@ -24,6 +24,7 @@ public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
 
+	sf::Mutex*              getMutex();
 	virtual bool		openWindow(int, int, const std::string &);
 	virtual bool		isRunning();
 	virtual void		closeWindow();

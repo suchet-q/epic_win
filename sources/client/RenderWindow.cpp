@@ -13,12 +13,16 @@ RenderWindow::~RenderWindow(void)
 {
 }
 
-/*
+
 sf::RenderWindow*	RenderWindow::getWindow()
 {
 	return (this->_win);
 }
-*/
+
+sf::Mutex*		RenderWindow::getMutex()
+{
+  return (&this->_winMutex);
+}
 
 void		RenderWindow::setActive(bool active)
 {

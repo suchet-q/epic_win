@@ -25,7 +25,7 @@ class Larve : public Entity
 
  public:
 
-  Larve(int id);
+  Larve();
   ~Larve();
   bool	        SpriteAlive() const;
   void		GetSprite(int, int, unsigned int, Move);
@@ -40,4 +40,6 @@ class Larve : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

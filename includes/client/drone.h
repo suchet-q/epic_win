@@ -25,7 +25,7 @@ class Drone : public Entity
 
  public:
 
-  Drone(int id);
+  Drone();
   ~Drone();
   bool	        SpriteAlive() const;
   void		GetSprite(int, int, unsigned int, Move);
@@ -40,4 +40,6 @@ class Drone : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

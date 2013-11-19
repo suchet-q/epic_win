@@ -25,7 +25,7 @@ class Missil : public Entity
 
  public:
 
-  Missil(int id);
+  Missil();
   ~Missil();
   bool	        SpriteAlive() const;
   void		GetSprite(int, int, unsigned int, Move);
@@ -40,4 +40,6 @@ class Missil : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

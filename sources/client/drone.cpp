@@ -1,9 +1,8 @@
 #include "drone.h"
 
-Drone::Drone(int id)
+Drone::Drone()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Etat = 1;
   this->_Size = 1;
@@ -12,10 +11,20 @@ Drone::Drone(int id)
   this->_Type = 5;
 }
 
+
 Drone::~Drone()
 {
 }
 
+void		Drone::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 1;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 5;  
+}
 bool		Drone::SpriteAlive() const
 {
   if (this->_Old == 0)
@@ -139,4 +148,9 @@ int	Drone::getEtat() const
 int	Drone::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Drone::setId(int id)
+{
+  this->_Id = id;
 }

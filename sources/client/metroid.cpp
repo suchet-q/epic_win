@@ -1,9 +1,8 @@
 #include "metroid.h"
 
-Metroid::Metroid(int id)
+Metroid::Metroid()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -22,7 +21,15 @@ bool		Metroid::SpriteAlive() const
     return (false);
   return (true);
 }
-
+void		Metroid::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 1;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 10;  
+}
 void		Metroid::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
@@ -141,4 +148,9 @@ int	Metroid::getEtat() const
 int	Metroid::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Metroid::setId(int id)
+{
+  this->_Id = id;
 }

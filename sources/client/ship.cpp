@@ -5,7 +5,7 @@
 // Login   <heuzey_m@epitech.net>
 // 
 // Started on  Sat Oct 26 23:30:25 2013 mathieu heuzey
-// Last update Sun Nov 17 01:04:36 2013 mathieu heuzey
+// Last update Tue Nov 19 01:28:50 2013 mathieu heuzey
 //
 
 #include "ship.h"
@@ -24,7 +24,6 @@ Ship::Ship(int x, int y, int team, int id)
   this->_Inputs = NOTHING;
   this->_Etat = 1;
   this->_Size = 2;
-  this->_Timer= 0;
 }
 
 bool		Ship::SpriteAlive()
@@ -95,8 +94,6 @@ void		Ship::CheckSize(int time)
 
 void		Ship::FirstState(int time, Inputs inp)
 {
-	this->_Timer += time;
-	this->_Timer2 += time;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
@@ -119,7 +116,7 @@ void		Ship::GetSprite(int x, int y, Inputs inp, int time, Move move)
 
 void	Ship::CheckLeftAndRight()
 {
-	switch (this->_Status)
+  switch(this->_Status)
     {
     case 0:
       {
@@ -150,7 +147,6 @@ void	Ship::CheckLeftAndRight()
 
 void	Ship::CheckTop()
 {
-	this->_Timer = 0;
   switch(this->_Status)
     {
     case 0:
@@ -183,7 +179,6 @@ void	Ship::CheckTop()
 
 void	Ship::CheckDown()
 {
-	this->_Timer2 = 0;
   switch(this->_Status)
     {
     case 0:
@@ -220,20 +215,12 @@ void	Ship::CheckNothing()
     {
     case 0:
       {
-			  if (this->_Timer2 > 500)
-			  {
-				  this->_Status = 1;
-				  this->_Timer2 = 0;
-			  }
+	this->_Status = 1;
 	break;
       }
     case 1:
       {
-			  if (this->_Timer2 > 500)
-			  {
-				  this->_Status = 2;
-				  this->_Timer2 = 0;
-			  }
+	this->_Status = 2;
 	break;
       }
     case 2:
@@ -243,21 +230,12 @@ void	Ship::CheckNothing()
       }
     case 3:
       {
-		  if (this->_Timer > 500)
-		  {
-			  this->_Status = 2;
-			  this->_Timer = 0;
-		  }
+	this->_Status = 2;
 	break;
       }
     case 4:
       {
-			  if (this->_Timer > 500)
-			  {
-				  this->_Status = 3;
-				  this->_Timer = 0;
-			  }
-	
+	this->_Status = 3;
 	break;
       }
     }
@@ -322,4 +300,9 @@ int		Ship::GetEtat()
 int		Ship::GetStatus()
 {
   return (this->_Status);
+}
+
+int		Ship::GetTeam()
+{
+  return (this->_Team);
 }

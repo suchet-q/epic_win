@@ -28,6 +28,7 @@ class Drawer
   sf::Image *_FireballImg;
   sf::Image *_MissilImg;
   sf::Image *_ShipImg;
+  sf::Image *_LaserImg;
 
   sf::Sprite	*_AlienAnim;
   sf::Sprite	*_BallsAnim;
@@ -38,15 +39,17 @@ class Drawer
   sf::Sprite	*_JumperAnim;
   sf::Sprite	*_LarveAnim;
   sf::Sprite	*_MetroidAnim;
-  sf::Sprite	*_MissilAnim;
   sf::Sprite	*_XwingAnim;
   sf::Sprite	*_Ship1Anim;
   sf::Sprite	*_Ship2Anim;
   sf::Sprite	*_Ship3Anim;
   sf::Sprite	*_Ship4Anim;
+  sf::Sprite	*_MissilAnim;
+  sf::Sprite	*_LaserAnim;
 
+  sf::Mutex	*_Mutex;
  public:
-  Drawer(sf::RenderWindow * window);
+  Drawer(sf::RenderWindow * window, sf::Mutex *);
   ~Drawer();
   bool	InitSprite();
   bool	SetImg();
@@ -68,4 +71,8 @@ class Drawer
   void	drowShip2(int x, int y, int status);
   void	drowShip3(int x, int y, int status);
   void	drowShip4(int x, int y, int status);
+  void  drowMissil2(int x, int y, int status);
+  void  drowMissil3(int x, int y, int status);
+  void  drowMissil4(int x, int y, int status);
+  void	drowLaser(int x, int y, int status);
 };

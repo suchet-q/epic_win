@@ -1,9 +1,8 @@
 #include "dog.h"
 
-Dog::Dog(int id)
+Dog::Dog()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -22,7 +21,15 @@ bool		Dog::SpriteAlive() const
     return (false);
   return (true);
 }
-
+void		Dog::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 2;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 7;  
+}
 void		Dog::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
@@ -139,4 +146,9 @@ int	Dog::getEtat() const
 int	Dog::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Dog::setId(int id)
+{
+  this->_Id = id;
 }

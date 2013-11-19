@@ -1,9 +1,8 @@
 #include "balls.h"
 
-Balls::Balls(int id)
+Balls::Balls()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -22,7 +21,15 @@ bool		Balls::SpriteAlive() const
     return (false);
   return (true);
 }
-
+void		Balls::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 1;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 14;  
+}
 void		Balls::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
@@ -139,4 +146,9 @@ int	Balls::getEtat() const
 int	Balls::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Balls::setId(int id)
+{
+  this->_Id = id;
 }

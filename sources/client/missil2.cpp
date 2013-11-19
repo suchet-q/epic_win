@@ -1,6 +1,6 @@
-#include "missil.h"
+#include "missil2.h"
 
-Missil::Missil()
+Missil2::Missil2()
 {
   this->_Status = 0;
   this->_FrameTime = FRAMETIME;
@@ -8,29 +8,29 @@ Missil::Missil()
   this->_Size = 1;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 13;
+  this->_Type = 16;
 }
 
-Missil::~Missil()
+Missil2::~Missil2()
 {
 }
 
-bool		Missil::SpriteAlive() const
+bool		Missil2::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
   return (true);
 }
-void		Missil::ResetData()
+void		Missil2::ResetData()
 {
   this->_Status = 1;
   this->_Etat = 1;
   this->_Size = 1;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 13;  
+  this->_Type = 16;  
 }
-void		Missil::CheckEtat(Move move, int x, int y)
+void		Missil2::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
     {
@@ -40,7 +40,7 @@ void		Missil::CheckEtat(Move move, int x, int y)
     }
 }
 
-void		Missil::FirstState(int x, int y, int time)
+void		Missil2::FirstState(int x, int y, int time)
 {
   time = time;
   this->_X = x;
@@ -48,14 +48,14 @@ void		Missil::FirstState(int x, int y, int time)
 }
 
 
-void		Missil::CheckSize(int time)
+void		Missil2::CheckSize(int time)
 {
   time = time;
   this->_Old = 0;
   this->_Status = 0;
 }
 
-void		Missil::GetSprite(int x, int y, unsigned int time, Move move)
+void		Missil2::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
@@ -65,47 +65,47 @@ void		Missil::GetSprite(int x, int y, unsigned int time, Move move)
     this->CheckSize(time);
 }
 
-void	Missil::setX(int x)
+void	Missil2::setX(int x)
 {
   this->_X = x;
 }
 
-void	Missil::setY(int Y)
+void	Missil2::setY(int Y)
 {
   this->_Y = Y;
 }
 
-int	Missil::getX() const
+int	Missil2::getX() const
 {
   return (this->_X);
 }
 
-int	Missil::getY() const
+int	Missil2::getY() const
 {
   return (this->_Y);
 }
 
-int	Missil::getId() const
+int	Missil2::getId() const
 {
   return (this->_Id);
 }
 
-int	Missil::getType() const
+int	Missil2::getType() const
 {
   return (this->_Type);
 }
 
-int	Missil::getEtat() const
+int	Missil2::getEtat() const
 {
   return (this->_Etat);
 }
 
-int	Missil::getStatus() const
+int	Missil2::getStatus() const
 {
   return (this->_Status);
 }
 
-void	Missil::setId(int id)
+void	Missil2::setId(int id)
 {
   this->_Id = id;
 }

@@ -24,7 +24,7 @@ class Balls : public Entity
 
  public:
 
-  Balls(int id);
+  Balls();
   ~Balls();
   void		GetSprite(int, int, unsigned int, Move);
   int		getX() const;
@@ -39,4 +39,6 @@ class Balls : public Entity
   int		getType() const;
   int		getEtat() const;
  int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

@@ -1,9 +1,8 @@
 #include "alien.h"
 
-Alien::Alien(int id)
+Alien::Alien()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -15,7 +14,15 @@ Alien::Alien(int id)
 Alien::~Alien()
 {  
 }
-
+void		Alien::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 2;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 6;  
+}
 bool		Alien::SpriteAlive() const
 {
   if (this->_Old == 0)
@@ -140,4 +147,9 @@ int	Alien::getEtat() const
 int	Alien::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Alien::setId(int id)
+{
+  this->_Id = id;
 }

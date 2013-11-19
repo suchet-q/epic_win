@@ -1,9 +1,8 @@
 #include "larve.h"
 
-Larve::Larve(int id)
+Larve::Larve()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Etat = 1;
   this->_Size = 3;
@@ -22,7 +21,15 @@ bool		Larve::SpriteAlive() const
     return (false);
   return (true);
 }
-
+void		Larve::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 3;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 11;  
+}
 void		Larve::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
@@ -139,4 +146,9 @@ int	Larve::getEtat() const
 int	Larve::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Larve::setId(int id)
+{
+  this->_Id = id;
 }

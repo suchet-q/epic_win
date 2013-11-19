@@ -7,7 +7,8 @@
 #include <string>
 #include "entity.h"
 
-class Xwing : public Entity
+
+class Laser : public Entity
 {
  private:
 
@@ -17,23 +18,23 @@ class Xwing : public Entity
   unsigned int	_FrameTime;
   int		_X;
   int		_Y;
-  int		_Old;
   int		_Etat;
   int		_Size;
+  int		_Old;
   unsigned int	_EllapsedTime;
   int		_Type;
 
  public:
 
-  Xwing();
-  ~Xwing();
+  Laser();
+  ~Laser();
+  bool	        SpriteAlive() const;
   void		GetSprite(int, int, unsigned int, Move);
   int		getX() const;
   int		getY() const;
   void		setX(int);
   void		setY(int);
   int		getId() const;
-  bool		SpriteAlive() const;
   void		CheckEtat(Move, int, int);
   void		FirstState(int x, int y, int);
   void		CheckSize(int);

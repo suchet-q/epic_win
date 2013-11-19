@@ -1,6 +1,6 @@
-#include "fireball.h"
+#include "laser.h"
 
-Fireball::Fireball()
+Laser::Laser()
 {
   this->_Status = 0;
   this->_FrameTime = FRAMETIME;
@@ -8,29 +8,29 @@ Fireball::Fireball()
   this->_Size = 1;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 12;
+  this->_Type = 19;
 }
 
-Fireball::~Fireball()
+Laser::~Laser()
 {
 }
-void		Fireball::ResetData()
+void		Laser::ResetData()
 {
   this->_Status = 1;
   this->_Etat = 1;
   this->_Size = 1;
   this->_Old = 1;
   this->_EllapsedTime = 0;
-  this->_Type = 12;  
+  this->_Type = 19;  
 }
-bool		Fireball::SpriteAlive() const
+bool		Laser::SpriteAlive() const
 {
   if (this->_Old == 0)
     return (false);
   return (true);
 }
 
-void		Fireball::CheckEtat(Move move, int x, int y)
+void		Laser::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD && this->_Etat == 1)
     {
@@ -41,14 +41,14 @@ void		Fireball::CheckEtat(Move move, int x, int y)
     }
 }
 
-void		Fireball::FirstState(int x, int y, int time)
+void		Laser::FirstState(int x, int y, int time)
 {
   this->_X = x;
   this->_Y = y;
   this->_EllapsedTime += time;
   if (this->_EllapsedTime >= this->_FrameTime)
     {
-      if (this->_Status == 3)
+      if (this->_Status == 7)
 	this->_Status = -1;
       this->_Status += 1;
       this->_EllapsedTime = 0;
@@ -56,20 +56,13 @@ void		Fireball::FirstState(int x, int y, int time)
 }
 
 
-void		Fireball::CheckSize(int time)
+void		Laser::CheckSize(int time)
 {
   time = time;
-  // this->_EllapsedTime += time;
-  // if (this->_EllapsedTime >= this->_FrameTime)
-  //   {
-  //     if (this->_Status == 7)
-	this->_Old = 0;
-      // this->_Status += 1;
-      // this->_EllapsedTime = 0;
-    // }
+  this->_Old = 0;
 }
 
-void		Fireball::GetSprite(int x, int y, unsigned int time, Move move)
+void		Laser::GetSprite(int x, int y, unsigned int time, Move move)
 {
   if (this->_Etat == 1)
     this->CheckEtat(move,x ,y);
@@ -79,47 +72,47 @@ void		Fireball::GetSprite(int x, int y, unsigned int time, Move move)
     this->CheckSize(time);
 }
 
-void	Fireball::setX(int x)
+void	Laser::setX(int x)
 {
   this->_X = x;
 }
 
-void	Fireball::setY(int Y)
+void	Laser::setY(int Y)
 {
   this->_Y = Y;
 }
 
-int	Fireball::getX() const
+int	Laser::getX() const
 {
   return (this->_X);
 }
 
-int	Fireball::getY() const
+int	Laser::getY() const
 {
   return (this->_Y);
 }
 
-int	Fireball::getId() const
+int	Laser::getId() const
 {
   return (this->_Id);
 }
 
-int Fireball::getType() const
+int Laser::getType() const
 {
   return (this->_Type);
 }
 
-int	Fireball::getEtat() const
+int	Laser::getEtat() const
 {
   return (this->_Etat);
 }
 
-int	Fireball::getStatus() const
+int	Laser::getStatus() const
 {
   return (this->_Status);
 }
 
-void	Fireball::setId(int id)
+void	Laser::setId(int id)
 {
   this->_Id = id;
 }

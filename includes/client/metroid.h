@@ -25,7 +25,7 @@ class Metroid : public Entity
 
  public:
 
-  Metroid(int id);
+  Metroid();
   ~Metroid();
   void		SetSprite(sf::Image *);
   void		CutImage();
@@ -42,4 +42,6 @@ class Metroid : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

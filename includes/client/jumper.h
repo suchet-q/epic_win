@@ -25,7 +25,7 @@ class Jumper : public Entity
 
  public:
 
-  Jumper(int id);
+  Jumper();
   ~Jumper();
   void		GetSprite(int, int, unsigned int, Move);
   int		getX() const;
@@ -40,4 +40,6 @@ class Jumper : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

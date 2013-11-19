@@ -1,9 +1,8 @@
 #include "xwing.h"
 
-Xwing::Xwing(int id)
+Xwing::Xwing()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -22,7 +21,15 @@ bool		Xwing::SpriteAlive() const
     return (false);
   return (true);
 }
-
+void		Xwing::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 2;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 9;  
+}
 void		Xwing::CheckEtat(Move move, int x, int y)
 {
  if (move == DEAD)
@@ -139,4 +146,9 @@ int	Xwing::getEtat() const
 int	Xwing::getStatus() const
 {
   return (this->_Status);
+}
+
+void	Xwing::setId(int id)
+{
+  this->_Id = id;
 }

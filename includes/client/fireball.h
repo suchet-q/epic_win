@@ -25,7 +25,7 @@ class Fireball : public Entity
 
  public:
 
-  Fireball(int id);
+  Fireball();
   ~Fireball();
   bool	        SpriteAlive() const;
   void GetSprite(int, int, unsigned int, Move);
@@ -40,4 +40,6 @@ class Fireball : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

@@ -5,7 +5,7 @@
 ** Login   <heuzey_m@epitech.net>
 ** 
 ** Started on  Sat Oct 26 23:19:11 2013 mathieu heuzey
-** Last update Sun Nov 17 01:04:55 2013 mathieu heuzey
+** Last update Tue Nov 19 01:28:58 2013 mathieu heuzey
 */
 
 #pragma once
@@ -40,8 +40,7 @@ class Ship
   Inputs	_Inputs;
   int		_Size;
   int		_Etat;
-  int		_Timer;
-  int		_Timer2;
+
  public:
 
 
@@ -68,4 +67,5 @@ class Ship
   void		FirstState(int time, Inputs inp);
   int		GetEtat();
   int		GetStatus();
+  int		GetTeam();
 };

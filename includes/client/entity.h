@@ -51,4 +51,6 @@ public:
   virtual int	getType() const = 0;
   virtual int	getEtat() const = 0;
   virtual int	getStatus() const = 0;
+  virtual void	setId(int)  = 0;
+  virtual void ResetData() = 0;
 };

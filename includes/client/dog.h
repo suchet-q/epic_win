@@ -25,7 +25,7 @@ class Dog : public Entity
 
  public:
 
-  Dog(int id);
+  Dog();
   ~Dog();
   void		GetSprite(int, int, unsigned int, Move);
   int		getX() const;
@@ -40,4 +40,6 @@ class Dog : public Entity
   int		getType() const;
   int		getEtat() const;
   int		getStatus() const;
+  void		setId(int id);
+  void		ResetData();
 };

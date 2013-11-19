@@ -1,9 +1,8 @@
 #include "jumper.h"
 
-Jumper::Jumper(int id)
+Jumper::Jumper()
 {
   this->_Status = 1;
-  this->_Id = id;
   this->_FrameTime = FRAMETIME;
   this->_Old = 1;
   this->_Etat = 1;
@@ -15,7 +14,15 @@ Jumper::Jumper(int id)
 Jumper::~Jumper()
 {  
 }
-
+void		Jumper::ResetData()
+{
+  this->_Status = 1;
+  this->_Etat = 1;
+  this->_Size = 3;
+  this->_Old = 1;
+  this->_EllapsedTime = 0;
+  this->_Type = 8;  
+}
 bool		Jumper::SpriteAlive()  const
 {
   if (this->_Old == 0)
@@ -140,4 +147,9 @@ int	Jumper::getEtat()  const
 int	Jumper::getStatus()  const
 {
   return (this->_Status);
+}
+
+void	Jumper::setId(int id)
+{
+  this->_Id = id;
 }

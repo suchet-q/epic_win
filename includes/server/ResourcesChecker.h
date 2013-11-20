@@ -4,8 +4,9 @@
 #include	<map>
 #include	<sstream>
 #include	<string>
+#include	<iostream>
 #include	<cstring>
-
+#include	<exception>
 #include	"Entities.h"
 
 struct		t_tab_hit_box

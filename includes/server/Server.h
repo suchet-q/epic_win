@@ -6,6 +6,7 @@
 #include		<fstream>
 #include		<array>
 #include		<map>
+#include		<exception>
 #include		"Clients.h"
 #include		"Network.h"
 #include		"Resource.h"

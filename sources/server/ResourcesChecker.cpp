@@ -16,19 +16,19 @@ ResourcesChecker::ResourcesChecker()
 	this->_typeMap[10] = METROID;
 	this->_typeMap[11] = PLAYER1;
 	this->_typeMap[12] = XWING;
-	this->_name.push_back("Alien.txt");
-	this->_name.push_back("bonus.txt");
-	this->_name.push_back("bullet_big.txt");
-	this->_name.push_back("bullet_biggest.txt");
-	this->_name.push_back("bullet_enemy_basis.txt");
-	this->_name.push_back("bullet_medium.txt");
-	this->_name.push_back("bullets_small.txt");
-	this->_name.push_back("Dog.txt");
-	this->_name.push_back("Drone.txt");
-	this->_name.push_back("Jumper.txt");
-	this->_name.push_back("Metroid.txt");
-	this->_name.push_back("Ship.txt");
-	this->_name.push_back("Xwing");
+	this->_name.push_back("collisionTab/Alien.txt");
+	this->_name.push_back("collisionTab/bonus.txt");
+	this->_name.push_back("collisionTab/bullet_big.txt");
+	this->_name.push_back("collisionTab/bullet_biggest.txt");
+	this->_name.push_back("collisionTab/bullet_enemy_basis.txt");
+	this->_name.push_back("collisionTab/bullet_medium.txt");
+	this->_name.push_back("collisionTab/bullets_small.txt");
+	this->_name.push_back("collisionTab/Dog.txt");
+	this->_name.push_back("collisionTab/Drone.txt");
+	this->_name.push_back("collisionTab/Jumper.txt");
+	this->_name.push_back("collisionTab/Metroid.txt");
+	this->_name.push_back("collisionTab/Ship.txt");
+	this->_name.push_back("collisionTab/Xwing.txt");
 }
 
 
@@ -38,8 +38,8 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 {
 	std::ifstream	file;
 	t_tab_hit_box			tmpHit;
-	int	i;
-	int	j;
+	unsigned int	i;
+	unsigned int	j;
 	std::string				line;
 	std::stringstream		ss;
 
@@ -47,17 +47,20 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 	for (std::list<std::string>::iterator it = this->_name.begin();
 		it != this->_name.end(); ++it)
 	{
-		file.open((*it), std::ifstream::in);
-		//		if (!file.is_open())
-		//	throw new std::exception("Can't open file colision");
+		file.open((*it).c_str(), std::ifstream::in);
+		if (!file.is_open())
+			throw new std::exception("Can't open file colision");
 		tmpHit.x = 0;
 		tmpHit.y = 0;
 		tmpHit.yStart = 0;
 		i = 1;
-		while (file.eof() != false && i <= 3)
+		while (!file.eof() != false && i <= 3)
 		{
-			file >> line;
-			ss << line;
+			std::getline(file, line);
+			ss.str("");
+			ss.clear();
+			ss.str(line);
+			//std::cout << "ss.str = " << ss.str() << std::endl;
 			if (i == 1)
 				ss >> tmpHit.x;
 			else if (i == 2)
@@ -66,23 +69,29 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 				ss >> tmpHit.yStart;
 			++i;
 		}
-		//	if (i != 4)
-		//	throw new std::exception("Error : file Colision corrupted");
+		if (i != 4)
+			throw new std::exception("Error : file Colision corrupted");
 		tmpHit.tab = new char*[tmpHit.y];
 		i = 0;
-		while (file.eof())
+		while (!file.eof() && i < tmpHit.y)
 		{
 			tmpHit.tab[i] = new char[tmpHit.x];
-			file >> line;
-			//			if (line.size() != tmpHit.x)
-			//	throw new std::exception("Error : file Colision corrupted");
+			std::getline(file, line);
+			if (line.size() != tmpHit.x)
+				throw new std::exception("Error : file Colision corrupted");
 			memcpy(tmpHit.tab[i], line.c_str(), line.size());
 			++i;
 		}
-		//	if ((i + 1) != tmpHit.y)
-		//	throw new std::exception("Error : file Colision corrupted");
+		if (i != tmpHit.y)
+			throw new std::exception("Error : file Colision corrupted");
 		this->_tmp[this->_typeMap[j]] = tmpHit;
 		++j;
+		for (int t = 0; t < tmpHit.y; ++t)
+		{
+			for (int k = 0; k < tmpHit.x; ++k)
+				this->_tmp[this->_typeMap[j - 1]].tab[t][k] -= '0';
+		}
+		file.close();
 	}
 	return (this->_tmp);
 }

@@ -37,13 +37,12 @@ class		LoadLib
    return (this->_load.closeLib());
  }
 
- template<typename T>
- T		*getInstance()
+ template<typename U>
+ U		*getInstance()
  {
-	 T	*(*ptr)();
+	 U	*(*ptr)();
 
-	 ptr = static_cast<T *(*)()>(this->getLib("getInstance"));
+	 ptr = static_cast<U *(*)()>(this->getLib("getInstance"));
 	 return ptr();
  }
-
 };

@@ -5,58 +5,40 @@
 # include			"Pool.hpp"
 # include			"Entities.h"
 
-# include			"PlayerShip.h"
-//# include			"Alien.h"
-//# include			"Dog.h"
-//# include			"Drone.h"
-//# include			"Jumper.h"
-//# include			"Larve.h"
-//# include			"Metroid.h"
-//# include			"PlayerShip.h"
+# include			"ShotSmall.h"
+# include			"ShotMedium.h"
+# include			"ShotBig.h"
+# include			"ShotBiggest.h"
+# include			"ShotEnemy.h"
 
+template <typename T = Entity>
 class				EntitiesPoolContainer
 {
 private:
-  std::map<entityType, IPool<Entity *> *>	_poolMap;
-  std::map<entityType, unsigned int>		_poolSizeMap;
-  //  std::map<entityType, >			_poolMap;
+  std::map<entityType, GenericIPool *>	_poolMap;
+  std::map<entityType, unsigned int>	_poolSizeMap;
 
 public:
   EntitiesPoolContainer() {}
 
-  ~EntitiesPoolContainer()
-  {
-    for (std::map<entityType, IPool<Entity* >* >::iterator it = _poolMap.begin();
-	 it != _poolMap.end(); ++it)
-      {
-	for (unsigned int i = 0; i < _poolSizeMap[(*it).first]; ++i)
-	  delete *((*it).second->getElem(i));
-	delete (*it).second;
-      }
-  }
+  ~EntitiesPoolContainer() {}
 
-  template <typename T, unsigned int SIZE>
+  template <typename U, unsigned int SIZE>
   bool				addPool(entityType type)
   {
-    Pool<T *, SIZE>*		pool;
-
     if (_poolMap[type])
       return false;
-    pool = new Pool<T *, SIZE>;
-    //for (unsigned int i = 0; i < SIZE; ++i)
-      //      pool->getArray()[i] = 
-    _poolMap[type] = pool;
-    _poolSizeMap[type] = SIZE;
+    _poolMap[type] = new Pool<U, SIZE>;
     return true;
   }
 
-  template <typename T>
+  template <typename U>
   T*				getInstance(entityType type) {
-    return *(_poolMap[type]->getInstance());
+    return (dynamic_cast<IPool<U>* >(_poolMap[type]))->getInstance();
   }
   
-  template <typename T>
+  template <typename U>
   void				freeInstance(T* instance) {
-    _poolMap[instance->getType()].freeInstance();
+    dynamic_cast<IPool<U>* >(_poolMap[instance->getType()])->freeInstance();
   }
 };

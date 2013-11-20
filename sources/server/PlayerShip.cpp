@@ -1,4 +1,5 @@
 #include "PlayerShip.h"
+
 #include <iostream>
 
 PlayerShip::PlayerShip() : Ship() {}
@@ -7,11 +8,11 @@ PlayerShip::~PlayerShip() {}
 
 void			PlayerShip::shoot(std::list<Entity *> &entityList)
 {
-	entityList.push_back(_shotPool->getInstance());
-	entityList.back()->setVecDir(10, 0);
-	entityList.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
-	entityList.back()->getFloatCoord().setY(this->getFloatCoord().getY());
-	entityList.back()->setType((entityType)12);
+  entityList.push_back(_entitiesPool->getInstance<ShotSmall>(BASIC_SHOT));
+  entityList.back()->setVecDir(10, 0);
+  entityList.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
+  entityList.back()->getFloatCoord().setY(this->getFloatCoord().getY());
+  entityList.back()->setType((entityType)12);
 }
 
 void			PlayerShip::update(std::list<Entity *> &entityList)

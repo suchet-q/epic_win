@@ -3,7 +3,7 @@
 template<typename T = unsigned short int>
 class			Coord
 {
-private:
+protected:
   T			_x;
   T			_y;
 

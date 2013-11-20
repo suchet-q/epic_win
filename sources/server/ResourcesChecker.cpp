@@ -66,7 +66,7 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 	{
 		file.open((*it).c_str(), std::ifstream::in);
 		if (!file.is_open())
-			throw new std::exception("Can't open file colision");
+		  throw new std::exception(/*"Can't open file colision"*/);
 		tmpHit.x = 0;
 		tmpHit.y = 0;
 		tmpHit.yStart = 0;
@@ -86,7 +86,7 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 			++i;
 		}
 		if (i != 4)
-			throw new std::exception("Error : file Colision corrupted");
+			throw new std::exception(/*"Error : file Colision corrupted"*/);
 		tmpHit.tab = new char*[tmpHit.y];
 		i = 0;
 		while (!file.eof() && i < tmpHit.y)
@@ -94,12 +94,12 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 			tmpHit.tab[i] = new char[tmpHit.x];
 			std::getline(file, line);
 			if (line.size() != tmpHit.x)
-				throw new std::exception("Error : file Colision corrupted");
+			  throw new std::exception(/*"Error : file Colision corrupted"*/);
 			memcpy(tmpHit.tab[i], line.c_str(), line.size());
 			++i;
 		}
 		if (i != tmpHit.y)
-			throw new std::exception("Error : file Colision corrupted");
+			throw new std::exception(/*"Error : file Colision corrupted"*/);
 		this->_tmp[this->_typeMap[j]] = tmpHit;
 		++j;
 		for (unsigned int t = 0; t < tmpHit.y; ++t)

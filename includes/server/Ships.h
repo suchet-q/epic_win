@@ -5,6 +5,7 @@
 # include			"Entities.h"
 # include			"Shot.h"
 # include			"Pool.hpp"
+# include			"EntitiesPoolContainer.hpp"
 	
 # define			LEFT			(1)
 # define			RIGHT			(2)
@@ -18,14 +19,14 @@ class				Ship : public Entity
 {
 protected:
   bool				_shoot;
-  Pool<Shot, 64>*		_shotPool;
+  EntitiesPoolContainer<>*	_entitiesPool;
   unsigned short		_input;
 
 public:
   Ship();
   virtual ~Ship();
 
-  void				setShotPool(Pool<Shot, 64>& pool);
+  void				setEntitiesPool(EntitiesPoolContainer<>& pool);
   unsigned short		getInput() const;
   void				setInput(unsigned short);
   virtual void			update(std::list<Entity *> &);

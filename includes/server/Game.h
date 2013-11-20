@@ -13,7 +13,7 @@
 # include			"StructCommands.h"
 # include			"MetaClock.hpp"
 # include			"ResourcesChecker.h"
-#include			"LoadLib.h"
+# include			"LoadLib.hpp"
 
 # define			REFRESH_TIME	(33000)
 

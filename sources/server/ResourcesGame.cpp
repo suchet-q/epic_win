@@ -14,9 +14,19 @@ std::list<Ship *>&	ResourcesGame::getShipList() {
   return _shipList;
 }
 
-Pool<Shot, 64>		&ResourcesGame::getShotPool()
+EntitiesPoolContainer<>& ResourcesGame::getEntitiesPool()
 {
-	return _shotPool;
+  return _entitiesPool;
+}
+
+ShipPoolContainer<>&	ResourcesGame::getShipPool()
+{
+  return _shipPool;
+}
+
+Pool<PlayerShip, 4>&	ResourcesGame::getPlayerShipPool()
+{
+  return _playerShipPool;
 }
 
 void			ResourcesGame::createPlayerShip()

@@ -2,7 +2,7 @@
 
 # include		<list>
 # include		"Coord.hpp"
-//# include		"Sprite.h"
+# include		"Vector.hpp"
 
 enum			entityGlobalType
 {
@@ -48,10 +48,9 @@ class			Entity
 protected:
   Coord<>		_intCoord;
   Coord<float>		_coord;
-  Coord<float>		_vecDir;
+  Vector		_vecDir;
   entityType		_type;
   entityGlobalType	_globalType;
-  //  Sprite		_sprite;
 
 public:
   Entity();
@@ -61,7 +60,7 @@ public:
   Coord<>&		getCoord();
   Coord<float>&		getFloatCoord();
   entityGlobalType	getGlobalType() const;
-  void				setGlobalType(entityGlobalType);
+  void			setGlobalType(entityGlobalType);
 
   void			setVecDir(float x, float y);
   void			setType(entityType type);

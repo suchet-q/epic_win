@@ -9,8 +9,57 @@ void			Collision::setResources(ResourcesGame *resources) {
 }
 
 
+void			Collision::checkCollisions()
+{
+  checkPlayerInScreen();
+  checkEntitiesColisions();
+}
 
-void			Collision::checkCollisions();
+void			Collision::manageDepop()
+{
+  for (std::list<Entity *>::iterator it = _resources.getEntityList().begin();
+       it != _resources->getEntityList().end();) {
+    switch ((*it)->getGlobalType()) {
+    case MOBB:
+    case MOBBMISSIL:
+    case DECOR :
+      if ((*it)->getCoord().getX() < -OUT_SREEN_SIZE) {
+	// _ressources->getPool.freeInstance<>(*it);
+	it = _resources.getEntityList().erase(it);
+      }
+      else
+	++it;
+      break;
+    case PLAYERMISSIL :
+      if ((*it)->getCoord().getX() + (*it)->getSize().getX()
+	  > SCREEN_WIDTH + OUT_SREEN_SIZE) {
+	// _ressources->getPool.freeInstance<>(*it);
+	it = _resources.getEntityList().erase(it);
+      }
+      else
+	++it;
+    default:
+      ++it;
+      break;
+    }
+  }
+}
+
+void			Collision::checkPlayerInScreen()
+{
+  for (std::list<Ship *>::iterator it = _ressources.getShipList().begin();
+       it != _resources->getShipList().end(); ++it)
+    if ((*it)->getCoord().getX() < 0)
+      (*it)->getCoord().setX(0);
+    else if ((*it)->getCoord().getX() + (*it)->getSize() < SCREEN_WIDTH)
+      (*it)->getCoord().setX(SCREEN_WIDTH - (*it)->getSize());
+    if ((*it)->getCoord().getY() < 0)
+      (*it)->getCoord().setY(0);
+    else if ((*it)->getCoord().getY() + (*it)->getSize() < SCREEN_HEIGHT)
+      (*it)->getCoord().setY(SCREEN_HEIGHT - (*it)->getSize());
+}
+
+void			Collision::checkEntitiesCollisions()
 {
   Coord<>&		a;
   Coord<>&		b;
@@ -19,9 +68,9 @@ void			Collision::checkCollisions();
   
 
   for (std::list<Entity *>::iterator it_o = _ressources.getEntityList().begin();
-       it_o != _resources.getEntityList().end(); ++it_o)     
+       it_o != _resources->getEntityList().end(); ++it_o)
     for (std::list<Entity *>::iterator it_t = it + 1;
-	 it_t != _resources.getEntityList().end(); ++it_t)
+	 it_t != _resources->getEntityList().end(); ++it_t)
 	if ((*it_o)->getType != LANDSCAPE
 	    || (*it_t)->getType != LANDSCAPE)
 	  {
@@ -38,12 +87,12 @@ void			Collision::checkCollisions();
 		     && b.getX()+ size_b.getX() > a.getX()
 		     && b.getY() < a.getY()
 		     && b.getY()+ size_b.getY() > a.getXY())
-	      checkCollisionAdvenced(it_t, it_o);
+	      checkEntitiesCollisionAdvenced(it_t, it_o);
 	  }
 }
 
-void			Collision::checkCollisionsAdvenced(std::list<Entity *>::iterator it_o,
-							   std::list<Entity *>::iterator it_t)
+void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator it_o,
+								   std::list<Entity *>::iterator it_t)
 {
   Coord<>&		a = (*it_o)->getCoord();
   Coord<>&		b = (*it_t)->getCoord();
@@ -61,6 +110,6 @@ void			Collision::checkCollisionsAdvenced(std::list<Entity *>::iterator it_o,
 void			Collision::collision(std::list<Entity *>::iterator it_o,
 					     std::list<Entity *>::iterator it_t)
 {
-
+  std::cout << "boum !" std::end;
 }
 */

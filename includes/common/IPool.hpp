@@ -2,8 +2,10 @@
 
 # include			<array>
 
+# include			"GenericIPool.h"
+
 template<typename T>
-class				IPool
+class				IPool : public GenericIPool
 {
 public:
   IPool() {}

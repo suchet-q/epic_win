@@ -165,8 +165,8 @@ void			Game::initPlayersShip()
     _resources.createPlayerShip();
 	_resources.getShipList().back()->getFloatCoord().setX(30);
 	_resources.getShipList().back()->getFloatCoord().setY((768 - 100) / (_clients.size() + 1) * type);
-    _resources.getShipList().back()->setType(static_cast<entityType>(type));
-	_resources.getShipList().back()->setShotPool(_resources.getShotPool());
+	_resources.getShipList().back()->setType(static_cast<entityType>(type));
+    _resources.getShipList().back()->setEntitiesPool(_resources.getEntitiesPool());
     _clientToShip[*it] = _resources.getShipList().back();
     type++;
   }

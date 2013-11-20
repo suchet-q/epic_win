@@ -5,6 +5,7 @@
 # include			<string>
 
 # include			"EntitiesPoolContainer.hpp"
+# include			"ShipPoolContainer.hpp"
 # include			"Ships.h"
 # include			"PlayerShip.h"
 # include			"Shot.h"
@@ -14,7 +15,8 @@ class				ResourcesGame
 {
 private:
   Pool<PlayerShip, 4>		_playerShipPool;
-  Pool<Shot, 64>		_shotPool;
+  EntitiesPoolContainer<>	_entitiesPool;
+  ShipPoolContainer<>		_shipPool;
   std::list<Entity *>		_entityList;
   std::list<Ship *>		_shipList;
 
@@ -24,7 +26,8 @@ public:
   
   std::list<Entity *>&		getEntityList();
   std::list<Ship *>&		getShipList();
-  Pool<Shot, 64>		&getShotPool();
-
+  EntitiesPoolContainer<>&	getEntitiesPool();
+  ShipPoolContainer<>&		getShipPool();
+  Pool<PlayerShip, 4>&		getPlayerShipPool();
   void				createPlayerShip();
 };

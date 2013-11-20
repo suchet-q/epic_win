@@ -7,6 +7,7 @@
 #include	<iostream>
 #include	<cstring>
 #include	<exception>
+#include	<stdexcept>
 #include	"Entities.h"
 
 struct		t_tab_hit_box

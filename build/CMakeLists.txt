@@ -151,6 +151,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Alien-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -163,6 +165,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Dog-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -175,6 +179,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Drone-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -187,6 +193,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Jumper-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -199,6 +207,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Larve-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -211,6 +221,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/Metroid-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 file(
@@ -223,6 +235,8 @@ file(
 	../includes/server/IAI.h
 	../includes/server/Ships.h
 	../includes/libraries/XWing-DLL/*
+	../sources/server/Randum.h
+	../sources/server/Randum.cpp
 )
 
 add_library(

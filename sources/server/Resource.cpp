@@ -1,6 +1,5 @@
 #include "Resource.h"
 
-
 Resource::Resource()
 {
   for (int i = 0; i < 255; ++i)
@@ -9,7 +8,6 @@ Resource::Resource()
     this->_idGames[i] = false;
 }
 
-
 Resource::~Resource() {}
 
 std::list<Client *>	&Resource::getClients()
@@ -17,6 +15,10 @@ std::list<Client *>	&Resource::getClients()
 	return (this->_clients);
 }
 
+void		Resource::setTabHitBox(std::map<entityType, t_tab_hit_box> &tab)
+{
+	this->_tabHitBox = tab;
+}
 bool				Resource::checkIfGameIsPossible()
 {
 	for (int id = 1; id < 255; ++id)

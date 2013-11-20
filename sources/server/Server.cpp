@@ -13,7 +13,7 @@ bool			Server::init(int port)
 		this->_idArray[i] = false;
 	
 	try {
-		this->_tabHitBox = this->_resourcesChecker.getFileResources();
+		this->_resources.setTabHitBox(this->_resourcesChecker.getFileResources());
 	}
 	catch (std::exception *e)
 	{

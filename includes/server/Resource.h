@@ -7,7 +7,8 @@
 #include	"Room.h"
 #include	"MetaSocket.h"
 #include	"Game.h"
-/*#include	"MateThread.h"*/
+#include	"ResourcesChecker.h"
+
 
 class		Resource
 {
@@ -18,9 +19,11 @@ class		Resource
   std::list<Game *>		_games;
   std::array<bool, 255>	_idRooms;
   std::array<bool, 255> _idGames;
+  std::map<entityType, t_tab_hit_box>		_tabHitBox;
 public:
   Resource();
   ~Resource();
+  void		setTabHitBox(std::map<entityType, t_tab_hit_box> &);
   std::list<Game *>		&getGame();
   std::list<Game *>::iterator &deleteGame(std::list<Game *>::iterator &);
   std::list<Client *>		&getClients();

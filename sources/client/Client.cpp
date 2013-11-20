@@ -30,7 +30,9 @@ void		Client::menuResources()
 {
 	this->_menu.initParser(this->_parser);
 	this->_menu.loadResources(&this->_win);
+	this->_mutex.Lock();
 	this->_finishedLoading = true;
+	this->_mutex.Unlock();
 }
 
 void		Client::gameResources()
@@ -97,8 +99,10 @@ void		Client::loadingScreen()
 	
 	while (this->_win.isRunning())
 	{
-	  if (this->_finishedLoading)
-	    break;
+		this->_mutex.Lock();
+		if (this->_finishedLoading)
+			break;
+		this->_mutex.Unlock();
 		tmp = clock.GetElapsedTime();
 		if (clock.GetElapsedTime() >= 1.2)
 			clock.Reset();
@@ -111,6 +115,7 @@ void		Client::loadingScreen()
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 	}
+	this->_mutex.Unlock();
 }
 
 void		Client::initializeThreads()

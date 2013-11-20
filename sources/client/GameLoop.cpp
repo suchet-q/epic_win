@@ -65,6 +65,7 @@ int		GameLoop::loadResources(void *arg)
 	catch (RuntimeException &e) {
 		this->_exception = e;
 		this->_exceptionOccured = true;
+		this->_resources.Unlock();
 		return (-1);
 	}
 	this->_resources.Unlock();

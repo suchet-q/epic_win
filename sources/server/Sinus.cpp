@@ -16,9 +16,9 @@ float		Sinus::calculNewVecY(float y, float yVec)
 
 float		Sinus::getValue(Coord<float> &coord)
 {
-	float result;
+	float result = 0;
 
-	//result = sin(coord.getX());
+	result = sin(coord.getX());
 	result += 1;
 	result *= 50;
 	return (result);

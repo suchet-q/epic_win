@@ -15,6 +15,11 @@ std::list<Client *>	&Resource::getClients()
 	return (this->_clients);
 }
 
+std::map<entityType, t_tab_hit_box> &Resource::getTabHitBox()
+{
+	return this->_tabHitBox;
+}
+
 void		Resource::setTabHitBox(std::map<entityType, t_tab_hit_box> &tab)
 {
 	this->_tabHitBox = tab;

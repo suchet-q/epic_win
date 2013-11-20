@@ -6,7 +6,7 @@
 #include	"ResourcesGame.h"
 #include	"Sinus.h"
 
-class Xwing : Ship
+class Xwing : public Ship
 {
 private:
 	Sinus	_sinus;

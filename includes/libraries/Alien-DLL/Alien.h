@@ -6,7 +6,7 @@
 #include	"ResourcesGame.h"
 #include	"Sinus.h"
 
-class Alien : Ship
+class Alien : public Ship
 {
 private:
 	Sinus	_sinus;

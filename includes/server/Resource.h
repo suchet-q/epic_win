@@ -23,6 +23,7 @@ class		Resource
 public:
   Resource();
   ~Resource();
+  std::map<entityType, t_tab_hit_box> &getTabHitBox();
   void		setTabHitBox(std::map<entityType, t_tab_hit_box> &);
   std::list<Game *>		&getGame();
   std::list<Game *>::iterator &deleteGame(std::list<Game *>::iterator &);

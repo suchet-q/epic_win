@@ -15,7 +15,15 @@ Game::Game() {}
 
 Game::~Game() {}
 
+std::map<entityType, t_tab_hit_box> *Game::getTabHitBox() const
+{
+	return this->_tabHitBox;
+}
 
+void				Game::setTabHitBox(std::map<entityType, t_tab_hit_box> &tab)
+{
+	this->_tabHitBox = &tab;
+}
 
 std::list<Client *>&	Game::getClients() {
   return this->_clients;
@@ -104,17 +112,19 @@ void			Game::initBufClient()
 	t_rep_client	tmp;
 
 	memset(&tmp, 0, sizeof(t_rep_client));
+	tmp.size = 0;
+	std::cout << "la size elle est a 0 maggle" << std::endl;
+	tmp.life = 3;
+	tmp.weapon = MISSIL;
+	tmp.bonus = false;
+	tmp.score = 0;
+	tmp.hightScore = 0;
+	tmp.status = EMPTY;
 	std::list<Client *>::iterator it = this->_clients.begin();
 	for (; it != this->_clients.end(); ++it)
 	{
-		memset(&this->_repClient[(*it)].buffer, 0, sizeof(8128));
-		this->_repClient[(*it)].size = 0;
-		this->_repClient[(*it)].life = 3;
-		this->_repClient[(*it)].weapon = MISSIL;
-		this->_repClient[(*it)].bonus = false;
-		this->_repClient[(*it)].score = 0;
-		this->_repClient[(*it)].hightScore = 0;
-		this->_repClient[(*it)].status = EMPTY;
+		memcpy(&this->_repClient[(*it)], &tmp, sizeof(tmp));
+//		this->_repClient[(*it)] = tmp;
 	}
 }
 
@@ -164,6 +174,7 @@ void			Game::waitAllClients()
 	    {
 	      memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
 	      ++readyClients;
+		  system("pause");
 	    }
 	  this->unlockClient();
 	}
@@ -196,7 +207,7 @@ void			Game::manageClientsInputs()
 		  memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
 		  if (cmd.id_cmd == 14) //TODO : MACRO
 		  {
-			  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
+	//		  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
 			  (*it).second->setInput(cmd.input);
 		  }
 
@@ -217,6 +228,7 @@ void			Game::loop()
   int			nbUpdate;
   unsigned long int	ellapsedTime = 0;
 
+
   _clock.start();
   while (true)
     {
@@ -227,50 +239,60 @@ void			Game::loop()
       /*plus tard*//*update AI*/
       itEntity = this->_resources.getEntityList().begin();
       for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
-	{
-	  tmp = (*itEntity)->getCoord();
-	  if (tmp.getX() < 0 || tmp.getX() > 1024)
-	    {
-	      itEntity = this->_resources.getEntityList().erase(itEntity);
-	      if (itEntity == this->_resources.getEntityList().end())
-		break;
-	      tmp = (*itEntity)->getCoord();
-	    }
+		{
+			tmp = (*itEntity)->getCoord();
+			if (tmp.getX() < 0 || tmp.getX() > 1024)
+			{
+				itEntity = this->_resources.getEntityList().erase(itEntity);
+				if (itEntity == this->_resources.getEntityList().end())
+					break;
+				tmp = (*itEntity)->getCoord();
+			}
 
-	  for (int i = 0; i < nbUpdate; ++i)
-	    (*itEntity)->update(this->_resources.getEntityList());
+			for (int i = 0; i < nbUpdate; ++i)
+				(*itEntity)->update(this->_resources.getEntityList());
 
-	  itRep = this->_repClient.begin();
-	  for (; itRep != this->_repClient.end(); ++itRep)
-	    {
-	      affServer.id_cmd = 10;
-	      affServer.type = (*itEntity)->getType();
-	      affServer.id_obj = 007/*mettre l id dans la class entity*/;
-	      affServer.x = tmp.getX();
-	      affServer.y = tmp.getY();
-	      memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
-	      (*itRep).second.size += sizeof(affServer);
-	    }
-	}
-      itRep = this->_repClient.begin();
-      for (; itRep != this->_repClient.end(); ++itRep)
-	{
-	  /*info a mettre dans dans la map et retire la struc infoclient du client*/
-	  srcServer.id_cmd = 11;
-	  srcServer.score = (*itRep).second.score;
-	  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &srcServer, sizeof(srcServer));
-	  (*itRep).second.size += sizeof(srcServer);
-	  lifServer.id_cmd = 12;
-	  lifServer.life = (*itRep).second.life;
-	  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
-	  (*itRep).second.size += sizeof(lifServer);
+			if (nbUpdate)
+			{
+				itRep = this->_repClient.begin();
+				for (; itRep != this->_repClient.end(); ++itRep)
+				{
+					affServer.id_cmd = 10;
+					affServer.type = (*itEntity)->getType();
+					affServer.id_obj = 007/*mettre l id dans la class entity*/;
+					affServer.x = tmp.getX();
+					affServer.y = tmp.getY();
+					memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
+					(*itRep).second.size += sizeof(affServer);
+				}
+			}
+		}
+
 	  if (nbUpdate)
-	    this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
-				    (*itRep).second.size, &(*itRep).first->getUDPsin());
-	  (*itRep).second.size = 0;
-	}
+	  {
+
+		  itRep = this->_repClient.begin();
+		  for (; itRep != this->_repClient.end(); ++itRep)
+		  {
+			  /*info a mettre dans dans la map et retire la struc infoclient du client*/
+			  srcServer.id_cmd = 11;
+			  srcServer.score = (*itRep).second.score;
+			  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &srcServer, sizeof(srcServer));
+			  (*itRep).second.size += sizeof(srcServer);
+			  lifServer.id_cmd = 12;
+			  lifServer.life = (*itRep).second.life;
+			  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
+			  (*itRep).second.size += sizeof(lifServer);
+
+				std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
+				this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
+					  (*itRep).second.size, &(*itRep).first->getUDPsin());
+				(*itRep).second.size = 0;
+		  }
+
+		}
       
-      ellapsedTime %= REFRESH_TIME;
+	ellapsedTime %= REFRESH_TIME;
 
       /*check colision peut etre fait dans update entity (vie ou mort)*/
       /*evtServer.id_cmd = 13; set levent (mort colision etc..) surment pas fait ici

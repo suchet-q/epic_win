@@ -4,7 +4,7 @@ Jumper::Jumper() {}
 
 Jumper::~Jumper() {}
 
-bool		Jumper::update(ResourcesGame &game, unsigned int time)
+bool		Jumper::update(std::list<Entity *> &)
 {
 	float	vecY;
 
@@ -14,4 +14,13 @@ bool		Jumper::update(ResourcesGame &game, unsigned int time)
 	if (this->getInput() == 0)
 		this->setInput(LEFT);
 	return (true);
+}
+
+extern "C"
+#ifdef _WIN32
+__declspec (dllexport)
+#endif
+Entity		*getInstance()
+{
+	return new Jumper();
 }

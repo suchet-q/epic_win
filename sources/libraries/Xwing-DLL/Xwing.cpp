@@ -16,3 +16,11 @@ bool		Xwing::update(ResourcesGame &game, unsigned int time)
 	return (true);
 }
 
+extern "C" 
+#ifdef _WIN32
+	__declspec (dllexport)
+#endif
+Entity		*getInstance()
+{
+	return new Xwing();
+}

@@ -12,6 +12,7 @@
 # include			"MetaThreader.hpp"
 # include			"StructCommands.h"
 # include			"MetaClock.hpp"
+# include			"ResourcesChecker.h"
 
 # define			REFRESH_TIME	(33000)
 
@@ -57,6 +58,7 @@ private:
   ResourcesGame				_resources;
   bool					_isInit;
   std::map<Client *, t_rep_client>	_repClient;
+  std::map<entityType, t_tab_hit_box> *_tabHitBox;
 
 public:
   Game(int, std::list<Client *> &);
@@ -68,6 +70,9 @@ public:
   std::list<Client *>&		getClients();
   bool				getIsInit() const;
   int				getID();
+  std::map<entityType, t_tab_hit_box> *getTabHitBox() const;
+  void				setTabHitBox(std::map<entityType, t_tab_hit_box> &);
+
 
   void				setResources(ResourcesGame const &);
   void				setID(int);

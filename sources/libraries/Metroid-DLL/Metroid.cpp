@@ -17,3 +17,12 @@ bool		Metroid::update(ResourcesGame &game, unsigned int time)
 		this->setInput(LEFT);
 	return (true);
 }
+
+extern "C"
+#ifdef _WIN32
+__declspec (dllexport)
+#endif
+Entity		*getInstance()
+{
+	return new Metroid();
+}

@@ -94,6 +94,7 @@ void			GameSocket::update(Parser &parser)
 		this->_socket.Send(cmd.first, cmd.second);
 	if (this->_udpRunning && this->_select.fdIsset(this->_socketUDP, &readFd))
 	{
+		std::cout << "HEY JE SUIS DANS LE SELECT MAGGLE" << std::endl;
 		memset(rec, 0, 512);
 		parser.parse(&rec, this->_socketUDP.recvFrom(rec, 512, this->_sin));
 		parser.setStartUDP();

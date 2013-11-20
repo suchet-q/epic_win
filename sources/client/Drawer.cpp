@@ -17,6 +17,10 @@ Drawer::Drawer(sf::RenderWindow *window, sf::Mutex *mutex)
   this->_MissilImg = new sf::Image;
   this->_ShipImg = new sf::Image;
   this->_LaserImg = new sf::Image;
+  this->_Decor1topImg = new sf::Image;
+  this->_Decor1downImg = new sf::Image;
+  this->_Decor2topImg = new sf::Image;
+  this->_Decor2downImg = new sf::Image;
 
   this->_XwingAnim = new sf::Sprite[8];
   this->_MissilAnim = new sf::Sprite[4];
@@ -34,8 +38,9 @@ Drawer::Drawer(sf::RenderWindow *window, sf::Mutex *mutex)
   this->_Ship3Anim = new sf::Sprite[5];
   this->_Ship4Anim = new sf::Sprite[5];
   this->_LaserAnim = new sf::Sprite[8];
+  this->_DecorAnim = new sf::Sprite[4];
 
-  fct = new pfSprite[19];
+  fct = new pfSprite[23];
   fct[0] = &Drawer::drowShip1;
   fct[1] = &Drawer::drowShip2;
   fct[2] = &Drawer::drowShip3;
@@ -55,6 +60,10 @@ Drawer::Drawer(sf::RenderWindow *window, sf::Mutex *mutex)
   fct[16] = &Drawer::drowMissil3;
   fct[17] = &Drawer::drowMissil4;
   fct[18] = &Drawer::drowLaser;
+  fct[19] = &Drawer::drowDecor1Top;
+  fct[20] = &Drawer::drowDecor1Down;
+  fct[21] = &Drawer::drowDecor2Top;
+  fct[22] = &Drawer::drowDecor2Down;
 }
 
 Drawer::~Drawer()
@@ -72,6 +81,10 @@ Drawer::~Drawer()
   delete this->_MissilImg;
   delete this->_ShipImg;
   delete this->_LaserImg;
+  delete this->_Decor1topImg;
+  delete this->_Decor1downImg;
+  delete this->_Decor2topImg;
+  delete this->_Decor2downImg;
 
   delete this->_XwingAnim;
   delete this->_MissilAnim;
@@ -89,6 +102,7 @@ Drawer::~Drawer()
   delete this->_Ship3Anim;
   delete this->_Ship4Anim;
   delete this->_LaserAnim;
+  delete this->_DecorAnim;
 }
 
 bool	Drawer::InitSprite()
@@ -129,6 +143,14 @@ bool	Drawer::SetImg()
   this->_ShipImg->CreateMaskFromColor(sf::Color(0,0,0));
   if (!this->_LaserImg->LoadFromFile("./sprites/r-typesheet2.png"))
     return (false);
+  if (!this->_Decor1topImg->LoadFromFile("./sprites/monster_revert.png"))
+    return (false);
+  if (!this->_Decor1downImg->LoadFromFile("./sprites/monster.png"))
+    return (false);
+  if (!this->_Decor2topImg->LoadFromFile("./sprites/bidule_revert.png"))
+    return (false);
+  if (!this->_Decor2downImg->LoadFromFile("./sprites/bidule.png"))
+    return (false);
   return true;
 }
 
@@ -167,6 +189,11 @@ void	Drawer::SetSprite()
     this->_MissilAnim[x].SetImage(*this->_MissilImg);
   for (x = 0; x < 8; ++x)
     this->_LaserAnim[x].SetImage(*this->_LaserImg);
+  this->_DecorAnim[0].SetImage(*this->_Decor1topImg);
+  this->_DecorAnim[1].SetImage(*this->_Decor1downImg);
+  this->_DecorAnim[2].SetImage(*this->_Decor2topImg);
+  this->_DecorAnim[3].SetImage(*this->_Decor2downImg);
+
 }
 
 void	Drawer::CutImg()
@@ -377,6 +404,42 @@ void	Drawer::drowFireBall(int x, int y, int status)
   this->_FireballAnim[status].SetPosition(x, y);
   this->_Mutex->Lock();
   this->Window->Draw(this->_FireballAnim[status]);
+  this->_Mutex->Unlock();
+}
+
+void	Drawer::drowDecor1Top(int x, int y, int status)
+{
+  status = status;
+  this->_DecorAnim[0].SetPosition(x, y);
+  this->_Mutex->Lock();
+  this->Window->Draw(this->_DecorAnim[0]);
+  this->_Mutex->Unlock();
+}
+
+void	Drawer::drowDecor1Down(int x, int y, int status)
+{
+  status = status;
+  this->_DecorAnim[1].SetPosition(x, y);
+  this->_Mutex->Lock();
+  this->Window->Draw(this->_DecorAnim[1]);
+  this->_Mutex->Unlock();
+}
+
+void	Drawer::drowDecor2Top(int x, int y, int status)
+{
+  status = status;
+  this->_DecorAnim[2].SetPosition(x, y);
+  this->_Mutex->Lock();
+  this->Window->Draw(this->_DecorAnim[2]);
+  this->_Mutex->Unlock();
+}
+
+void	Drawer::drowDecor2Down(int x, int y, int status)
+{
+  status = status;
+  this->_DecorAnim[3].SetPosition(x, y);
+  this->_Mutex->Lock();
+  this->Window->Draw(this->_DecorAnim[3]);
   this->_Mutex->Unlock();
 }
 

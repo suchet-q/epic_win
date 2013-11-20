@@ -1,13 +1,11 @@
 #include "ShotBig.h"
 
-
 ShotBig::ShotBig()
 {
 	this->_life = 3;
 	this->_entityType = BIG_SHOT;
 	this->_entityGlobalType = PLAYERMISSIL;
 }
-
 
 ShotBig::~ShotBig() {}
 

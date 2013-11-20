@@ -4,7 +4,7 @@
 #include		<fstream>		
 #include		"Shot.h"
 
-class ShotEnemy : Shot
+class ShotEnemy : public Shot
 {
 private:
 	unsigned int		_life;

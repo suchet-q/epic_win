@@ -31,7 +31,8 @@ enum			entityType
 	BALLS,
 	MEDIUM_SHOT,
 	BIG_SHOT,
-	BIGGEST_SHOT
+	BIGGEST_SHOT,
+	KIKOU_SHOT
   };
 
 class			Entity

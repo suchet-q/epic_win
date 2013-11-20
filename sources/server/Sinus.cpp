@@ -1,13 +1,8 @@
 #include "Sinus.h"
 
-Sinus::Sinus()
-{
-}
+Sinus::Sinus() {}
 
-
-Sinus::~Sinus()
-{
-}
+Sinus::~Sinus() {}
 
 float		Sinus::calculNewVecX(float x)
 {

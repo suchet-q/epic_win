@@ -1,6 +1,5 @@
 #include "ResourcesChecker.h"
 
-
 ResourcesChecker::ResourcesChecker()
 {
 	this->_typeMap[0] = ALIEN;
@@ -16,6 +15,7 @@ ResourcesChecker::ResourcesChecker()
 	this->_typeMap[10] = METROID;
 	this->_typeMap[11] = PLAYER1;
 	this->_typeMap[12] = XWING;
+	this->_typeMap[12] = KIKOU_SHOT;
 	this->_name.push_back("collisionTab/Alien.txt");
 	this->_name.push_back("collisionTab/bonus.txt");
 	this->_name.push_back("collisionTab/bullet_big.txt");
@@ -29,6 +29,7 @@ ResourcesChecker::ResourcesChecker()
 	this->_name.push_back("collisionTab/Metroid.txt");
 	this->_name.push_back("collisionTab/Ship.txt");
 	this->_name.push_back("collisionTab/Xwing.txt");
+	this->_name.push_back("collisionTab/bullet_kikou.txt");
 }
 
 
@@ -37,7 +38,7 @@ ResourcesChecker::~ResourcesChecker() {}
 std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 {
 	std::ifstream	file;
-	t_tab_hit_box			tmpHit;
+	t_tab_hit_box	tmpHit;
 	unsigned int	i;
 	unsigned int	j;
 	std::string				line;
@@ -60,7 +61,6 @@ std::map<entityType, t_tab_hit_box>		&ResourcesChecker::getFileResources()
 			ss.str("");
 			ss.clear();
 			ss.str(line);
-			//std::cout << "ss.str = " << ss.str() << std::endl;
 			if (i == 1)
 				ss >> tmpHit.x;
 			else if (i == 2)

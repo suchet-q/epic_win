@@ -1,13 +1,11 @@
 #include "ShotMedium.h"
 
-
 ShotMedium::ShotMedium()
 {
 	this->_life = 2;
 	this->_entityType = MEDIUM_SHOT;
 	this->_entityGlobalType = PLAYERMISSIL;
 }
-
 
 ShotMedium::~ShotMedium() {}
 

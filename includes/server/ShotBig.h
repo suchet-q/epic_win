@@ -1,7 +1,7 @@
 #pragma once
 #include		"Shot.h"
 
-class ShotBig : Shot
+class ShotBig : public Shot
 {
 private:
 	unsigned int _life;

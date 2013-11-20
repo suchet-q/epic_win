@@ -1,13 +1,11 @@
 #include "ShotSmall.h"
 
-
 ShotSmall::ShotSmall()
 {
 	this->_life = 1;
 	this->_entityType = BASIC_SHOT;
 	this->_entityGlobalType = PLAYERMISSIL;
 }
-
 
 ShotSmall::~ShotSmall() {}
 

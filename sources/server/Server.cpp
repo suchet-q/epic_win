@@ -18,6 +18,7 @@ bool			Server::init(int port)
 	catch (std::exception *e)
 	{
 		std::cout << e->what() << std::endl;
+		delete e;
 		return (false);
 	}
 	return true;

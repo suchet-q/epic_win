@@ -1,15 +1,15 @@
 #pragma once
-#include		"Shot.h"
+#include	"Shot.h"
 
-class ShotMedium : public Shot
+class ShotKikou : public Shot
 {
 private:
 	unsigned int _life;
 	entityType			_entityType;
 	entityGlobalType	_entityGlobalType;
 public:
-	ShotMedium();
-	~ShotMedium();
+	ShotKikou();
+	~ShotKikou();
 	entityType		getEntityType() const;
 	entityGlobalType	getEntityGlabalType() const;
 };

@@ -29,7 +29,7 @@ ResourcesChecker::ResourcesChecker()
 	this->_name.push_back("collisionTab/Metroid.txt");
 	this->_name.push_back("collisionTab/Ship.txt");
 	this->_name.push_back("collisionTab/Xwing.txt");
-	this->_name.push_back("collisionTab/bullet_kikou.txt");
+	//this->_name.push_back("collisionTab/bullet_kikou.txt");
 }
 
 

@@ -38,14 +38,14 @@ ResourcesChecker::ResourcesChecker()
 	this->_name.push_back("collisionTab/Ship.txt");
 	this->_name.push_back("collisionTab/Xwing.txt");
 	//this->_name.push_back("collisionTab/bullet_kikou.txt");
-	this->_name.push_back("collisionTab/monster.txt");
-	this->_name.push_back("collisionTab/monster_revert.txt");
-	this->_name.push_back("collisionTab/bibule.txt");
-	this->_name.push_back("collisionTab/bidule_revert.txt");
-	this->_name.push_back("collisionTab/platform.txt");
-	this->_name.push_back("collisionTab/platform_revert.txt");
-	this->_name.push_back("collisionTab/platform2.txt");
-	this->_name.push_back("collisionTab/platform2_revert.txt");
+//	this->_name.push_back("collisionTab/monster.txt");
+	//this->_name.push_back("collisionTab/monster_revert.txt");
+//	this->_name.push_back("collisionTab/bibule.txt");
+//	this->_name.push_back("collisionTab/bidule_revert.txt");
+//	this->_name.push_back("collisionTab/platform.txt");
+//	this->_name.push_back("collisionTab/platform_revert.txt");
+//	this->_name.push_back("collisionTab/platform2.txt");
+//	this->_name.push_back("collisionTab/platform2_revert.txt");
 }
 
 

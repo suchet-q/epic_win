@@ -13,6 +13,7 @@
 # include			"StructCommands.h"
 # include			"MetaClock.hpp"
 # include			"ResourcesChecker.h"
+#include			"LoadLib.h"
 
 # define			REFRESH_TIME	(33000)
 
@@ -59,6 +60,7 @@ private:
   bool					_isInit;
   std::map<Client *, t_rep_client>	_repClient;
   std::map<entityType, t_tab_hit_box> *_tabHitBox;
+  std::map<entityType, LoadLib<> *> _instanceGetter;
 
 public:
   Game(int, std::list<Client *> &);
@@ -72,7 +74,7 @@ public:
   int				getID();
   std::map<entityType, t_tab_hit_box> *getTabHitBox() const;
   void				setTabHitBox(std::map<entityType, t_tab_hit_box> &);
-
+  std::map<entityType, LoadLib<> *> getInstanceGetter() const;
 
   void				setResources(ResourcesGame const &);
   void				setID(int);
@@ -83,6 +85,8 @@ public:
   bool				unlockSocket();
   bool				lockAttribut();
   bool				unlockAttribut();
+
+  bool				loadAllLib();
 
   int				startGame(void *);
   bool				launchThread(void *arg);

@@ -12,7 +12,10 @@ LoadLibWindows::~LoadLibWindows(void)
 
 void		LoadLibWindows::loadLibrary(char const *name)
 {
-	this->_modul = LoadLibrary(name);
+	std::string realName(name);
+
+	realName += ".dll";
+	this->_modul = LoadLibrary(realName.c_str());
 }
 
 void		*LoadLibWindows::getLib(char const *name)

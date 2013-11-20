@@ -13,6 +13,6 @@ private:
 public:
 	Jumper();
 	~Jumper();
-	bool update(ResourcesGame &game, unsigned int time);
+	void update(std::list<Entity *> &);
 };
 

@@ -4,7 +4,7 @@ Jumper::Jumper() {}
 
 Jumper::~Jumper() {}
 
-bool		Jumper::update(std::list<Entity *> &)
+void		Jumper::update(std::list<Entity *> &)
 {
 	float	vecY;
 
@@ -13,7 +13,6 @@ bool		Jumper::update(std::list<Entity *> &)
 	and this->_sinus.calculNewVecY(y, vecY)*/
 	if (this->getInput() == 0)
 		this->setInput(LEFT);
-	return (true);
 }
 
 extern "C"

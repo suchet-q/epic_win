@@ -19,14 +19,15 @@ class		LoadLib
  private:
   T		_load;
  public:
- LoadLib();
- ~LoadLib();
+	 LoadLib() {}
+	 ~LoadLib() {}
+
  void		loadLibrary(char const *name)
  {
    this->_load.loadLibrary(name);
  }
  
- void		getLib(char const *name)
+ void		*getLib(char const *name)
  {
    return (this->_load.getLib(name));
  }
@@ -35,4 +36,14 @@ class		LoadLib
  {
    return (this->_load.closeLib());
  }
+
+ template<typename T>
+ T		*getInstance()
+ {
+	 T	*(*ptr)();
+
+	 ptr = static_cast<T *(*)()>(this->getLib("getInstance"));
+	 return ptr();
+ }
+
 };

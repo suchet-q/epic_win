@@ -12,7 +12,10 @@ LoadLibLinux::~LoadLibLinux(void)
 
 void		LoadLibLinux::loadLibrary(char const *name)
 {
-  this->_fd = dlopen(name, RTLD_LAZY);
+	std::string realName(name);
+
+	realName += ".so";
+  this->_fd = dlopen(realName.c_str(), RTLD_LAZY);
 }
 
 void		*LoadLibLinux::getLib(char const *name)

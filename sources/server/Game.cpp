@@ -54,6 +54,10 @@ void			Game::setResources(ResourcesGame const &resources) {
 }
 
 
+std::map<entityType, LoadLib<> *> Game::getInstanceGetter() const
+{
+	return this->_instanceGetter;
+}
 
 bool			Game::lockClient() {
   return this->_gameClient.Lock();
@@ -69,6 +73,29 @@ bool			Game::lockSocket() {
 
 bool			Game::unlockSocket() {
   return this->_gameSocket.Unlock();
+}
+
+bool		Game::loadAllLib()
+{
+	this->_instanceGetter[DRONE] = new LoadLib<>;
+	this->_instanceGetter[DRONE]->loadLibrary("libDrone");
+
+	this->_instanceGetter[ALIEN] = new LoadLib<>;
+	this->_instanceGetter[ALIEN]->loadLibrary("libAlien");
+
+	this->_instanceGetter[DOG] = new LoadLib<>;
+	this->_instanceGetter[DOG]->loadLibrary("libDog");
+
+	this->_instanceGetter[JUMPER] = new LoadLib<>;
+	this->_instanceGetter[JUMPER]->loadLibrary("libJumper");
+
+	this->_instanceGetter[XWING] = new LoadLib<>;
+	this->_instanceGetter[XWING]->loadLibrary("libXwing");
+
+	this->_instanceGetter[METROID] = new LoadLib<>;
+	this->_instanceGetter[METROID]->loadLibrary("libMetroid");
+
+	return true;
 }
 
 bool		Game::init()
@@ -92,6 +119,7 @@ bool		Game::init()
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
+	this->loadAllLib();
 	this->initBufClient();
 	this->initPlayersShip();
 	this->unlockClient();

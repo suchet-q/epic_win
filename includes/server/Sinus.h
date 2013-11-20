@@ -10,7 +10,6 @@ public:
 	Sinus();
 	~Sinus();
 	float		getValue(Coord<float> &coord);
-	float		calculNewVecX(float);
 	float		calculNewVecY(float, float);
 };
 

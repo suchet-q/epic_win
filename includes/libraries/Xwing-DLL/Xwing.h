@@ -2,17 +2,25 @@
 #include	<string.h>
 #include	<fstream>
 #include	<iostream>
+#include	<time.h>
 #include	"Ships.h"
 #include	"ResourcesGame.h"
 #include	"Sinus.h"
+#include	"Entities.h"
+#include	"Randum.h"
 
 class Xwing : public Ship
 {
 private:
+	int		_shoot;
+	int		_nbPlayer;
 	Sinus	_sinus;
+	float	_xplayer;
+	float	_yplayer; 
+	Randum	_rand;
 public:
 	Xwing();
 	~Xwing();
-	bool update(ResourcesGame &game, unsigned int time);
+	void update(std::list<Entity *> &entities);
 };
 

@@ -20,12 +20,12 @@ void		WidgetText::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> > 
 
 void		WidgetText::setPosition(std::list<sf::Vector2f> &pos)
 {
-	this->_text.SetPosition(pos.front());
+	this->_text.setPosition(pos.front());
 }
 
 void		WidgetText::setPosition(sf::Vector2f pos)
 {
-	this->_text.SetPosition(pos);
+	this->_text.setPosition(pos);
 }
 
 void		WidgetText::setAnimations(std::list<std::pair<sf::Vector2f, float> > &anims)
@@ -53,36 +53,31 @@ void		WidgetText::update(float elapsed, RenderWindow &win, int sheetNb)
 	win.drawText(this->_text);
 }
 
-void		WidgetText::setCenter(int x, int y)
-{
-	this->_text.SetCenter(static_cast<float>(x), static_cast<float>(y));
-}
-
 void		WidgetText::setText(const std::string &text)
 {
-	this->_text.SetText(text);
+	this->_text.setString(text);
 }
 
 void		WidgetText::setStyle(unsigned long style, int size, std::string const &font,
 				     unsigned char r, unsigned char g, unsigned char b)
 {
-	this->_text.SetStyle(style);
-	this->_text.SetSize(static_cast<float>(size));
+	this->_text.setStyle(style);
+	this->_text.setCharacterSize(static_cast<float>(size));
 	if (font != "")
 	{
-	  this->_mutex.Lock();
-	  this->_font.LoadFromFile(font);
-	  this->_text.SetFont(this->_font);
-	  this->_mutex.Unlock();
+	  this->_mutex.lock();
+	  this->_font.loadFromFile(font);
+	  this->_text.setFont(this->_font);
+	  this->_mutex.unlock();
 	}
-	this->_text.SetColor(sf::Color(r, g, b));
+	this->_text.setColor(sf::Color(r, g, b));
 }
 
 boost::any		WidgetText::refreshText(std::list<boost::any> args)
 {
 	std::string	text = boost::any_cast<std::string>(args.front());
 
-	this->_text.SetText(text);
+	this->_text.setString(text);
 	return (0);
 }
 
@@ -98,10 +93,10 @@ void		WidgetText::resetWidget()
 
 sf::FloatRect	WidgetText::getRect()
 {
-	return (this->_text.GetRect());
+	return (this->_text.getGlobalBounds());
 }
 
 int				WidgetText::getSize()
 {
-	return (static_cast<int>(this->_text.GetSize()));
+	return (static_cast<int>(this->_text.getString().getSize()));
 }

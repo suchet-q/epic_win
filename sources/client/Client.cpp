@@ -30,15 +30,13 @@ void		Client::menuResources()
 {
 	this->_menu.initParser(this->_parser);
 	this->_menu.loadResources(&this->_win);
-	this->_mutex.Lock();
 	this->_finishedLoading = true;
-	this->_mutex.Unlock();
 }
 
 void		Client::gameResources()
 {
 	while (!this->_finishedLoading)
-		sf::Sleep(0.25f);
+		;//sf::Sleep(0.25f);
 	this->_game.loadResources(&(this->_clientID));
 }
 
@@ -53,6 +51,7 @@ void		Client::update()
 			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
 	}
 	catch (RuntimeException &e) {
+		
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
 	}
@@ -60,9 +59,7 @@ void		Client::update()
 	{
 		try {
 			this->_win.clearWindow();
-			this->_win.lockMutex();
 			this->_menu.update(this->_win);
-			this->_win.unlockMutex();
 			this->_win.refreshWindow();
 			this->_win.handleEvents();
 			this->_socket.update(this->_parser);
@@ -91,21 +88,19 @@ void		Client::loadingScreen()
 	float				tmp;
 
 	this->_win.setActive(true);
-	loading.setStyle(sf::String::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
+	loading.setStyle(sf::Text::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
 	
-	clock.Reset();
+	clock.restart();
 	
 	while (this->_win.isRunning())
 	{
-		this->_mutex.Lock();
 		if (this->_finishedLoading)
 			break;
-		this->_mutex.Unlock();
-		tmp = clock.GetElapsedTime();
-		if (clock.GetElapsedTime() >= 1.2)
-			clock.Reset();
+		tmp = clock.getElapsedTime().asSeconds();
+		if (clock.getElapsedTime().asSeconds() >= 1.2)
+			clock.restart();
 		ss.str("");
 		ss << "Loading ";
 		while ((tmp -= 0.3f) >= 0.0f)
@@ -115,26 +110,23 @@ void		Client::loadingScreen()
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 	}
-	this->_mutex.Unlock();
 }
 
 void		Client::initializeThreads()
 {
-	sf::Thread	gameResources(&gameResourcesThread, this);
-	sf::Thread	menuResources(&menuResourcesThread, this);
-	sf::Thread	update(&updateThread, this);
+	sf::Thread	gameResources(&Client::gameResources, this);
+	sf::Thread	menuResources(&Client::menuResources, this);
+	sf::Thread	update(&Client::update, this);
 	
-	menuResources.Launch();
-	update.Launch();
-	std::cout << "JE DOIS PASSER QUNE FOIS" << std::endl;
-	gameResources.Launch();
-	std::cout << "PAREIL POUR MOI" << std::endl;
+	menuResources.launch();
+	update.launch();
+	gameResources.launch();
 
 	try {
 	  	this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
-		update.Terminate();
+		update.terminate();
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
 		std::cout << "Waiting Threads" << std::endl;

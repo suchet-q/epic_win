@@ -1,8 +1,8 @@
-#include "Music.h"
+/*#include "Music.h"
 
 Music::Music()
 {
-  if (!this->_musicMenu.OpenFromFile("Music/03-menu.ogg"))
+if (!this->_musicMenu.OpenFromFile("Music/03-menu.ogg"))
     return;
   if (!this->_musicLvlOne.OpenFromFile("Music/01-opening.ogg"))
     return;
@@ -92,3 +92,4 @@ void			Music::stopLoose()
 {
   this->_musicLoose.Stop();
 }
+*/

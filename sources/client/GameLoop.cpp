@@ -13,21 +13,12 @@ GameLoop::~GameLoop(void)
 {
 }
 
-void	GameLoop::lockResources(bool lock)
-{
-	if (lock)
-		this->_resources.Lock();
-	else
-		this->_resources.Unlock();
-}
-
 int		GameLoop::loadResources(void *arg)
 {
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
 
-	this->_resources.Lock();
 	try {
 		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(1024, 768)));
 		subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(1024, 0), sf::Vector2i(2048, 768)));
@@ -50,25 +41,23 @@ int		GameLoop::loadResources(void *arg)
 		this->_back2.setAnimations(anims);
 		this->_back2.addActualSheet(0);
 
-		this->_life.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		this->_life.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_life.addActualSheet(0);
 		this->_life.setPosition(sf::Vector2f(10, 0));
 
-		this->_score.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		this->_score.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_score.addActualSheet(0);
 		this->_score.setPosition(sf::Vector2f(10, 730));
 
-		this->_fps.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		this->_fps.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
 		this->_fps.addActualSheet(0);
 		this->_fps.setPosition(sf::Vector2f(900, 730));
 	}
 	catch (RuntimeException &e) {
 		this->_exception = e;
 		this->_exceptionOccured = true;
-		this->_resources.Unlock();
 		return (-1);
 	}
-	this->_resources.Unlock();
 	this->_idClient = (unsigned char *)arg;
 	return (0);
 }
@@ -179,25 +168,25 @@ boost::any	GameLoop::aff(std::list<boost::any> &args)
 		return (0);
 }
 
-void		GameLoop::handleInputs(const sf::Input &input, Parser &parser)
+void		GameLoop::handleInputs(Parser &parser)
 {
-	if (input.IsKeyDown(sf::Key::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		parser.addINP(*this->_idClient, INP_LEFT);
 	}
-	if (input.IsKeyDown(sf::Key::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		parser.addINP(*this->_idClient, INP_RIGHT);
 	}
-	if (input.IsKeyDown(sf::Key::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		parser.addINP(*this->_idClient, INP_UP);
 	}
-	if (input.IsKeyDown(sf::Key::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		parser.addINP(*this->_idClient, INP_DOWN);
 	}
-	if (input.IsKeyDown(sf::Key::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		parser.addINP(*this->_idClient, INP_FIRE);
 	}
@@ -228,25 +217,25 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	parser.addCallback(CMD_LIF, boost::bind(&GameLoop::life, this, _1));
 	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
 	
-	this->_manager = new Managewindow(win.getWindow(), win.getMutex());
+	this->_manager = new Managewindow(win.getWindow(), NULL);
 	this->_manager->InitDrawer();
 	
-	clock.Reset();
+	clock.restart();
 	while (win.isRunning() && !(parser.getStartUDP()))
 	{
 		win.clearWindow();
 		this->drawBackground(win, elapsed);
 		win.refreshWindow();
 		sock.update(parser);
-		elapsed = clock.GetElapsedTime();
+		elapsed = clock.getElapsedTime().asSeconds();
 		timer += elapsed;
 		if (timer >= 2.0)
 		{
 			timer -= 2.0;
 			parser.addIDT(*this->_idClient);
 		}
-		elapsed = clock.GetElapsedTime();
-		clock.Reset();
+		elapsed = clock.getElapsedTime().asSeconds();
+		clock.restart();
 	}
 	timer = 0.0;
 	while (win.isRunning())
@@ -258,14 +247,12 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		win.refreshWindow();
 		if ((timer += elapsed) >= 0.05)
 		{
-			win.lockMutex();
-			this->handleInputs(win.getInput(), parser);
-			win.unlockMutex();
+			this->handleInputs(parser);
 			timer = 0.0;
 		}
 		sock.update(parser);
-		elapsed = clock.GetElapsedTime();
-		clock.Reset();
+		elapsed = clock.getElapsedTime().asSeconds();
+		clock.restart();
 	}
 	return (true);
 }

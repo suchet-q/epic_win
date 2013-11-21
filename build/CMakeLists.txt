@@ -106,10 +106,10 @@ if ( MSVC )
 	
 	target_link_libraries(
 		R-Type
-		../../lib/sfml/windows/lib/vc2010/sfml-audio-s-d
-		../../lib/sfml/windows/lib/vc2010/sfml-graphics-s-d
-		../../lib/sfml/windows/lib/vc2010/sfml-window-s-d
-		../../lib/sfml/windows/lib/vc2010/sfml-system-s-d	
+		../../lib/sfml/windows/lib/sfml-audio-d
+		../../lib/sfml/windows/lib/sfml-graphics-d
+		../../lib/sfml/windows/lib/sfml-window-d
+		../../lib/sfml/windows/lib/sfml-system-d
 	)
 
 	endif ()
@@ -118,12 +118,11 @@ if ( MSVC )
 
 	target_link_libraries(
 		R-Type
-		../../lib/sfml/windows/lib/vc2010/sfml-audio-s
-		../../lib/sfml/windows/lib/vc2010/sfml-graphics-s
-		../../lib/sfml/windows/lib/vc2010/sfml-window-s
-		../../lib/sfml/windows/lib/vc2010/sfml-system-s
+		../../lib/sfml/windows/lib/sfml-audio
+		../../lib/sfml/windows/lib/sfml-graphics
+		../../lib/sfml/windows/lib/sfml-window
+		../../lib/sfml/windows/lib/sfml-system
 	)
-
 	endif ()
 
 	set_target_properties(R-Type PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../../bin )

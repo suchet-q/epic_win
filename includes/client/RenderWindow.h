@@ -17,14 +17,10 @@ protected:
 	bool				_getNick;
 	bool				_getMsg;
 	std::list<sf::Event>	_events;
-	sf::Mutex				_mutex;
-	sf::Mutex				_winMutex;
-	const sf::Input*		_lastInput;
 public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
 
-	sf::Mutex*              getMutex();
 	virtual bool		openWindow(int, int, const std::string &);
 	virtual bool		isRunning();
 	virtual void		closeWindow();
@@ -32,12 +28,9 @@ public:
 	virtual void		clearWindow();
 	virtual void		refreshWindow();
 	virtual void		drawSprite(sf::Sprite &);
-	virtual void		drawText(sf::String &);
+	virtual void		drawText(sf::Text &);
 	virtual void		handleClosing();
-	virtual void		lockMutex();
-	virtual void		unlockMutex();
 	virtual void   		setActive(bool);
-  const sf::Input&	getInput();
 	std::string	getNickname();
 	std::string	getMsg();
 	void		switchNick();

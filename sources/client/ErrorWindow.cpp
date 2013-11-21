@@ -16,10 +16,10 @@ void		ErrorWindow::initialize()
 	std::list<sf::Vector2f>								pos;
 
 	this->openWindow(450, 180, "error");
-	this->_win->Show(false);
-	this->_msg.setStyle(sf::String::Bold, 28, "Images/charlie_dotted.ttf", 255, 0, 0);
+	this->_win->setVisible(false);
+	this->_msg.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 0, 0);
 	this->_msg.addActualSheet(0);
-	this->_method.setStyle(sf::String::Bold, 30, "Images/charlie_dotted.ttf", 142, 142, 142);
+	this->_method.setStyle(sf::Text::Bold, 30, "Images/charlie_dotted.ttf", 142, 142, 142);
 	this->_method.addActualSheet(0);
 
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(200, 50)));
@@ -35,12 +35,12 @@ void		ErrorWindow::initialize()
 
 void		ErrorWindow::displayError(const std::string &method, const std::string &error)
 {
-	this->_win->Show(true);
-	this->_win->SetPosition(735, 450);
+	this->_win->setVisible(true);
+	this->_win->setPosition(sf::Vector2i(735, 450));
 	this->_method.setText(method);
-	this->_method.setPosition(sf::Vector2f((450 - this->_method.getRect().Right) / 2, 15));
+	this->_method.setPosition(sf::Vector2f((450 - (this->_method.getRect().left + this->_method.getRect().width)) / 2, 15));
 	this->_msg.setText(error);
-	this->_msg.setPosition(sf::Vector2f((450 - this->_msg.getRect().Right) / 2, 45));
+	this->_msg.setPosition(sf::Vector2f((450 - (this->_msg.getRect().left + this->_msg.getRect().width)) / 2, 45));
 
 	while (this->isRunning())
 	{
@@ -59,14 +59,9 @@ void		ErrorWindow::handleEvents()
 
 	if (this->isRunning())
 	{
-		this->lockMutex();
-		this->_winMutex.Lock();
-		this->_lastInput = &this->_win->GetInput();
-		this->_winMutex.Unlock();
-		 this->unlockMutex();
-		while (this->_win->GetEvent(event))
+		while (this->_win->pollEvent(event))
 		{
-			if (event.Type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed)
 			{
 				this->closeWindow();
 				break;

@@ -7,7 +7,7 @@
 class WidgetText : public AWidget
 {
 protected:
-  sf::String		_text;
+  sf::Text		_text;
   sf::Font		_font;
   float			_resetDelay;
   static sf::Mutex	_mutex;
@@ -24,11 +24,10 @@ protected:
   void			setPosition(sf::Vector2f);
   void			setStyle(unsigned long, int, std::string const & = "",
 				 unsigned char r = 255, unsigned char g = 255, unsigned char b = 255);
-  boost::any		refreshText(std::list<boost::any>);
+  boost::any	refreshText(std::list<boost::any>);
   void			setResetParameters(float);
   void			resetWidget();
   sf::FloatRect	getRect();
-  int				getSize();
-  void			setCenter(int, int);
+  int			getSize();
 };
 

@@ -7,41 +7,33 @@ Sprite::Sprite(void)
 	this->_initialPos.y = -1337;
 }
 
-
 Sprite::~Sprite(void)
 {
 }
 
 Sprite::Sprite(const Sprite &sprite)
 {
-	this->_sprite.SetImage(const_cast<Sprite &>(sprite).getImage());
+	this->_sprite.setTexture(const_cast<Sprite &>(sprite).getTexture());
 }
 
-void		Sprite::setImage(sf::Image &img)
+void		Sprite::setTexture(sf::Texture &img)
 {
-	this->_sprite.SetImage(img);
+	this->_sprite.setTexture(img);
 }
 
-sf::Image&	Sprite::getImage()
+sf::Texture&	Sprite::getTexture()
 {
 	return (this->_img);
 }
 
-void		Sprite::setMask(unsigned char r, unsigned char g , unsigned char b)
+bool		Sprite::loadFromFile(std::string const & filename)
 {
-	this->_img.CreateMaskFromColor(sf::Color(r, g, b));
-}
-
-bool		Sprite::loadFromFile(std::string const & filename, bool useMask, unsigned char r, unsigned char g , unsigned char b)
-{
-	if (!(this->_img.LoadFromFile(filename)))
+	if (!(this->_img.loadFromFile(filename)))
 	{
 		throw RuntimeException("[Sprite::loadFromFile]", "Can't load " + filename);
 		return (false);
 	}
-	if (useMask)
-		this->_img.CreateMaskFromColor(sf::Color(r, g, b));
-	this->_sprite.SetImage(this->_img);
+	this->_sprite.setTexture(this->_img);
 	return (true);
 }
 
@@ -53,14 +45,14 @@ void		Sprite::draw(RenderWindow &window)
 void		Sprite::place(unsigned char flags, sf::Vector2f position, sf::Vector2f translate, sf::Vector2f scale, float angle)
 {
 	if ((flags & SP_TRS) == SP_TRS)
-		this->_sprite.Move(translate);
+		this->_sprite.move(translate);
 	if ((flags & SP_SCL) == SP_SCL)
-		this->_sprite.Scale(scale);
+		this->_sprite.scale(scale);
 	if ((flags & SP_ROT) == SP_ROT)
-		this->_sprite.Rotate(angle);
+		this->_sprite.rotate(angle);
 	if ((flags & SP_POS) == SP_POS)
 	{
-		this->_sprite.SetPosition(position);
+		this->_sprite.setPosition(position);
 		this->_floatPos.x = position.x;
 		this->_floatPos.y = position.y;
 		if (this->_initialPos.x == -1337 && this->_initialPos.y == -1337)
@@ -70,29 +62,29 @@ void		Sprite::place(unsigned char flags, sf::Vector2f position, sf::Vector2f tra
 
 void		Sprite::resetPosition()
 {
-	this->_sprite.SetPosition(this->_initialPos);
+	this->_sprite.setPosition(this->_initialPos);
 	this->_floatPos.x = this->_initialPos.x;
 	this->_floatPos.y = this->_initialPos.y;
 }
 
 void		Sprite::setAlpha(unsigned char level)
 {
-	this->_sprite.SetColor(sf::Color(255, 255, 255, level));
+	this->_sprite.setColor(sf::Color(255, 255, 255, level));
 }
 
-sf::Vector2f	Sprite::getSize()
+sf::FloatRect	Sprite::getSize()
 {
-	return (this->_sprite.GetSize());
+	return (this->_sprite.getGlobalBounds());
 }
 
 sf::Vector2f	Sprite::getPosition()
 {
-	return (this->_sprite.GetPosition());
+	return (this->_sprite.getPosition());
 }
 
 void			Sprite::cut(sf::Vector2i begin, sf::Vector2i end)
 {
-	this->_sprite.SetSubRect(sf::IntRect(begin.x, begin.y, end.x, end.y));
+	this->_sprite.setTextureRect(sf::IntRect(begin.x, begin.y, end.x, end.y));
 }
 
 void			Sprite::queueAnimation(sf::Vector2f destination, float time)

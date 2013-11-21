@@ -35,14 +35,6 @@ GameMenu::~GameMenu(void)
 	//delete this->_lobbiesLabel;
 }
 
-void		GameMenu::lockResources(bool lock)
-{
-	if (lock)
-		this->_resources.Lock();
-	else
-		this->_resources.Unlock();
-}
-
 void		GameMenu::loadImages()
 {
   //	sf::Context	context;
@@ -69,7 +61,6 @@ void		GameMenu::loadImages()
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
-	this->_resources.Lock();
 	logo->loadImage("Images/rtype-logo.bmp");
 	logo->loadSprites(subRects);
 	logo->setPosition(pos);
@@ -107,7 +98,6 @@ void		GameMenu::loadImages()
 	transition->addActualSheet(1);
 	transition->addActualSheet(2);
 	transition->addActualSheet(3);
-	this->_resources.Unlock();
 	this->_widgets.push_back(logo);
 	this->_widgets.push_back(transition);
 	this->_widgets.push_back(fullLogo);
@@ -158,7 +148,6 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	pos.push_back(sf::Vector2f(WIN_X, WIN_Y));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 100, WIN_Y / 2 - 25 + 80), 0.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 100, WIN_Y / 4 - 25 + 80), 0.5f));
-	this->_resources.Lock();
 	play->loadImage("Images/play.png");
 	play->loadSprites(subRects);
 	play->setPosition(pos);
@@ -236,8 +225,6 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	musicOff->setCallback("click", musicOn, &WidgetSwitch::setClickable);
 	musicOff->setCallback("click", musicOn, &WidgetSwitch::cancelAnimations);
 	musicOff->setCallback("click", SoundPool::getInstance(), &SoundPool::enableMusic);
-	this->_resources.Unlock();
-	this->_resources.Lock();
 	anims.clear();
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(WIN_X / 2 - 200, WIN_Y / 2 - 25 + 80), 0.5f));
 	soundOn->loadImage("Images/soundOn.png");
@@ -327,8 +314,6 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	prev->setAnimations(anims);
 	prev->addActualSheet(2);
 	prev->setCallback("animationFinished", prev, &WidgetButton::setClickable);
-	this->_resources.Unlock();
-	this->_resources.Lock();
 	pos.clear();
 	pos.push_back(sf::Vector2f(302, 768 + 50));
 	pos.push_back(sf::Vector2f(WIN_X, WIN_Y));
@@ -399,7 +384,6 @@ void		GameMenu::loadButtons(RenderWindow *win)
 	statFrame->setAnimations(anims);
 	statFrame->addActualSheet(2);
 
-	this->_resources.Unlock();
 	sheet->addWidgetToSheet(0, play,  &WidgetButton::resetWidget);
 	sheet->addWidgetToSheet(0, play,  &WidgetButton::setUnclickable);
 	sheet->addWidgetToSheet(0, options,  &WidgetButton::resetWidget);
@@ -466,18 +450,17 @@ void		GameMenu::loadText(RenderWindow *win)
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<sf::Vector2f>								pos;
 	Sheets *sheet = &(this->_sheets);
-	this->_resources.Lock();
 	statistics->setText("Statistics : ");
 	statistics->setPosition(sf::Vector2f(740, 50));
 	statistics->addActualSheet(2);
-	statistics->setStyle(sf::String::Bold, 30, "Images/charlie_dotted.ttf", 0, 0, 0);
+	statistics->setStyle(sf::Text::Bold, 30, "Images/charlie_dotted.ttf", 0, 0, 0);
 	statistics->setDelay(1.2f);
 	statistics->setResetParameters(1.2f);
 
 	players->setText("Online players : 1");
 	players->setPosition(sf::Vector2f(740, 90));
 	players->addActualSheet(2);
-	players->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+	players->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 	players->setDelay(1.2f);
 	players->setResetParameters(1.2f);
 	this->_playersLabel = players;
@@ -485,7 +468,7 @@ void		GameMenu::loadText(RenderWindow *win)
 	lobbies->setText("Open lobbies : 0");
 	lobbies->setPosition(sf::Vector2f(740, 125));
 	lobbies->addActualSheet(2);
-	lobbies->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+	lobbies->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 	lobbies->setDelay(1.2f);
 	lobbies->setResetParameters(1.2f);
 	this->_lobbiesLabel = lobbies;
@@ -493,14 +476,14 @@ void		GameMenu::loadText(RenderWindow *win)
 	highscore->setText("High score : 1337");
 	highscore->setPosition(sf::Vector2f(740, 160));
 	highscore->addActualSheet(2);
-	highscore->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+	highscore->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 	highscore->setDelay(1.2f);
 	highscore->setResetParameters(1.2f);
 
 	nickname->setText("Nickname : ");
 	nickname->setPosition(sf::Vector2f(740, 240));
 	nickname->addActualSheet(2);
-	nickname->setStyle(sf::String::Bold, 30, "Images/charlie_dotted.ttf", 0, 0, 0);
+	nickname->setStyle(sf::Text::Bold, 30, "Images/charlie_dotted.ttf", 0, 0, 0);
 	nickname->setDelay(1.2f);
 	nickname->setResetParameters(1.2f);
 
@@ -508,7 +491,7 @@ void		GameMenu::loadText(RenderWindow *win)
 	this->_input->setText("");
 	this->_input->setPosition(sf::Vector2f(752, 278));
 	this->_input->addActualSheet(2);
-	this->_input->setStyle(sf::String::Bold, 22, "Images/charlie_dotted.ttf", 0, 0, 0);
+	this->_input->setStyle(sf::Text::Bold, 22, "Images/charlie_dotted.ttf", 0, 0, 0);
 	this->_input->setDelay(1.2f);
 	this->_input->setResetParameters(1.2f);
 
@@ -529,7 +512,7 @@ void		GameMenu::loadText(RenderWindow *win)
 	input->setCallback("click", win, &RenderWindow::switchNick);
 	input->setCallback("click", this->_typingBar, &WidgetTypingBar::switchActivate);
 	input->setCallback("click", this, &GameMenu::setNickname);
-	this->_resources.Unlock();
+
 	sheet->addWidgetToSheet(2, statistics, &WidgetText::resetWidget);
 	sheet->addWidgetToSheet(2, highscore, &WidgetText::resetWidget);
 	sheet->addWidgetToSheet(2, lobbies, &WidgetText::resetWidget);
@@ -567,7 +550,6 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(545, 50)));
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(545, 0), sf::Vector2i(1090, 50)));
-	this->_resources.Lock();
 	for (int i = 0; i <= 10; ++i)
 	{
 		lobbyOff = new WidgetSwitch;
@@ -600,7 +582,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 		text->setText("");
 		text->setPosition(sf::Vector2f(125.0f, static_cast<float>(58 + i * 54)));
 		text->addActualSheet(2);
-		text->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+		text->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 		text->setDelay(1.2f);
 		text->setResetParameters(1.2f);
 
@@ -613,7 +595,6 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 		this->_lobbiesText.push_back(text);
 		this->_lobbiesFrame.push_back(std::pair<WidgetSwitch *, WidgetSwitch *>(lobbyOn, lobbyOff));	
 	}
-	this->_resources.Unlock();
 	for (it = this->_lobbiesFrame.begin(); it != this->_lobbiesFrame.end(); ++it)
 		for (it2 = this->_lobbiesFrame.begin(); it2 != this->_lobbiesFrame.end(); ++it2)
 			if (it != it2)
@@ -621,7 +602,6 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 				(*it).first->setCallback("click", (*it2).second, &WidgetSwitch::setUnvisible);
 				(*it).first->setCallback("click", (*it2).first, &WidgetSwitch::setVisible);
 			}
-	this->_resources.Lock();
 	for (int i = 0; i <= 3; ++i)
 	{
 		lobbyOn = new WidgetSwitch;
@@ -641,7 +621,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 		text->setText("");
 		text->setPosition(sf::Vector2f(125.0f, static_cast<float>(58 + i * 54)));
 		text->addActualSheet(3);
-		text->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+		text->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 		text->setDelay(1.2f);
 		text->setResetParameters(1.2f);
 
@@ -659,7 +639,7 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 		text->setText("");
 		text->setPosition(sf::Vector2f(135.0f, static_cast<float>(345 + i * 30)));
 		text->addActualSheet(3);
-		text->setStyle(sf::String::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
+		text->setStyle(sf::Text::Bold, 25, "Images/charlie_dotted.ttf", 0, 0, 0);
 		text->setDelay(1.2f);
 		text->setResetParameters(1.2f);
 
@@ -667,8 +647,6 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 
 		this->_msgText.push_back(text);
 	}
-	this->_resources.Unlock();
-	this->_resources.Lock();
 	subRects.clear();
 	pos.clear();
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(1000, 800)));
@@ -807,10 +785,9 @@ void		GameMenu::loadLobbies(WidgetButton *join, RenderWindow *win)
 	this->_inputMsg->setText("");
 	this->_inputMsg->setPosition(sf::Vector2f(128, 609));
 	this->_inputMsg->addActualSheet(3);
-	this->_inputMsg->setStyle(sf::String::Bold, 22, "Images/charlie_dotted.ttf", 0, 0, 0);
+	this->_inputMsg->setStyle(sf::Text::Bold, 22, "Images/charlie_dotted.ttf", 0, 0, 0);
 	this->_inputMsg->setDelay(1.2f);
 	this->_inputMsg->setResetParameters(1.2f);
-	this->_resources.Unlock();
 	sheet->addWidgetToSheet(3, lobby_topright, &WidgetImage::resetWidget);
 	sheet->addWidgetToSheet(3, lobby_botright, &WidgetImage::resetWidget);
 	sheet->addWidgetToSheet(3, lobby_botleft, &WidgetImage::resetWidget);
@@ -1105,7 +1082,7 @@ void		GameMenu::sendMsg()
 
 void		GameMenu::rstClock()
 {
-	this->_clock.Reset();
+	this->_clock.restart();
 }
 
 void		GameMenu::joinLobby()
@@ -1158,9 +1135,9 @@ void		GameMenu::leaveLobby()
 
 void		GameMenu::checkInputs(RenderWindow &win)
 {
-	const sf::Input& input = win.getInput();
+	//const sf::Input& input = win.getInput();
 
-	if (input.IsKeyDown(sf::Key::Escape))
+/*	if (input.IsKeyDown(sf::Key::Escape))
 	{
 		std::list<AWidget *>::iterator		it;
 		std::list<std::pair<WidgetSwitch *, WidgetSwitch *> >::iterator		it2;
@@ -1190,8 +1167,8 @@ void		GameMenu::checkInputs(RenderWindow &win)
 			this->_sheetSkipped = true;
 			this->_sheetSkippedval = this->_sheetNb;
 		}
-	}
-	if (!(input.IsKeyDown(sf::Key::Return)))
+	}*/
+	/*if (!(input.IsKeyDown(sf::Key::Return)))
 		this->_antiSpam = false;
 	if (input.IsKeyDown(sf::Key::Return) && !(this->_antiSpam))
 	{
@@ -1207,12 +1184,12 @@ void		GameMenu::checkInputs(RenderWindow &win)
 			this->setNickname();
 		}
 
-	}
+	}*/
 }
 
 void		GameMenu::update(RenderWindow &window)
 {
-	float	elapsed = this->_clock.GetElapsedTime();
+	float	elapsed = this->_clock.getElapsedTime().asSeconds();
 	std::list<AWidget *>::iterator		it;
 	std::list<std::pair<WidgetSwitch *, WidgetSwitch *> >::iterator		it2;
 	std::list<WidgetText *>::iterator									it3;
@@ -1224,7 +1201,7 @@ void		GameMenu::update(RenderWindow &window)
 	(window.msgActive()) ? (rect = this->_inputMsg->getRect()) : (rect = this->_input->getRect());
 	this->_input->setText(window.getNickname());
 	this->_inputMsg->setText(window.getMsg());
-	this->_typingBar->setPosition(sf::Vector2f(rect.Right, rect.Top));
+	this->_typingBar->setPosition(sf::Vector2f(rect.left + rect.width, rect.top));
 	this->checkInputs(window);
 	
 	for (it = this->_widgets.begin(); it != this->_widgets.end(); ++it)

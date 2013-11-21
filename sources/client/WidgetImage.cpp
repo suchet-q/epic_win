@@ -18,11 +18,10 @@ void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> >
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
-	sprite->loadFromFile(this->_img, true, 0, 0, 0);
+	sprite->loadFromFile(this->_img);
 	for (it = subRects.begin(); it != subRects.end(); ++it)
 	{
-		sprite->setImage(original->getImage());
-		sprite->setMask(0, 0, 0);
+		sprite->setTexture(original->getTexture());
 		sprite->cut((*it).first, (*it).second);
 		this->_sprites.push_back(sprite);
 		if ((*it) != subRects.back())
@@ -36,12 +35,11 @@ void		WidgetImage::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> >
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
-	sprite->loadFromFile(this->_img, true, r, g, b);
+	sprite->loadFromFile(this->_img);
 	
 	for (it = subRects.begin(); it != subRects.end(); ++it)
 	{
-		sprite->setImage(original->getImage());
-		sprite->setMask(r, g, b);
+		sprite->setTexture(original->getTexture());
 		sprite->cut((*it).first, (*it).second);
 		this->_sprites.push_back(sprite);
 		if ((*it) != subRects.back())

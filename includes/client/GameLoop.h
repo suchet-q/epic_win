@@ -30,7 +30,6 @@ class GameLoop
 	void		drawHUB(RenderWindow &, float);
 	void		drawEntities(RenderWindow &, float);
 	void		drawBackground(RenderWindow &, float);
-	void		handleInputs(sf::Input &, Parser &);
 public:
 	GameLoop(void);
 	~GameLoop(void);
@@ -41,7 +40,7 @@ public:
 	void		exception();
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
 	int			loadResources(void *);
-	void		handleInputs(const sf::Input &, Parser &);
+	void		handleInputs(Parser &);
 	void		lockResources(bool);
 };
 

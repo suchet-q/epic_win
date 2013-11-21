@@ -24,12 +24,11 @@ void		WidgetButton::loadSprites(std::list<std::pair<sf::Vector2i, sf::Vector2i> 
 	Sprite	*sprite = new Sprite;
 	Sprite	*original = sprite;
 
-	sprite->loadFromFile(this->_img, true, 0, 255, 0);
+	sprite->loadFromFile(this->_img);
 	
 	for (it = subRects.begin(); it != subRects.end(); ++it)
 	{
-		sprite->setImage(original->getImage());
-		sprite->setMask(0, 255, 0);
+		sprite->setTexture(original->getTexture());
 		sprite->cut((*it).first, (*it).second);
 		this->_sprites.push_back(sprite);
 		if ((*it) != subRects.back())
@@ -62,12 +61,12 @@ void		WidgetButton::setAnimations(std::list<std::pair<sf::Vector2f, float> > &an
 
 void		WidgetButton::handleInputs(RenderWindow &win)
 {
-	const sf::Input& input = win.getInput();
-	sf::Vector2f	position, size;
+	sf::Vector2f	position;
+	sf::FloatRect	size;
 
 	(this->_hovered) ? (position = this->_sprites[1]->getPosition()) : (position = this->_sprites[0]->getPosition());
 	size = this->_sprites[0]->getSize();
-	if (input.GetMouseX() >= position.x && input.GetMouseX() <= (position.x + size.x) &&
+	/*if (input.GetMouseX() >= position.x && input.GetMouseX() <= (position.x + size.x) &&
 		input.GetMouseY() >= position.y && input.GetMouseY() <= (position.y + size.y))
 	{
 		if (!(this->_hovered))
@@ -87,7 +86,7 @@ void		WidgetButton::handleInputs(RenderWindow &win)
 	{
 		this->_hovered = false;
 		this->triggerCallback("unhover");
-	}
+	}*/
 }
 
 void		WidgetButton::update(float elapsed, RenderWindow &win, int sheetNb)

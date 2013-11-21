@@ -1,5 +1,5 @@
 # pragma once
-
+/*
 # include <SFML/Audio.hpp>
 
 class		Music
@@ -40,3 +40,4 @@ class		Music
   void		loopLvlOne();
   void		loopLoose();
 };
+*/

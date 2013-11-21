@@ -16,18 +16,18 @@ void		SoundPool::initialize()
 	this->_soundOn = true;
 	this->_musicOn = true;
 
-	this->_soundsBuffer["ButtonHover"].LoadFromFile("Sounds/ButtonHover.ogg");
-	this->_soundsBuffer["ButtonClicked"].LoadFromFile("Sounds/ButtonClicked.ogg");
+	this->_soundsBuffer["ButtonHover"].loadFromFile("Sounds/ButtonHover.ogg");
+	this->_soundsBuffer["ButtonClicked"].loadFromFile("Sounds/ButtonClicked.ogg");
 }
 
 void		SoundPool::playSound(const std::string &name, const std::string &bufferName, float volume, bool loop)
 {
 	if (this->_soundOn)
 	{
-		this->_sounds[name].SetBuffer(this->_soundsBuffer[bufferName]);
-		this->_sounds[name].SetVolume(volume);
-		this->_sounds[name].SetLoop(loop);
-		this->_sounds[name].Play();
+		this->_sounds[name].setBuffer(this->_soundsBuffer[bufferName]);
+		this->_sounds[name].setVolume(volume);
+		this->_sounds[name].setLoop(loop);
+		this->_sounds[name].play();
 	}
 }
 

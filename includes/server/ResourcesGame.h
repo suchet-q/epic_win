@@ -4,6 +4,7 @@
 # include			<iostream>
 # include			<string>
 
+# include			"ResourcesChecker.h"
 # include			"EntitiesPoolContainer.hpp"
 # include			"ShipPoolContainer.hpp"
 # include			"Ships.h"
@@ -19,6 +20,7 @@ private:
   ShipPoolContainer<>		_shipPool;
   std::list<Entity *>		_entityList;
   std::list<Ship *>		_shipList;
+  std::map<entityType, t_tab_hit_box> *_tabHitBox;
 
 public:
   ResourcesGame();
@@ -29,5 +31,7 @@ public:
   EntitiesPoolContainer<>&	getEntitiesPool();
   ShipPoolContainer<>&		getShipPool();
   Pool<PlayerShip, 4>&		getPlayerShipPool();
+  std::map<entityType, t_tab_hit_box> &getTabHitBox();
+  void						setTabHitBox(std::map<entityType, t_tab_hit_box> *);
   void				createPlayerShip();
 };

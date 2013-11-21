@@ -1,10 +1,10 @@
 #pragma once
 
-# include			"ResourcesGame.h"
+#include			"ResourcesGame.h"
 
-# define			SCREEN_WIDTH		(1024)
-# define			SRCEEN_HEIGHT		(768)
-# define			OUT_SCREEN_SIZE		(500)	
+#define			SCREEN_WIDTH		(1024)
+#define			SCREEN_HEIGHT		(768)
+#define			OUT_SCREEN_SIZE		(500)	
 
 class				Collision
 {
@@ -16,10 +16,11 @@ public:
   ~Collision();
 
   void				setResources(ResourcesGame *resources);
-  
+  void				manageDepop();
+  void				checkPlayerInScreen();
   void				checkCollisions();
   void				checkEntitiesCollisions();
-  void				checkCollisionsAdvenced(std::list<Entity *>::iterator it_o,
+  void				checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator it_o,
 							std::list<Entity *>::iterator it_t);
   void				collision(std::list<Entity *>::iterator it_o,
 					  std::list<Entity *>::iterator it_t);

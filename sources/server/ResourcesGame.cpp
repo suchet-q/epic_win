@@ -5,6 +5,15 @@ ResourcesGame::ResourcesGame() {}
 
 ResourcesGame::~ResourcesGame() {}
 
+std::map<entityType, t_tab_hit_box> &ResourcesGame::getTabHitBox()
+{
+	return *this->_tabHitBox;
+}
+
+void				ResourcesGame::setTabHitBox(std::map<entityType, t_tab_hit_box> *map)
+{
+	this->_tabHitBox = map;
+}
 
 std::list<Entity *>&	ResourcesGame::getEntityList() {
   return _entityList;

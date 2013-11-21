@@ -59,7 +59,6 @@ private:
   ResourcesGame				_resources;
   bool					_isInit;
   std::map<Client *, t_rep_client>	_repClient;
-  std::map<entityType, t_tab_hit_box> *_tabHitBox;
   std::map<entityType, LoadLib<> *> _instanceGetter;
 
 public:
@@ -72,7 +71,7 @@ public:
   std::list<Client *>&		getClients();
   bool				getIsInit() const;
   int				getID();
-  std::map<entityType, t_tab_hit_box> *getTabHitBox() const;
+  std::map<entityType, t_tab_hit_box> *getTabHitBox();
   void				setTabHitBox(std::map<entityType, t_tab_hit_box> &);
   std::map<entityType, LoadLib<> *> getInstanceGetter() const;
 

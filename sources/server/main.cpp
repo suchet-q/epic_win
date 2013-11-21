@@ -25,7 +25,10 @@ int		main(int ac, char **av)
   buffer.str(av[1]);
   buffer >> port;
   if (!server.init(port)
-      || !server.loop())
-    return (-1);
-  return (0);
+	  || !server.loop())
+  {
+	  system("PAUSE");
+	  return (-1);
+  }
+	return (0);
 }

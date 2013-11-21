@@ -17,6 +17,7 @@ bool			Server::init(int port)
 	}
 	catch (std::exception *e)
 	{
+		std::cout << "Error : cannot open file or file are corrupted" << std::endl;
 		std::cout << e->what() << std::endl;
 		delete e;
 		return (false);

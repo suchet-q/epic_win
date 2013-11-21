@@ -1,5 +1,5 @@
 #pragma once
-#include		<Windows.h>
+#include		"WindowsInclude.h"
 #include		<iostream>
 #include		<string>
 

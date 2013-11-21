@@ -15,14 +15,14 @@ Game::Game() {}
 
 Game::~Game() {}
 
-std::map<entityType, t_tab_hit_box> *Game::getTabHitBox() const
+std::map<entityType, t_tab_hit_box> *Game::getTabHitBox()
 {
-	return this->_tabHitBox;
+	return &this->_resources.getTabHitBox();
 }
 
 void				Game::setTabHitBox(std::map<entityType, t_tab_hit_box> &tab)
 {
-	this->_tabHitBox = &tab;
+	this->_resources.setTabHitBox(&tab);
 }
 
 std::list<Client *>&	Game::getClients() {

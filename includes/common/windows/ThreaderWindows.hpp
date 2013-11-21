@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include "WindowsInclude.h"
 
 #define		JOIN_ERROR (-1337)
 

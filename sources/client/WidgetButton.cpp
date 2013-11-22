@@ -66,15 +66,15 @@ void		WidgetButton::handleInputs(RenderWindow &win)
 
 	(this->_hovered) ? (position = this->_sprites[1]->getPosition()) : (position = this->_sprites[0]->getPosition());
 	size = this->_sprites[0]->getSize();
-	/*if (input.GetMouseX() >= position.x && input.GetMouseX() <= (position.x + size.x) &&
-		input.GetMouseY() >= position.y && input.GetMouseY() <= (position.y + size.y))
+	if (sf::Mouse::getPosition(*win.getWindow()).x >= position.x && sf::Mouse::getPosition(*win.getWindow()).x <= (position.x + size.width) &&
+		sf::Mouse::getPosition(*win.getWindow()).y >= position.y && sf::Mouse::getPosition(*win.getWindow()).y <= (position.y + size.height))
 	{
 		if (!(this->_hovered))
 		{
 			this->_hovered = true;
 			this->triggerCallback("hover");
 		}
-		if (input.IsMouseButtonDown(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			this->_clickPushed = true;
 		else if (this->_clickPushed)
 		{
@@ -86,7 +86,7 @@ void		WidgetButton::handleInputs(RenderWindow &win)
 	{
 		this->_hovered = false;
 		this->triggerCallback("unhover");
-	}*/
+	}
 }
 
 void		WidgetButton::update(float elapsed, RenderWindow &win, int sheetNb)

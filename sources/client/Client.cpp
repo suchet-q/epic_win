@@ -11,21 +11,6 @@ Client::~Client(void)
 {
 }
 
-void		menuResourcesThread(void *client)
-{
-	(static_cast<Client *>(client))->menuResources();
-}
-
-void		gameResourcesThread(void *client)
-{
-	(static_cast<Client *>(client))->gameResources();
-}
-
-void		updateThread(void *client)
-{
-	(static_cast<Client *>(client))->update();
-}
-
 void		Client::menuResources()
 {
 	this->_menu.initParser(this->_parser);
@@ -35,15 +20,12 @@ void		Client::menuResources()
 
 void		Client::gameResources()
 {
-	while (!this->_finishedLoading)
-		;//sf::Sleep(0.25f);
 	this->_game.loadResources(&(this->_clientID));
 }
 
 void		Client::update()
 {
 	this->loadingScreen();
-	this->_menu.rstClock();
 	try {
 		this->_menu.exception();
 		//this->_game.exception();		A mettre avant laancement game
@@ -55,6 +37,7 @@ void		Client::update()
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
 	}
+	this->_menu.rstClock();
 	while (this->_win.isRunning() && !(this->_menu.finished()))
 	{
 		try {
@@ -86,12 +69,15 @@ void		Client::loadingScreen()
 	std::stringstream	ss;
 	sf::Clock			clock;
 	float				tmp;
-
+	sf::Thread			gameResources(&Client::gameResources, this);
+	sf::Thread			menuResources(&Client::menuResources, this);
+	
 	this->_win.setActive(true);
 	loading.setStyle(sf::Text::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
-	
+	gameResources.launch();
+	menuResources.launch();
 	clock.restart();
 	
 	while (this->_win.isRunning())
@@ -114,14 +100,9 @@ void		Client::loadingScreen()
 
 void		Client::initializeThreads()
 {
-	sf::Thread	gameResources(&Client::gameResources, this);
-	sf::Thread	menuResources(&Client::menuResources, this);
 	sf::Thread	update(&Client::update, this);
-	
-	menuResources.launch();
-	update.launch();
-	gameResources.launch();
 
+	update.launch();
 	try {
 	  	this->_win.handleClosing();
 	}

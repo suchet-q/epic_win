@@ -42,7 +42,7 @@ void		GameMenu::loadImages()
 	std::list<std::pair<sf::Vector2f, float> >			anims;
 	std::list<sf::Vector2f>								pos;
 	WidgetImage*	transition = new WidgetImage, *logo = new WidgetImage, *fullLogo = new WidgetImage;
-
+	std::cout << "coucou" << std::endl;
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(105, 153)));
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(105, 0), sf::Vector2i(210, 153)));
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(210, 0), sf::Vector2i(315, 153)));
@@ -61,7 +61,7 @@ void		GameMenu::loadImages()
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
 	anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f((WIN_X - 570) / 2, WIN_Y / 2 - 75), 2.5f));
-	logo->loadImage("Images/rtype-logo.bmp");
+	logo->loadImage("Images/rtype-logo.png");
 	logo->loadSprites(subRects);
 	logo->setPosition(pos);
 	logo->setAnimations(anims);
@@ -80,7 +80,7 @@ void		GameMenu::loadImages()
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(640, 153)));
 	pos.clear();
 	pos.push_back(sf::Vector2f(WIN_X / 2 - 320, 10));
-	fullLogo->loadImage("Images/rtype-logo.bmp");
+	fullLogo->loadImage("Images/rtype-logo.png");
 	fullLogo->loadSprites(subRects);
 	fullLogo->setPosition(pos);
 	fullLogo->setTransitionTime(2.0, false);
@@ -90,7 +90,7 @@ void		GameMenu::loadImages()
 
 	subRects.clear();
 	subRects.push_back(std::pair<sf::Vector2i, sf::Vector2i>(sf::Vector2i(0, 0), sf::Vector2i(WIN_X, WIN_Y)));
-	transition->loadImage("Images/transition.bmp");
+	transition->loadImage("Images/transition.png");
 	transition->loadSprites(subRects);
 	transition->setTransitionTime(2.0, true);
 	transition->setDelay(5.0);
@@ -1137,7 +1137,7 @@ void		GameMenu::checkInputs(RenderWindow &win)
 {
 	//const sf::Input& input = win.getInput();
 
-/*	if (input.IsKeyDown(sf::Key::Escape))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
 		std::list<AWidget *>::iterator		it;
 		std::list<std::pair<WidgetSwitch *, WidgetSwitch *> >::iterator		it2;
@@ -1167,10 +1167,10 @@ void		GameMenu::checkInputs(RenderWindow &win)
 			this->_sheetSkipped = true;
 			this->_sheetSkippedval = this->_sheetNb;
 		}
-	}*/
-	/*if (!(input.IsKeyDown(sf::Key::Return)))
+	}
+	if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Return)))
 		this->_antiSpam = false;
-	if (input.IsKeyDown(sf::Key::Return) && !(this->_antiSpam))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && !(this->_antiSpam))
 	{
 		if (win.msgActive())
 		{
@@ -1184,7 +1184,7 @@ void		GameMenu::checkInputs(RenderWindow &win)
 			this->setNickname();
 		}
 
-	}*/
+	}
 }
 
 void		GameMenu::update(RenderWindow &window)

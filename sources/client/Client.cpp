@@ -77,8 +77,8 @@ void		Client::loadingScreen()
 	loading.setStyle(sf::Text::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
-	gameResources.launch();
-	//menuResources.launch();
+	//gameResources.launch();
+	menuResources.launch();
 	clock.restart();
 	
 	while (this->_win.isRunning())

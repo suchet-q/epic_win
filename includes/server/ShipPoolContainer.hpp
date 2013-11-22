@@ -53,6 +53,6 @@ public:
   }
   
   void				freeInstance(T* instance) {
-    _poolMap[instance->getType()].freeInstance();
+    _poolMap[instance->getType()]->freeInstance(&instance);
   }
 };

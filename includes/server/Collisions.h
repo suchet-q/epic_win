@@ -2,14 +2,26 @@
 
 #include			"ResourcesGame.h"
 
-#define			SCREEN_WIDTH		(1024)
-#define			SCREEN_HEIGHT		(768)
-#define			OUT_SCREEN_SIZE		(500)	
+#include			"PlayerShip.h"
+#include			"ShotSmall.h"
+#include			"ShotMedium.h"
+#include			"ShotBig.h"
+#include			"ShotBiggest.h"
+
+#define				SCREEN_WIDTH		(1024)
+#define				SCREEN_HEIGHT		(768)
+#define				OUT_SCREEN_SIZE		(500)	
+
+class				Collision;
+
+typedef bool			(Collision::*entitiesColl)(std::list<Entity *>::iterator&,
+							   std::list<Entity *>::iterator&);
 
 class				Collision
 {
 private:
-  ResourcesGame			*_resources;
+  ResourcesGame*		_resources;
+  std::array<entitiesColl, 8>	_entitiesCollisions;
 
 public:
   Collision();
@@ -19,9 +31,27 @@ public:
   void				manageDepop();
   void				checkPlayerInScreen();
   void				checkCollisions();
+  void				deleteEntity(Entity *entitiy);
   void				checkEntitiesCollisions();
   void				checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator it_o,
-							std::list<Entity *>::iterator it_t);
+								std::list<Entity *>::iterator it_t);
   void				collision(std::list<Entity *>::iterator it_o,
 					  std::list<Entity *>::iterator it_t);
+  
+  bool				CollPlayerPlayer(std::list<Entity *>::iterator& it_o,
+						 std::list<Entity *>::iterator& it_t);
+  bool				CollMobbMobb(std::list<Entity *>::iterator& it_o,
+					     std::list<Entity *>::iterator& it_t);
+  bool				CollPlayerMobb(std::list<Entity *>::iterator& it_o,
+					       std::list<Entity *>::iterator& it_t);
+  bool				CollMobbDecor(std::list<Entity *>::iterator& it_o,
+					      std::list<Entity *>::iterator& it_t);
+  bool				CollPlayerDecor(std::list<Entity *>::iterator& it_o,
+						std::list<Entity *>::iterator& it_t);
+  bool				CollMissilDecor(std::list<Entity *>::iterator& it_o,
+						std::list<Entity *>::iterator& it_t);
+  bool				CollMissilMobb(std::list<Entity *>::iterator& it_o,
+					       std::list<Entity *>::iterator& it_t);
+  bool				CollMissilPlayer(std::list<Entity *>::iterator& it_o,
+						 std::list<Entity *>::iterator& it_t);
 };

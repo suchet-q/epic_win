@@ -39,6 +39,6 @@ public:
   
   template <typename U>
   void				freeInstance(T* instance) {
-    dynamic_cast<IPool<U>* >(_poolMap[instance->getType()])->freeInstance();
+    dynamic_cast<IPool<U>* >(_poolMap[instance->getType()])->freeInstance(dynamic_cast<U *>(instance));
   }
 };

@@ -81,13 +81,13 @@ void		Client::loadingScreen()
 	menuResources.launch();
 	clock.restart();
 	
-	while (this->_win.isRunning())
+	while (/*this->_win.isRunning()*/42)
 	{
 		this->_mutex.lock();
 		if (this->_finishedLoading)
 			break;
 		this->_mutex.unlock();
-		tmp = clock.getElapsedTime().asSeconds();
+		/*tmp = clock.getElapsedTime().asSeconds();
 		if (clock.getElapsedTime().asSeconds() >= 1.2)
 			clock.restart();
 		ss.str("");
@@ -96,8 +96,8 @@ void		Client::loadingScreen()
 			ss << ". ";
 		loading.setText(ss.str());
 		this->_win.clearWindow();
-		//loading.update(0.15f, this->_win, 0);
-		this->_win.refreshWindow();
+		loading.update(0.15f, this->_win, 0);
+		this->_win.refreshWindow();*/
 	}
 	this->_mutex.unlock();
 }

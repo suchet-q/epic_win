@@ -26,8 +26,6 @@ void		Client::gameResources()
 
 void		Client::update()
 {
-	sf::Context context;
-
 	this->loadingScreen();
 	try {
 		//this->_menu.exception();
@@ -98,7 +96,7 @@ void		Client::loadingScreen()
 			ss << ". ";
 		loading.setText(ss.str());
 		this->_win.clearWindow();
-		loading.update(0.15f, this->_win, 0);
+		//loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 	}
 	this->_mutex.unlock();

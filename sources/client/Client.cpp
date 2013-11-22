@@ -1,5 +1,5 @@
 #include "Client.h"
-
+#include <X11/Xlib.h>
 
 Client::Client(void)
 {
@@ -122,6 +122,7 @@ void		Client::initializeThreads()
 
 bool		Client::launch(std::string const &ip, int port)
 {
+  XInitThreads();
 	try { 
 		this->_err.initialize();
 	}

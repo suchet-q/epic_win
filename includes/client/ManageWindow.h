@@ -24,6 +24,10 @@
 #include "missil3.h"
 #include "missil4.h"
 #include "laser.h"
+#include "decor1top.h"
+#include "decor1down.h"
+#include "decor2top.h"
+#include "decor2down.h"
 
 class Managewindow;
 
@@ -54,6 +58,10 @@ class Managewindow
   Pool<Missil3, 40>	_Missil3Pool;
   Pool<Missil4, 40>	_Missil4Pool;
   Pool<Laser, 40>	_LaserPool;
+  Pool<Decor1top, 40>	_Decor1TopPool;
+  Pool<Decor1down, 40>	_Decor1DownPool;
+  Pool<Decor2top, 40>	_Decor2TopPool;
+  Pool<Decor2down, 40>	_Decor2DownPool;
   pfObject		*fct;
   pfPool		*fct2;
 
@@ -62,45 +70,54 @@ class Managewindow
   Managewindow(sf::RenderWindow *window, sf::Mutex *);
   ~Managewindow();
   /* void  DrawSomething(unsigned short id, unsigned char type, unsigned short x, unsigned short y, int time, Move move); */
-  void	Update();
-  void	SetShip(unsigned short id_obj, unsigned short x, unsigned short y, unsigned char type);
-  void	SetDeath(unsigned short id_obj, unsigned short x, unsigned short y);
-  void	SetEntity(unsigned short id_obj, unsigned short x, unsigned short y, unsigned char type);
-  void	SetExplosion();
-  void	SetItem(unsigned char type, unsigned short id_obj, unsigned short x, unsigned short y);
-  void	SetInputs(Ship *ship, unsigned short y);
-  void	CleanList();
-  bool	InitDrawer();
+  void		Update();
+  void		SetShip(unsigned short id_obj, unsigned short x, unsigned short y, unsigned char type);
+  void		SetDeath(unsigned short id_obj, unsigned short x, unsigned short y);
+  void		SetEntity(unsigned short id_obj, unsigned short x, unsigned short y, unsigned char type);
+  void		SetExplosion();
+  void		SetItem(unsigned char type, unsigned short id_obj, unsigned short x, unsigned short y);
+  void		SetInputs(Ship *ship, unsigned short y);
+  void		CleanList();
+  bool		InitDrawer();
+  void		BackInPool(int type, Entity *entity);
+  void		BackPoolDrone(Entity *entity);
+  void		BackPoolAlien(Entity *entity);
+  void		BackPoolDog(Entity *entity);
+  void		BackPoolJumper(Entity *entity);
+  void		BackPoolXwing(Entity *entity);
+  void		BackPoolMetroid(Entity *entity);
+  void		BackPoolLarve(Entity *entity);
+  void		BackPoolFireball(Entity *entity);
+  void		BackPoolMissil(Entity *entity);
+  void		BackPoolBalls(Entity *entity);
+  void		BackPoolMissil2(Entity *entity);
+  void		BackPoolMissil3(Entity *entity);
+  void		BackPoolMissil4(Entity *entity);
+  void		BackPoolLaser(Entity *entity);
+  void		BackPoolExplosion(Entity *entity);
+  void		BackPoolDecor1Top(Entity *entity);
+  void		BackPoolDecor1Down(Entity *entity);
+  void		BackPoolDecor2Top(Entity *entity);
+  void		BackPoolDecor2Down(Entity *entity);
+
   Entity	*GetInPool(unsigned char type);
-  Entity *GetPoolDrone();
-  void	BackInPool(int type, Entity *entity);
-  void	BackPoolDrone(Entity *entity);
-  void	BackPoolAlien(Entity *entity);
-  void	BackPoolDog(Entity *entity);
-  void	BackPoolJumper(Entity *entity);
-  void	BackPoolXwing(Entity *entity);
-  void	BackPoolMetroid(Entity *entity);
-  void	BackPoolLarve(Entity *entity);
-  void	BackPoolFireball(Entity *entity);
-  void	BackPoolMissil(Entity *entity);
-  void	BackPoolBalls(Entity *entity);
-  void	BackPoolMissil2(Entity *entity);
-  void	BackPoolMissil3(Entity *entity);
-  void	BackPoolMissil4(Entity *entity);
-  void	BackPoolLaser(Entity *entity);
-  Entity *GetPoolExplosion();
-  Entity *	GetPoolAlien();
-  Entity *	GetPoolDog();
-  Entity *	GetPoolJumper();
-  Entity *	GetPoolXwing();
-  Entity *	GetPoolMetroid();
-  Entity *	GetPoolLarve();
-  Entity *	GetPoolFireball();
-  Entity *	GetPoolMissil();
-  Entity *	GetPoolBalls();
-  Entity *	GetPoolMissil2();
-  Entity *	GetPoolMissil3();
-  Entity *	GetPoolMissil4();
-  void	BackPoolExplosion(Entity *entity);
-  Entity *	GetPoolLaser();
+  Entity	*GetPoolDrone();
+  Entity	*GetPoolExplosion();
+  Entity	*GetPoolAlien();
+  Entity	*GetPoolDog();
+  Entity	*GetPoolJumper();
+  Entity	*GetPoolXwing();
+  Entity	*GetPoolMetroid();
+  Entity	*GetPoolLarve();
+  Entity	*GetPoolFireball();
+  Entity	*GetPoolMissil();
+  Entity	*GetPoolBalls();
+  Entity	*GetPoolMissil2();
+  Entity	*GetPoolMissil3();
+  Entity	*GetPoolMissil4();
+  Entity	*GetPoolLaser();
+  Entity	*GetPoolDecor1Top();
+  Entity	*GetPoolDecor1Down();
+  Entity	*GetPoolDecor2Top();
+  Entity	*GetPoolDecor2Down();
 };

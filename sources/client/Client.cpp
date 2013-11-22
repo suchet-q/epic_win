@@ -13,10 +13,10 @@ Client::~Client(void)
 
 void		Client::menuResources()
 {
-	this->_menu.initParser(this->_parser);
-	this->_menu.loadResources(&this->_win);
-	sf::Lock	lock(this->_mutex);
-	this->_finishedLoading = true;
+  this->_menu.initParser(this->_parser);
+  this->_menu.loadResources(&this->_win);
+  sf::Lock	lock(this->_mutex);
+  this->_finishedLoading = true;
 }
 
 void		Client::gameResources()
@@ -74,32 +74,37 @@ void		Client::loadingScreen()
 	sf::Thread			menuResources(&Client::menuResources, this);
 	
 	this->_win.setActive(true);
+	this->_win.lock(true);
 	loading.setStyle(sf::Text::Bold, 50, "Images/charlie_dotted.ttf", 0, 255, 0);
+	this->_win.lock(false);
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
-	//gameResources.launch();
 	menuResources.launch();
 	clock.restart();
 	
-	while (/*this->_win.isRunning()*/42)
+	while (this->_win.isRunning())
 	{
 		this->_mutex.lock();
 		if (this->_finishedLoading)
 			break;
 		this->_mutex.unlock();
-		/*tmp = clock.getElapsedTime().asSeconds();
+		tmp = clock.getElapsedTime().asSeconds();
 		if (clock.getElapsedTime().asSeconds() >= 1.2)
 			clock.restart();
 		ss.str("");
 		ss << "Loading ";
 		while ((tmp -= 0.3f) >= 0.0f)
-			ss << ". ";
+		  ss << ". ";
+		this->_win.lock(true); 
 		loading.setText(ss.str());
-		this->_win.clearWindow();
-		loading.update(0.15f, this->_win, 0);
-		this->_win.refreshWindow();*/
+		this->_win.lock(false);
+		 this->_win.clearWindow();
+		 loading.update(0.15f, this->_win, 0);
+		 this->_win.refreshWindow();
 	}
+	std::cout << "-------------------------------" << std::endl;
 	this->_mutex.unlock();
+	gameResources.launch();
 }
 
 void		Client::initializeThreads()

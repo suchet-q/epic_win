@@ -19,6 +19,14 @@ sf::RenderWindow*	RenderWindow::getWindow()
 	return (this->_win);
 }
 
+void		RenderWindow::lock(bool lock)
+{
+  if (lock)
+    this->_mutex.lock();
+  else
+    this->_mutex.unlock();
+}
+
 void		RenderWindow::setActive(bool active)
 {
   this->_win->setActive(active);
@@ -26,8 +34,9 @@ void		RenderWindow::setActive(bool active)
 
 bool		RenderWindow::isRunning()
 {
+  sf::Lock	lock(this->_mutex);
   bool		ret = false;
-
+  
   if (this->_win != NULL && this->_win->isOpen())
     ret = true;
   return (ret);
@@ -62,47 +71,51 @@ void		RenderWindow::handleClosing()
   
   while (42)
     {
-      while (42)
-	  {
-		  if (!this->_win->pollEvent(event))
-				break;
-			if (event.type == sf::Event::Closed)
-			{
-				throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
-				break;
-			}
-			else if (event.type == sf::Event::TextEntered)
-				this->_events.push_back(event);
-	  }
+      usleep(1000000);
+      this->_mutex.lock();
+      while (this->_win->pollEvent(event))
+	{
+	  if (event.type == sf::Event::Closed)
+	    {
+	      this->_mutex.unlock();
+	      throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
+	    }
+	  else if (event.type == sf::Event::TextEntered)
+	    this->_events.push_back(event);
+	}
+      this->_mutex.unlock();
     }
+
 }
 
 void		RenderWindow::handleEvents()
 {
-	std::string	str;
-	unsigned int		maxSize;
-	std::list<sf::Event>::iterator it;
+  sf::Lock lock(this->_mutex);
+  std::string	str;
+  unsigned int		maxSize;
+  std::list<sf::Event>::iterator it;
 
-	for (it = this->_events.begin(); it != this->_events.end(); ++it)
-	  if (this->_getNick || this->_getMsg)
-	    {
-	      (this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
-	      (this->_getNick) ? (maxSize = 15) : (maxSize = 50);
-	      if ((*it).type == sf::Event::TextEntered)
-		{
-		  if ((*it).text.unicode == '\b' && str.size() > 0)
-		    str.erase(str.size() - 1, 1);
-		  else if ((*it).text.unicode < 128 && str.size() < maxSize)
-		    str += static_cast<char>((*it).text.unicode);
-		}
-	      (this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
-	    }
+  for (it = this->_events.begin(); it != this->_events.end(); ++it)
+    if (this->_getNick || this->_getMsg)
+      {
+	(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
+	(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
+	if ((*it).type == sf::Event::TextEntered)
+	  {
+	    if ((*it).text.unicode == '\b' && str.size() > 0)
+	      str.erase(str.size() - 1, 1);
+	    else if ((*it).text.unicode < 128 && str.size() < maxSize)
+	      str += static_cast<char>((*it).text.unicode);
+	  }
+	(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
+      }
 }
 
 void		RenderWindow::clearWindow()
 {
 	if (this->isRunning())
 	{
+	  sf::Lock	lock(this->_mutex);
 	  this->_win->clear();
 	}
 }
@@ -111,13 +124,16 @@ void		RenderWindow::refreshWindow()
 {
 	if (this->isRunning())
 	{
+	  sf::Lock	lock(this->_mutex);
 	  this->_win->display();
 	}
 }
 
+
 void		RenderWindow::drawSprite(sf::Sprite &sprite)
 {
   if (this->isRunning()) {
+    sf::Lock	lock(this->_mutex);
     this->_win->draw(sprite);
   }
 }
@@ -129,6 +145,7 @@ void					RenderWindow::clearMsg()
 
 void					RenderWindow::drawText(sf::Text &text)
 {
+  sf::Lock	lock(this->_mutex);
   this->_win->draw(text);
 }
 
@@ -144,22 +161,26 @@ std::string				RenderWindow::getMsg()
 
 void					RenderWindow::switchNick()
 {
+  sf::Lock	lock(this->_mutex);
   this->_getNick = !(this->_getNick);
 }
 
 void					RenderWindow::switchMsg()
 {
+  sf::Lock	lock(this->_mutex);
   this->_getMsg = !(this->_getMsg);
 }
 
 void					RenderWindow::disableNick()
 {
+  sf::Lock	lock(this->_mutex);
   this->_getNick = false;
 }
 
 void					RenderWindow::disableMsg()
 {
-	this->_getMsg = false;
+  sf::Lock	lock(this->_mutex);
+  this->_getMsg = false;
 }
 
 bool				RenderWindow::nickActive()

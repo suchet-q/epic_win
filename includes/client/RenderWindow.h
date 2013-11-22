@@ -17,6 +17,8 @@ protected:
 	bool				_getNick;
 	bool				_getMsg;
 	std::list<sf::Event>	_events;
+	sf::Mutex			_mutex;
+
 public:
 	RenderWindow(void);
 	virtual ~RenderWindow(void);
@@ -31,6 +33,7 @@ public:
 	virtual void		drawText(sf::Text &);
 	virtual void		handleClosing();
 	virtual void   		setActive(bool);
+	virtual void		lock(bool);
 	std::string	getNickname();
 	std::string	getMsg();
 	void		switchNick();

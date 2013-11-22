@@ -5,7 +5,7 @@ Managewindow::Managewindow(sf::RenderWindow *window, sf::Mutex *mutex)
   this->_Mutex = mutex;
   this->Window = window;
   this->_Drawer = new Drawer(window, mutex);
-  fct = new pfObject[15];
+  fct = new pfObject[19];
   fct[0] = &Managewindow::GetPoolDrone;
   fct[1] = &Managewindow::GetPoolAlien;
   fct[2] = &Managewindow::GetPoolDog;
@@ -21,8 +21,12 @@ Managewindow::Managewindow(sf::RenderWindow *window, sf::Mutex *mutex)
   fct[12] = &Managewindow::GetPoolMissil3;
   fct[13] = &Managewindow::GetPoolMissil4;
   fct[14] = &Managewindow::GetPoolLaser;
+  fct[15] = &Managewindow::GetPoolDecor1Top;
+  fct[16] = &Managewindow::GetPoolDecor1Down;
+  fct[17] = &Managewindow::GetPoolDecor2Top;
+  fct[18] = &Managewindow::GetPoolDecor2Down;
 
-  fct2 = new pfPool[15];
+  fct2 = new pfPool[19];
   fct2[0] = &Managewindow::BackPoolDrone;
   fct2[1] = &Managewindow::BackPoolAlien;
   fct2[2] = &Managewindow::BackPoolDog;
@@ -37,7 +41,11 @@ Managewindow::Managewindow(sf::RenderWindow *window, sf::Mutex *mutex)
   fct2[11] = &Managewindow::BackPoolMissil2;
   fct2[12] = &Managewindow::BackPoolMissil3;
   fct2[13] = &Managewindow::BackPoolMissil4;
-  fct2[14] = &Managewindow::BackPoolLaser;
+  fct2[14] = &Managewindow::BackPoolLaser;  
+  fct2[15] = &Managewindow::BackPoolDecor1Top;
+  fct2[16] = &Managewindow::BackPoolDecor1Down;
+  fct2[17] = &Managewindow::BackPoolDecor2Top;
+  fct2[18] = &Managewindow::BackPoolDecor2Down;
 }
 
 Managewindow::~Managewindow()
@@ -199,6 +207,30 @@ void	Managewindow::BackPoolDrone(Entity *entity)
   this->_DronePool.freeInstance(dynamic_cast<Drone*>(entity));
 }
 
+void	Managewindow::BackPoolDecor1Top(Entity *entity)
+{
+  entity->ResetData();
+  this->_Decor1TopPool.freeInstance(dynamic_cast<Decor1top*>(entity));
+}
+
+void	Managewindow::BackPoolDecor1Down(Entity *entity)
+{
+  entity->ResetData();
+  this->_Decor1DownPool.freeInstance(dynamic_cast<Decor1down*>(entity));
+}
+
+void	Managewindow::BackPoolDecor2Top(Entity *entity)
+{
+  entity->ResetData();
+  this->_Decor2TopPool.freeInstance(dynamic_cast<Decor2top*>(entity));
+}
+
+void	Managewindow::BackPoolDecor2Down(Entity *entity)
+{
+  entity->ResetData();
+  this->_Decor2DownPool.freeInstance(dynamic_cast<Decor2down*>(entity));
+}
+
 void	Managewindow::BackPoolAlien(Entity *entity)
 {
   entity->ResetData();
@@ -350,6 +382,26 @@ Entity		*Managewindow::GetPoolMissil3()
 Entity	       *Managewindow::GetPoolMissil4()
 {
   return (this->_Missil4Pool.getInstance());
+}
+
+Entity	       *Managewindow::GetPoolDecor1Top()
+{
+  return (this->_Decor1TopPool.getInstance());
+}
+
+Entity	       *Managewindow::GetPoolDecor1Down()
+{
+  return (this->_Decor1DownPool.getInstance());
+}
+
+Entity	       *Managewindow::GetPoolDecor2Top()
+{
+  return (this->_Decor2TopPool.getInstance());
+}
+
+Entity	       *Managewindow::GetPoolDecor2Down()
+{
+  return (this->_Decor2DownPool.getInstance());
 }
 
 Entity	       *Managewindow::GetPoolLaser()

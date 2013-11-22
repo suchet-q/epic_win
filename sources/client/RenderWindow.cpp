@@ -66,14 +66,13 @@ void		RenderWindow::handleClosing()
 	  {
 		  if (!this->_win->pollEvent(event))
 				break;
-		  
 			if (event.type == sf::Event::Closed)
 			{
 				throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 				break;
 			}
 			else if (event.type == sf::Event::TextEntered)
-			this->_events.push_back(event);
+				this->_events.push_back(event);
 	  }
     }
 }

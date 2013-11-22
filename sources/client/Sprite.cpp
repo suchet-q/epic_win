@@ -13,26 +13,30 @@ Sprite::~Sprite(void)
 
 Sprite::Sprite(const Sprite &sprite)
 {
-	this->_sprite.setTexture(const_cast<Sprite &>(sprite).getTexture());
+	this->_img.loadFromImage(const_cast<Sprite &>(sprite).getTexture());
+	this->_sprite.setTexture(this->_img);
 }
 
-void		Sprite::setTexture(sf::Texture &img)
+void		Sprite::setTexture(sf::Image &img)
 {
-	this->_sprite.setTexture(img);
+	this->_img.loadFromImage(img);
+	this->_sprite.setTexture(this->_img);
 }
 
-sf::Texture&	Sprite::getTexture()
+sf::Image&	Sprite::getTexture()
 {
-	return (this->_img);
+	return (this->_image);
 }
 
 bool		Sprite::loadFromFile(std::string const & filename)
 {
-	if (!(this->_img.loadFromFile(filename)))
+	if (!(this->_image.loadFromFile(filename)))
 	{
 		throw RuntimeException("[Sprite::loadFromFile]", "Can't load " + filename);
 		return (false);
 	}
+	this->_image.createMaskFromColor(sf::Color(0, 255, 0));
+	this->_img.loadFromImage(this->_image);
 	this->_sprite.setTexture(this->_img);
 	return (true);
 }
@@ -84,7 +88,7 @@ sf::Vector2f	Sprite::getPosition()
 
 void			Sprite::cut(sf::Vector2i begin, sf::Vector2i end)
 {
-	this->_sprite.setTextureRect(sf::IntRect(begin.x, begin.y, end.x, end.y));
+	this->_sprite.setTextureRect(sf::IntRect(begin.x, begin.y, end.x - begin.x, end.y - begin.y));
 }
 
 void			Sprite::queueAnimation(sf::Vector2f destination, float time)

@@ -10,6 +10,7 @@
 class Sprite
 {
 	sf::Texture	_img;
+	sf::Image	_image;
 	sf::Sprite	_sprite;
 	std::list<std::pair<sf::Vector2f, float> >	_animations;
 	std::list<std::pair<sf::Vector2f, float> >	_animationsBackup;
@@ -20,12 +21,12 @@ public:
 	Sprite(const Sprite &);
 	~Sprite(void);
 
-	void			setTexture(sf::Texture &);
+	void			setTexture(sf::Image &);
 	bool			loadFromFile(std::string const &);
 	void			draw(RenderWindow &);
 	void			place(unsigned char, sf::Vector2f, sf::Vector2f, sf::Vector2f, float);
 	void			setAlpha(unsigned char);
-	sf::Texture&	getTexture();
+	sf::Image&	getTexture();
 	sf::FloatRect	getSize();
 	sf::Vector2f	getPosition();
 	void			cut(sf::Vector2i, sf::Vector2i);

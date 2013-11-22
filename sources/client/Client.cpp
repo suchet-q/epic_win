@@ -87,7 +87,7 @@ void		Client::loadingScreen()
 		if (this->_finishedLoading)
 			break;
 		this->_mutex.unlock();
-		/*tmp = clock.getElapsedTime().asSeconds();
+		tmp = clock.getElapsedTime().asSeconds();
 		if (clock.getElapsedTime().asSeconds() >= 1.2)
 			clock.restart();
 		ss.str("");
@@ -95,7 +95,7 @@ void		Client::loadingScreen()
 		while ((tmp -= 0.3f) >= 0.0f)
 			ss << ". ";
 		loading.setText(ss.str());
-		this->_win.clearWindow();
+		/*this->_win.clearWindow();
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();*/
 	}

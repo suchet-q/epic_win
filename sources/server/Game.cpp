@@ -159,6 +159,7 @@ void			Game::initBufClient()
 void			Game::initPlayersShip()
 {
   unsigned int		type = PLAYER1;
+  _resources.InitPool();
 
   for (std::list<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) 
   {
@@ -257,6 +258,9 @@ void			Game::loop()
   unsigned long int	ellapsedTime = 0;
 
 
+//  this->_resources.getEntityList().push_back(new PlayerShip);
+// this->_resources.getEntityList().back()->setGlobalType(PLAYER);
+//  this->_resources.getEntityList().back()->setType(PLAYER2);
   _clock.start();
   while (true)
     {

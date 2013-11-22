@@ -15,6 +15,7 @@ enum			entityGlobalType
 
 enum			entityType
   {
+	PLAYERS,
 	PLAYER1 = 1,
 	PLAYER2,
 	PLAYER3,

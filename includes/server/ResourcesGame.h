@@ -15,11 +15,11 @@
 class				ResourcesGame
 {
 private:
-  Pool<PlayerShip, 4>		_playerShipPool;
+  //Pool<PlayerShip, 4>		_playerShipPool;
   EntitiesPoolContainer<>	_entitiesPool;
   ShipPoolContainer<>		_shipPool;
   std::list<Entity *>		_entityList;
-  std::list<Ship *>		_shipList;
+  std::list<Ship *>			_shipList;
   std::map<entityType, t_tab_hit_box> *_tabHitBox;
 
 public:
@@ -30,7 +30,8 @@ public:
   std::list<Ship *>&		getShipList();
   EntitiesPoolContainer<>&	getEntitiesPool();
   ShipPoolContainer<>&		getShipPool();
-  Pool<PlayerShip, 4>&		getPlayerShipPool();
+  void						InitPool();
+  /*Pool<PlayerShip, 4>&		getPlayerShipPool();*/
   std::map<entityType, t_tab_hit_box> &getTabHitBox();
   void						setTabHitBox(std::map<entityType, t_tab_hit_box> *);
   void				createPlayerShip();

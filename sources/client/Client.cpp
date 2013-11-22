@@ -15,6 +15,7 @@ void		Client::menuResources()
 {
 	this->_menu.initParser(this->_parser);
 	this->_menu.loadResources(&this->_win);
+	sf::Lock	lock(this->_mutex);
 	this->_finishedLoading = true;
 }
 
@@ -25,9 +26,11 @@ void		Client::gameResources()
 
 void		Client::update()
 {
+	sf::Context context;
+
 	this->loadingScreen();
 	try {
-		this->_menu.exception();
+		//this->_menu.exception();
 		//this->_game.exception();		A mettre avant laancement game
 		if (!(this->_socket.connectTCP()))
 			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
@@ -77,13 +80,15 @@ void		Client::loadingScreen()
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
 	gameResources.launch();
-	menuResources.launch();
+	//menuResources.launch();
 	clock.restart();
 	
 	while (this->_win.isRunning())
 	{
+		this->_mutex.lock();
 		if (this->_finishedLoading)
 			break;
+		this->_mutex.unlock();
 		tmp = clock.getElapsedTime().asSeconds();
 		if (clock.getElapsedTime().asSeconds() >= 1.2)
 			clock.restart();
@@ -96,6 +101,7 @@ void		Client::loadingScreen()
 		loading.update(0.15f, this->_win, 0);
 		this->_win.refreshWindow();
 	}
+	this->_mutex.unlock();
 }
 
 void		Client::initializeThreads()

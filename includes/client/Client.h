@@ -21,6 +21,7 @@ class Client
 	GameLoop		_game;
 	unsigned char	_clientID;
 	bool			_finishedLoading;
+	sf::Mutex		_mutex;
 
 	bool		menu(GameLoop &, MetaThreader<GameMenu, RenderWindow> &, MetaThreader<GameLoop, void> &);
 	void		loading(MetaThreader<GameMenu, RenderWindow> &, GameMenu &);

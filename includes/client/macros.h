@@ -32,13 +32,12 @@
 
 #ifdef _WIN32
 
-#define		WIN_LOCK	;
-#define		WIN_UNLOCK	;
+#define		THREADS_INIT		;
 
 #else
 
-#define		WIN_LOCK	this->_winMutex.Lock();
-#define		WIN_UNLOCK	this->_winMutex.Unlock();
+#include	<X11/Xlib.h>
+#define		THREADS_INIT	XInitThreads();
 
 #endif
 

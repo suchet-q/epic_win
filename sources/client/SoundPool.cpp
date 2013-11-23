@@ -16,16 +16,18 @@ bool		SoundPool::initialize()
 	this->_soundOn = true;
 	this->_musicOn = true;
 
-	//this->_soundsBuffer["ButtonHover"].loadFromFile("Sounds/ButtonHover.ogg");
-	//this->_soundsBuffer["ButtonClicked"].loadFromFile("Sounds/ButtonClicked.ogg");
+	if (!this->_soundsBuffer["ButtonHover"].loadFromFile("Sounds/ButtonHover.ogg"))
+		throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
+	if (!this->_soundsBuffer["ButtonClicked"].loadFromFile("Sounds/ButtonClicked.ogg"))
+		throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
 	if (!this->_musicMenu.openFromFile("Music/03-menu.ogg"))
-	  return false;
+	  throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
 	if (!this->_musicLvlOne.openFromFile("Music/01-opening.ogg"))
-	  return false;
+	  throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
 	// if (!this->_musicLoose.OpenFromFile("Music/EndOfGame.ogg"))
 	//   return;
 	if (!this->_musicMort.loadFromFile("Music/21-game-over.ogg"))
-	  return false;
+	  throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
 	this->_Dead.setBuffer(_musicMort);
 	return true;
 }
@@ -34,10 +36,10 @@ void		SoundPool::playSound(const std::string &name, const std::string &bufferNam
 {
 	if (this->_soundOn)
 	{
-		/*this->_sounds[name].setBuffer(this->_soundsBuffer[bufferName]);
+		this->_sounds[name].setBuffer(this->_soundsBuffer[bufferName]);
 		this->_sounds[name].setVolume(volume);
 		this->_sounds[name].setLoop(loop);
-		this->_sounds[name].play();*/
+		this->_sounds[name].play();
 	}
 }
 

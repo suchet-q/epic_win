@@ -3,6 +3,7 @@
 #include	<map>
 #include	<SFML/Audio.hpp>
 #include	<iostream>
+#include	"RuntimeException.h"
 
 class SoundPool
 {
@@ -10,7 +11,7 @@ class SoundPool
 	std::map<std::string, sf::Sound>		_sounds;
 	bool									_soundOn;
 	bool									_musicOn;
-	static SoundPool							*_instance;
+	static SoundPool						*_instance;
 
 	SoundPool(void);
 	~SoundPool(void);

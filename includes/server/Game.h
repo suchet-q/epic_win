@@ -1,9 +1,9 @@
 #pragma once
 
-# include			<iostream>
-# include			<string>
-# include			<list>
-# include			<map>
+#include			<iostream>
+#include			<string>
+#include			<list>
+#include			<map>
 
 #include			"ResourcesGame.h"
 #include			"Clients.h"
@@ -14,6 +14,8 @@
 #include			"MetaClock.hpp"
 #include			"ResourcesChecker.h"
 #include			"LoadLib.hpp"
+#include			"Map.h"
+#include			"Decor.h"
 
 class		Collision;
 
@@ -49,54 +51,55 @@ struct				t_rep_client
 class				Game
 {
 private:
-  int					_id;
-  std::list<Client *>			_clients;
-  std::map<Client *, Ship *>		_clientToShip;
-  std::map<Entity *, Client *>		_entityToShip;
-  MetaMutex<>				_gameClient;
-  MetaMutex<>				_gameSocket;
-  MetaMutex<>				_gameAttribut;
-  MetaSocket<>				_socketUDP;
-  MetaThreader<Game, void>		_thread;
-  MetaClock<>				_clock;
-  ResourcesGame				_resources;
-  bool					_isInit;
-  std::map<Client *, t_rep_client>	_repClient;
-  std::map<entityType, LoadLib<> *> _instanceGetter;
+	std::list<t_spawn>	_spawn;
+	int					_id;
+	std::list<Client *>			_clients;
+	std::map<Client *, Ship *>		_clientToShip;
+	std::map<Entity *, Client *>		_entityToShip;
+	MetaMutex<>				_gameClient;
+	MetaMutex<>				_gameSocket;
+	MetaMutex<>				_gameAttribut;
+	MetaSocket<>				_socketUDP;
+	MetaThreader<Game, void>		_thread;
+	MetaClock<>				_clock;
+	ResourcesGame				_resources;
+	bool					_isInit;
+	std::map<Client *, t_rep_client>	_repClient;
+	std::map<entityType, LoadLib<> *> _instanceGetter;
 
 public:
-  Game(int, std::list<Client *> &);
-  Game();
-  ~Game();
+	Game(int, std::list<Client *> &);
+	Game();
+	~Game();
 
-  MetaSocket<>&			getSocket();
-  ResourcesGame&		getResources();
-  std::list<Client *>&		getClients();
-  bool				getIsInit() const;
-  int				getID();
-  std::map<entityType, t_tab_hit_box> *getTabHitBox();
-  void				setTabHitBox(std::map<entityType, t_tab_hit_box> &);
-  std::map<entityType, LoadLib<> *> getInstanceGetter() const;
+	MetaSocket<>&			getSocket();
+	ResourcesGame&		getResources();
+	std::list<Client *>&		getClients();
+	bool				getIsInit() const;
+	int				getID();
+	std::map<entityType, t_tab_hit_box> *getTabHitBox();
+	void				setTabHitBox(std::map<entityType, t_tab_hit_box> &);
+	 std::map<entityType, LoadLib<> *> getInstanceGetter() const;
 
-  void				setResources(ResourcesGame const &);
-  void				setID(int);
+	void				setResources(ResourcesGame const &);
+	void				setID(int);
+	void				createEntity(t_spawn);
+	bool				lockClient();
+	bool				unlockClient();
+	bool				lockSocket();
+	bool				unlockSocket();
+	bool				lockAttribut();
+	bool				unlockAttribut();
 
-  bool				lockClient();
-  bool				unlockClient();
-  bool				lockSocket();
-  bool				unlockSocket();
-  bool				lockAttribut();
-  bool				unlockAttribut();
+	bool				loadAllLib();
 
-  bool				loadAllLib();
-
-  int				startGame(void *);
-  bool				launchThread(void *arg);
-  void				initPlayersShip();
-  bool				init();
-  void				initBufClient();
-  void				waitAllClients();
-  void				manageClientsInputs();
-  void				loop();
+	int				startGame(void *);
+	bool				launchThread(void *arg);
+	void				initPlayersShip();
+	bool				init();
+	void				initBufClient();
+	void				waitAllClients();
+	void				manageClientsInputs();
+	void				loop();
 };
 

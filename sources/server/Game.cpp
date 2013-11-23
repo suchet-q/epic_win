@@ -104,6 +104,7 @@ bool		Game::init()
 	struct sockaddr_in sin;
 	socklen_t len = sizeof(sin);
 	t_cmd			cmd;
+	Map				map;
 
 	std::cout << "Initializing UDP Socket in Game " << this->_id << std::endl;
 	this->_socketUDP.init(UDP);
@@ -124,6 +125,10 @@ bool		Game::init()
 	this->initPlayersShip();
 	this->unlockClient();
 	this->_isInit = true;
+	if (map.parseMap("map.txt") == false)
+		return false;
+	else
+		this->_spawn = map.getSpanList();
 	return true;
 }
 
@@ -138,6 +143,7 @@ bool			Game::unlockAttribut() {
 void			Game::initBufClient()
 {
 	t_rep_client	tmp;
+	Map				map;
 
 	memset(&tmp, 0, sizeof(t_rep_client));
 	tmp.size = 0;
@@ -246,33 +252,131 @@ void			Game::manageClientsInputs()
 	  (*it).first->getFrameCMD().cmd.size = 0;
   }
 }
+class Drone;
+void				Game::createEntity(t_spawn newEntity)
+{
+	Entity			*entity;
+
+	switch (newEntity.type)
+	{
+	case DRONE:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case ALIEN:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case DOG:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case JUMPER:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case XWING:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case METROID:
+		entity = this->_resources.getShipPool().getInstance(newEntity.type);
+		entity->setGlobalType(MOBB);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
+		break;
+	case MONSTER:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case MONSTER_REVERT:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case BIDULE:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case BIDULE_REVERT:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case PLATFORM:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case PLATFORM_REVERT:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case PLATFORM2:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	case PLATFORM2_REVERT:
+		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
+		entity->setGlobalType(DECOR);
+		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		break;
+	default:
+		break;
+	}
+}
 
 void			Game::loop()
 {
-  std::map<Client *, t_rep_client>::iterator	itRep;
-  std::list<Entity *>::iterator	itEntity;
-  Coord<>		tmp;
-  t_aff_server		affServer;
-  t_evt_server		evtServer;
-  t_scr_server		srcServer;
-  t_lif_server		lifServer;
-  int			nbUpdate;
-  unsigned long int	ellapsedTime = 0;
-
+	std::map<Client *, t_rep_client>::iterator	itRep;
+	std::list<Entity *>::iterator	itEntity;
+	Coord<>		tmp;
+	t_aff_server		affServer;
+	t_evt_server		evtServer;
+	t_scr_server		srcServer;
+	t_lif_server		lifServer;
+	int			nbUpdate;
+	unsigned long int	ellapsedTime = 0;
+	bool			stopSpawn = false;
+	std::list<t_spawn>::iterator	it_spawn;
 
 //  this->_resources.getEntityList().push_back(new PlayerShip);
 // this->_resources.getEntityList().back()->setGlobalType(PLAYER);
 //  this->_resources.getEntityList().back()->setType(PLAYER2);
-  _clock.start();
-  while (true)
-    {
-      ellapsedTime += _clock.elapsedTime();
-      nbUpdate = ellapsedTime / REFRESH_TIME;
+	this->_clock.start();
+	while (true)
+	{
+		it_spawn = this->_spawn.begin();
+		for (; it_spawn != this->_spawn.begin() && !stopSpawn; )
+		{
+			if ((*it_spawn).time >= ellapsedTime)
+			{
+				this->createEntity((*it_spawn));
+				it_spawn = this->_spawn.erase(it_spawn);
+			}
+			else if ((*it_spawn).time < ellapsedTime)
+				stopSpawn = true;
+		}
+		ellapsedTime += this->_clock.elapsedTime();
+		nbUpdate = ellapsedTime / REFRESH_TIME;
 
-      this->manageClientsInputs();
-      /*plus tard*//*update AI*/
-      itEntity = this->_resources.getEntityList().begin();
-      for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
+		this->manageClientsInputs();
+		itEntity = this->_resources.getEntityList().begin();
+		for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
 		{
 			tmp = (*itEntity)->getCoord();
 			if (tmp.getX() < 0 || tmp.getX() > 1024)
@@ -332,5 +436,5 @@ void			Game::loop()
       /*check colision peut etre fait dans update entity (vie ou mort)*/
       /*evtServer.id_cmd = 13; set levent (mort colision etc..) surment pas fait ici
 	evtServer.event = ;*/
-    }
+	}
 }

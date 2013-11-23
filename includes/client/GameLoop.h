@@ -39,7 +39,7 @@ public:
 	boost::any	score(std::list<boost::any> &);
 	void		exception();
 	bool		loop(RenderWindow &, Parser &, GameSocket &);
-	int			loadResources(void *);
+	int			loadResources(void *, RenderWindow& win);
 	void		handleInputs(Parser &);
 	void		lockResources(bool);
 };

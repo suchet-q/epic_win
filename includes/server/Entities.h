@@ -48,21 +48,21 @@ enum			entityType
 class			Entity
 {
 protected:
-  Coord<>		_intCoord;
+  Coord<>			_intCoord;
   Coord<float>		_coord;
-  Vector		_vecDir;
+  Vector			_vecDir;
   entityType		_type;
   entityGlobalType	_globalType;
-  char			_ID;
+  char				_ID;
 
 public:
   Entity();
   ~Entity();
 
   char		       	getID() const;
-  void			setID(char);
+  void				setID(char);
   entityType		getType() const;
-  Coord<>&		getCoord();
+  Coord<>&			getCoord();
   Coord<float>&		getFloatCoord();
   entityGlobalType	getGlobalType() const;
   void			setGlobalType(entityGlobalType);

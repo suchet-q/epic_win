@@ -71,8 +71,9 @@ void		RenderWindow::handleClosing()
   
   while (42)
     {
-		sf::sleep(sf::seconds(0.1f));
-		this->_mutex.lock();
+      sf::sleep(sf::seconds(0.1f));
+      // usleep(1000000);
+      this->_mutex.lock();
 	while (this->_win->pollEvent(event))
 	{
 	  if (event.type == sf::Event::Closed)

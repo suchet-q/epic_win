@@ -32,12 +32,12 @@
 
 #ifdef _WIN32
 
-#define		THREADS_INIT		;
+#define		THREADS_INITIALISATION		;
 
 #else
 
-#include	<X11/Xlib.h>
-#define		THREADS_INIT	XInitThreads();
+/* #include	<X11/Xlib.h> */
+#define		THREADS_INITIALISATION	XInitThreads();
 
 #endif
 

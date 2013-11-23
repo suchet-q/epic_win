@@ -22,7 +22,8 @@ class SoundPool
 	/* sf::Music		_musicLoose; */
 	sf::SoundBuffer		_musicMort;
 	sf::Sound		_Dead;
-
+	sf::SoundBuffer		_musicExplosion;
+	sf::Sound		_Explosion;
 
 public:
 
@@ -46,6 +47,10 @@ public:
 	void		playDead(); 
 	void		pauseDead();
 	void		stopDead();
+	void		playExplosion(); 
+	void		pauseExplosion();
+	void		stopExplosion();
+
 	void		playMenu();
 	void		pauseMenu();
 	void		stopMenu();

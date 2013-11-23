@@ -29,6 +29,9 @@ bool		SoundPool::initialize()
 	if (!this->_musicMort.loadFromFile("Music/21-game-over.ogg"))
 	  throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
 	this->_Dead.setBuffer(_musicMort);
+	if (!this->_musicExplosion.loadFromFile("Music/1421.ogg"))
+	  throw RuntimeException("[SoundPool::initialize]", "Error in Sound loading");
+	this->_Explosion.setBuffer(this->_musicExplosion);
 	return true;
 }
 
@@ -87,6 +90,23 @@ void			SoundPool::loopLvlOne()
 // {
 //   this->_musicLoose.setLoop(true);
 // }
+
+void			SoundPool::playExplosion()
+{
+  this->_Explosion.play();
+}
+
+
+void			SoundPool::pauseExplosion()
+{
+  this->_Explosion.pause();
+}
+
+
+void			SoundPool::stopExplosion()
+{
+  this->_Explosion.stop();
+}
 
 void			SoundPool::playDead()
 {

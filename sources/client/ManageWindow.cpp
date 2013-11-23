@@ -161,6 +161,7 @@ void	Managewindow::SetItem(unsigned char type, unsigned short id_obj, unsigned s
     }
   else if (type == 5)
     {
+      SoundPool::getInstance()->playExplosion();
       this->SetDeath(id_obj, x, y);
     }
   else

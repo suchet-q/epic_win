@@ -51,6 +51,9 @@ void			Collision::deleteEntity(Entity *entity)
   case BIGGEST_SHOT :
     _resources->getEntitiesPool().freeInstance<ShotBiggest>(entity);
     break;
+  case KIKOU_SHOT:
+	  _resources->getEntitiesPool().freeInstance<ShotKikou>(entity);
+	  break;
   default:
     break;
   }
@@ -167,13 +170,14 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator 
 void			Collision::collision(std::list<Entity *>::iterator it_o,
 					     std::list<Entity *>::iterator it_t)
 {
-  bool			collision = false;
-
-  for (unsigned int i = 0; i < _entitiesCollisions.size() && !collision; ++i)
-    collision = (this->*_entitiesCollisions[i])(it_o, it_t);
-  if (!collision)
-    for (unsigned int i = 0; i < _entitiesCollisions.size() && !collision; ++i)
-      collision = (this->*_entitiesCollisions[i])(it_t, it_o);
+	bool			collision = false;
+	
+	for (unsigned int i = 0; i < _entitiesCollisions.size() && !collision; ++i)
+		collision = (this->*_entitiesCollisions[i])(it_o, it_t);
+	if (!collision)
+		for (unsigned int i = 0; i < _entitiesCollisions.size() && !collision; ++i)
+			collision = (this->*_entitiesCollisions[i])(it_t, it_o);
+	
 }
 
 
@@ -185,7 +189,6 @@ bool			Collision::CollPlayerPlayer(std::list<Entity *>::iterator& it_o,
     return false;
   (*it_o)->setColision(true);
   (*it_t)->setColision(true);
-  
   return true;
 }
 
@@ -203,8 +206,9 @@ bool			Collision::CollPlayerMobb(std::list<Entity *>::iterator& it_o,
 {
   if ((*it_o)->getGlobalType() != PLAYER || (*it_t)->getGlobalType() != MOBB)
     return false;
-  this->_resources->getEntitiesPool().freeInstance<PlayerShip>((*it_o));
-  this->_resources->getEntityList().erase(it_o);
+  this->deleteEntity((*it_o));
+  it_o = this->_resources->getEntityList().erase(it_o);
+  this->_deleteOne = true;
   /*event explosion*/
   return true;
 }
@@ -214,9 +218,10 @@ bool			Collision::CollMobbDecor(std::list<Entity *>::iterator& it_o,
 {
   if ((*it_o)->getGlobalType() != MOBB || (*it_t)->getGlobalType() != DECOR)
     return false;
-  this->_resources->getShipPool().freeInstance((*it_o));
-  this->_resources->getEntityList().erase(it_o);
-  /*ne peut plus bouger*/
+  this->deleteEntity((*it_o));
+  it_o = this->_resources->getEntityList().erase(it_o);
+  this->_deleteOne = true;
+  /*event explosion*/
   return true;
 }
 
@@ -227,14 +232,16 @@ bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
 
 	if ((*it_o)->getGlobalType() != PLAYER || (*it_t)->getGlobalType() != DECOR)
 		return false;
-	this->_resources->getEntitiesPool().freeInstance<PlayerShip>((*it_o));
-	tmp = (*this->_entityToShip)[(*it_t)];
+	tmp = (*this->_entityToShip)[(*it_o)];
 	if ((*this->_mapClient)[tmp].life > 1)
 		(*this->_mapClient)[tmp].life -= 1;
-	/*verifier sa vie
 	else
-		dead
-	this->_resources->getEntityList().erase(it_o);*/
+	{
+		(*this->_mapClient)[tmp].life = 0;
+		this->deleteEntity((*it_o));
+		it_o = this->_resources->getEntityList().erase(it_o);
+		this->_deleteOne = true;
+	}
 	/*event explosion*/
 	return true;
 }
@@ -242,67 +249,46 @@ bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
 bool			Collision::CollMissilDecor(std::list<Entity *>::iterator& it_o,
 						   std::list<Entity *>::iterator& it_t)
 {
+	Shot		*shot;
+
 	if (((*it_o)->getGlobalType() != MOBBMISSIL && (*it_o)->getGlobalType() != PLAYERMISSIL)
 		|| (*it_t)->getGlobalType() != DECOR)
 			return false;
-	if ((*it_o)->getGlobalType() == MOBBMISSIL)
-		this->_resources->getEntitiesPool().freeInstance<ShotEnemy>((*it_o));
+	shot = dynamic_cast<Shot *>(*it_o);
+	if (shot->getLife() > 1)
+		shot->setLife(shot->getLife() - 1);
 	else
 	{
-		switch ((*it_o)->getGlobalType())
-		{
-		case BASIC_SHOT:
-			this->_resources->getEntitiesPool().freeInstance<ShotSmall>((*it_o));
-			break;
-		case MEDIUM_SHOT:
-			this->_resources->getEntitiesPool().freeInstance<ShotMedium>((*it_o));
-			break;
-		case BIG_SHOT:
-			this->_resources->getEntitiesPool().freeInstance<ShotBig>((*it_o));
-			break;
-		case BIGGEST_SHOT:
-			this->_resources->getEntitiesPool().freeInstance<ShotBiggest>((*it_o));
-			break;
-		case KIKOU_SHOT:
-			this->_resources->getEntitiesPool().freeInstance<ShotKikou>((*it_o));
-			break;
-		default:
-			break;
-		}
+		shot->setLife(0);
+		this->deleteEntity((*it_o));
+		it_o = this->_resources->getEntityList().erase(it_o);
+		this->_deleteOne = true;
 	}
-	this->_resources->getEntityList().erase(it_o);
-	/*missile detruit*/
 	return true;
 }
 
 bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
 						  std::list<Entity *>::iterator& it_t)
 {
-  if ((*it_o)->getGlobalType() != PLAYERMISSIL || (*it_t)->getGlobalType() != MOBB)
-    return false;
-  this->_resources->getShipPool().freeInstance((*it_t));
-  this->_resources->getEntityList().erase(it_t);
-  switch ((*it_o)->getGlobalType())
-  {
-  case BASIC_SHOT:
-	  this->_resources->getEntitiesPool().freeInstance<ShotSmall>((*it_o));
-	  break;
-  case MEDIUM_SHOT:
-	  this->_resources->getEntitiesPool().freeInstance<ShotMedium>((*it_o));
-	  break;
-  case BIG_SHOT:
-	  this->_resources->getEntitiesPool().freeInstance<ShotBig>((*it_o));
-	  break;
-  case BIGGEST_SHOT:
-	  this->_resources->getEntitiesPool().freeInstance<ShotBiggest>((*it_o));
-	  break;
-  case KIKOU_SHOT:
-	  this->_resources->getEntitiesPool().freeInstance<ShotKikou>((*it_o));
-	  break;
-  default:
-	  break;
-  }
-  this->_resources->getEntityList().erase(it_o);
+	Shot		*shot;
+
+	if ((*it_o)->getGlobalType() != PLAYERMISSIL || (*it_t)->getGlobalType() != MOBB)
+		return false;
+	
+	this->deleteEntity((*it_t));
+	it_t = this->_resources->getEntityList().erase(it_t);
+	this->_deleteTwo = true;
+
+	shot = dynamic_cast<Shot *>(*it_o);
+	if (shot->getLife() > 1)
+		shot->setLife(shot->getLife() - 1);
+	else
+	{
+		shot->setLife(0);
+		this->deleteEntity((*it_o));
+		it_o = this->_resources->getEntityList().erase(it_o);
+		this->_deleteOne = true;
+	}
   return true;
 }
 
@@ -313,12 +299,21 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
 
 	if ((*it_o)->getGlobalType() != MOBBMISSIL || (*it_t)->getGlobalType() != PLAYER)
 		return false;
-	this->_resources->getShipPool().freeInstance((*it_t));
+	
+	this->deleteEntity((*it_o));
+	it_o = this->_resources->getEntityList().erase(it_o);
+	this->_deleteOne = true;
+
 	tmp = (*this->_entityToShip)[(*it_t)];
 	if ((*this->_mapClient)[tmp].life > 1)
 		(*this->_mapClient)[tmp].life -= 1;
-	/*else
-		dead
-	this->_resources->getEntityList().erase(it_t);*/
+	else
+	{
+		(*this->_mapClient)[tmp].life = 0;
+		this->deleteEntity((*it_t));
+		it_t = this->_resources->getEntityList().erase(it_t);
+		this->_deleteTwo = true;
+		this->_deleteOne = true;
+	}
 	return true;
 }

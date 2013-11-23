@@ -10,7 +10,8 @@ enum			entityGlobalType
 	PLAYERMISSIL,
 	MOBB,
 	MOBBMISSIL,
-	DECOR
+	DECOR,
+	NOTHING
 };
 
 enum			entityType

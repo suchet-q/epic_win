@@ -11,7 +11,7 @@ struct			t_spawn
 {
   entityType		type;
   unsigned short int	y;
-  unsigned int		time;
+  unsigned long int		time;
 };
 
 class			Map

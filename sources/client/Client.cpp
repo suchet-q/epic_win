@@ -37,6 +37,8 @@ void		Client::update()
 	if (!(this->_win.isRunning()))
 		return;
 	gameResources.launch();
+	SoundPool::getInstance()->loopMenu();
+	SoundPool::getInstance()->playMenu();
 	try {
 		this->_menu.exception();
 		if (!(this->_socket.connectTCP()))
@@ -61,6 +63,7 @@ void		Client::update()
 			this->_err.displayError(e.method(), e.what());
 		}
 	}
+	SoundPool::getInstance()->stopMenu();
 	this->_socket.setUDPPort(this->_menu.getUDPPort());
 	this->_clientID = this->_menu.getPlayerID();
 	try {

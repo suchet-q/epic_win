@@ -228,7 +228,8 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
 	
 	this->_manager = new Managewindow(win.getWindow(), win.getMutex());
-	this->_manager->InitDrawer();
+	if (!this->_manager->InitDrawer())
+		throw RuntimeException("[GameLoop::loop]", "Error in Sprite loading");
 	
 	clock.restart();
 	while (win.isRunning() && !(parser.getStartUDP()))

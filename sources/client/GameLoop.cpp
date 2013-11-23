@@ -217,7 +217,7 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 	parser.addCallback(CMD_LIF, boost::bind(&GameLoop::life, this, _1));
 	parser.addCallback(CMD_SCR, boost::bind(&GameLoop::score, this, _1));
 	
-	this->_manager = new Managewindow(win.getWindow(), NULL);
+	this->_manager = new Managewindow(win.getWindow(), win.getMutex());
 	this->_manager->InitDrawer();
 	
 	clock.restart();
@@ -229,15 +229,15 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		sock.update(parser);
 		elapsed = clock.getElapsedTime().asSeconds();
 		timer += elapsed;
-		if (timer >= 2.0)
+		if (timer >= 2.0f)
 		{
-			timer -= 2.0;
+			timer -= 2.0f;
 			parser.addIDT(*this->_idClient);
 		}
 		elapsed = clock.getElapsedTime().asSeconds();
 		clock.restart();
 	}
-	timer = 0.0;
+	timer = 0.0f;
 	while (win.isRunning())
 	{
 		win.clearWindow();
@@ -245,10 +245,10 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		this->drawEntities(win, elapsed);
 		this->drawHUB(win, elapsed);
 		win.refreshWindow();
-		if ((timer += elapsed) >= 0.05)
+		if ((timer += elapsed) >= 0.05f)
 		{
 			this->handleInputs(parser);
-			timer = 0.0;
+			timer = 0.0f;
 		}
 		sock.update(parser);
 		elapsed = clock.getElapsedTime().asSeconds();

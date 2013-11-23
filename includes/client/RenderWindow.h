@@ -33,6 +33,7 @@ public:
 	virtual void		drawText(sf::Text &);
 	virtual void		handleClosing();
 	virtual void   		setActive(bool);
+	virtual sf::Mutex*			getMutex();
 	virtual void		lock(bool);
 	std::string	getNickname();
 	std::string	getMsg();

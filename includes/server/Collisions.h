@@ -25,13 +25,17 @@ typedef bool			(Collision::*entitiesColl)(std::list<Entity *>::iterator&,
 class				Collision
 {
 private:
-  ResourcesGame*		_resources;
-  std::array<entitiesColl, 8>	_entitiesCollisions;
+  ResourcesGame*			_resources;
+  std::array<entitiesColl, 8>		_entitiesCollisions;
   std::map<Client *, t_rep_client>	*_mapClient;
   std::map<Entity *, Client *>		*_entityToShip;
+  bool					_deletedOne;
+  bool					_deletedTwo;
+
 public:
   Collision();
   ~Collision();
+
   void				setMapClient(std::map<Client *, t_rep_client> *);
   void				setEntityToShip(std::map<Entity *, Client *> *);
   void				setResources(ResourcesGame *resources);
@@ -40,15 +44,13 @@ public:
   void				checkCollisions();
   void				deleteEntity(Entity *entitiy);
   void				checkEntitiesCollisions();
-  void				checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator it_o,
-								std::list<Entity *>::iterator it_t);
-  void				collision(std::list<Entity *>::iterator it_o,
-					  std::list<Entity *>::iterator it_t);
+  void				checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator& it_o,
+								std::list<Entity *>::iterator& it_t);
+  void				collision(std::list<Entity *>::iterator& it_o,
+					  std::list<Entity *>::iterator& it_t);
   
   bool				CollPlayerPlayer(std::list<Entity *>::iterator& it_o,
 						 std::list<Entity *>::iterator& it_t);
-  bool				CollMobbMobb(std::list<Entity *>::iterator& it_o,
-					     std::list<Entity *>::iterator& it_t);
   bool				CollPlayerMobb(std::list<Entity *>::iterator& it_o,
 					       std::list<Entity *>::iterator& it_t);
   bool				CollMobbDecor(std::list<Entity *>::iterator& it_o,

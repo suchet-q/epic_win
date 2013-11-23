@@ -1,22 +1,15 @@
 #include		"Entities.h"
 
-Entity::Entity()
-{
-	static char id = 4;
-
-	this->_ID = id++;
-}
+Entity::Entity() {}
 
 Entity::~Entity() {}
 
-char			Entity::getID() const
-{
-	return this->_ID;
+char			Entity::getID() const {
+  return this->_ID;
 }
 
-void			Entity::setID(char id)
-{
-	this->_ID = id;
+void			Entity::setID(char id) {
+  this->_ID = id;
 }
 
 entityType		Entity::getType() const {
@@ -25,34 +18,34 @@ entityType		Entity::getType() const {
 
 Coord<>&		Entity::getCoord()
 {
-	_intCoord.set((_coord.getX() - static_cast<float>(static_cast<unsigned short int>(_coord.getX())) > 0,5)
-					? static_cast<unsigned short int>(_coord.getX()) + 1
-					: static_cast<unsigned short int>(_coord.getX()),
-					(_coord.getY() - static_cast<float>(static_cast<unsigned short int>(_coord.getY())) > 0,5)
-					? static_cast<unsigned short int>(_coord.getY()) + 1
-					: static_cast<unsigned short int>(_coord.getY()));
+  _intCoord.set((_coord.getX() - static_cast<float>(static_cast<unsigned short int>(_coord.getX())) > 0,5)
+		? static_cast<unsigned short int>(_coord.getX()) + 1
+		: static_cast<unsigned short int>(_coord.getX()),
+		(_coord.getY() - static_cast<float>(static_cast<unsigned short int>(_coord.getY())) > 0,5)
+		? static_cast<unsigned short int>(_coord.getY()) + 1
+		: static_cast<unsigned short int>(_coord.getY()));
   return _intCoord;
 }
 
 entityGlobalType	Entity::getGlobalType() const
 {
-	return _globalType;
+  return _globalType;
 }
 
-void				Entity::setGlobalType(entityGlobalType type)
+void			Entity::setGlobalType(entityGlobalType type)
 {
-	this->_globalType = type;
+  this->_globalType = type;
 }
 
 Coord<float>&		Entity::getFloatCoord() 
 {
-	return _coord;
+  return _coord;
 }
 void			Entity::setType(entityType type) {
   _type = type;
 }
 
 void			Entity::setVecDir(float x, float y) {
-	_vecDir.setX(x);
-	_vecDir.setY(y);
+  _vecDir.setX(x);
+  _vecDir.setY(y);
 }

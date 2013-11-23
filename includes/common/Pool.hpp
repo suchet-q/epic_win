@@ -1,6 +1,7 @@
 #pragma once
 
 # include			<array>
+# include			<iostream>
 
 # include			"IPool.hpp"
 
@@ -23,6 +24,8 @@ public:
     unsigned int		i = 0;
 
     for (; i < NB_ELEM && this->_idArray[i]; ++i);
+    if (i == NB_ELEM)
+      return (NULL);
     this->_idArray[i] = true;
     return &(this->_pool[i]);
   }
@@ -30,6 +33,7 @@ public:
     unsigned int		i = 0;
 
     for (; i < NB_ELEM && &(this->_pool[i]) != instance; ++i);
+    if (i != NB_ELEM)
       this->_idArray[i] = false;
   }
 

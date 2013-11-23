@@ -93,10 +93,16 @@ void		WidgetText::resetWidget()
 
 sf::FloatRect	WidgetText::getRect()
 {
-	return (this->_text.getGlobalBounds());
+	sf::FloatRect	rect = this->_text.getGlobalBounds();
+
+	//std::string string = this->_text.getString();
+	//this->_text.setString("");
+	rect.top = this->_text.getPosition().y;
+	//this->_text.setString(string);
+	return (rect);
 }
 
 int				WidgetText::getSize()
 {
-	return (static_cast<int>(this->_text.getString().getSize()));
+	return (static_cast<int>(this->_text.getCharacterSize()));
 }

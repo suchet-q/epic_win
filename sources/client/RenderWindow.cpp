@@ -128,7 +128,7 @@ void		RenderWindow::handleEvents()
 			{
 				if ((*it).text.unicode == '\b' && str.size() > 0)
 					str.erase(str.size() - 1, 1);
-				else if ((*it).text.unicode >= 33 && (*it).text.unicode <= 126 && str.size() < maxSize)
+				else if ((*it).text.unicode >= 32 && (*it).text.unicode <= 126 && str.size() < maxSize)
 					str += static_cast<char>((*it).text.unicode);
 			}
 			(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);

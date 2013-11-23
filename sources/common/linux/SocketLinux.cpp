@@ -195,6 +195,7 @@ int		SocketLinux::sendTo(void const *to_send, int size, struct sockaddr_in *dest
   if (this->_ifClosed)
     return (UNINITIALIZED_SOCKET);
 
+  dest->sin_family = AF_INET;
   sended = sendto(this->_socket, to_send, size, 0, reinterpret_cast<struct sockaddr *>(dest), sizeof(*dest));
   return (sended);
 }

@@ -18,6 +18,7 @@
 class				Ship : public Entity
 {
 protected:
+  Coord<float>			_lastCoord;
   bool				_shoot;
   EntitiesPoolContainer<>*	_entitiesPool;
   unsigned short		_input;
@@ -26,8 +27,11 @@ public:
   Ship();
   virtual ~Ship();
 
-  void				setEntitiesPool(EntitiesPoolContainer<>& pool);
   unsigned short		getInput() const;
+  Coord<float> const &		getLastCoord() const;
+
+  void				setEntitiesPool(EntitiesPoolContainer<>& pool);
   void				setInput(unsigned short);
+
   virtual void			update(std::list<Entity *> &);
 };

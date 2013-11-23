@@ -218,6 +218,7 @@ int			SocketWindows::Send(const void *to_send, int size)
 
 int	SocketWindows::sendTo(void *to_send, int size, struct sockaddr_in *dest)
 {
+	int error = 0;
 	WSABUF buff;
 	unsigned long int		lpNumberOfBitSent;
 
@@ -226,8 +227,15 @@ int	SocketWindows::sendTo(void *to_send, int size, struct sockaddr_in *dest)
 
 	buff.len = size;
 	buff.buf = reinterpret_cast<char *>(to_send);
-	if (WSASendTo(this->_socket, &buff, 1, &lpNumberOfBitSent, NULL, (SOCKADDR *)dest, sizeof(*dest), NULL, NULL) != 0)
+//	std::cout << "dest family : " << dest->sin_family << " AF_INET : " << AF_INET << std::endl;
+	dest->sin_family = AF_INET;
+//	std::cout << "dest ai_socktype : " << dest->ai_socktype << " SOCK_DGRAM : " << SOCK_DGRAM << std::endl;
+//	std::cout << " port  = " << ntohs(dest->sin_port) << std::endl;
+	if ((error = WSASendTo(this->_socket, &buff, 1, &lpNumberOfBitSent, NULL, (SOCKADDR *)dest, sizeof(*dest), NULL, NULL)) != 0)
+	{
+		std::cout << "SENDTO FAIL : Error = " << WSAGetLastError() << " port  = " << ntohs(dest->sin_port) << std::endl;
 		return (-1);
+	}
 	return lpNumberOfBitSent;
 }
 
@@ -243,6 +251,8 @@ int	SocketWindows::recvFrom(void *buff, int size, struct sockaddr_in *sender)
 	tmp.len = size;
 	tmp.buf = reinterpret_cast<char *>(buff);
 	if (WSARecvFrom(this->_socket, &tmp, 1, &readed, &flagrecv, (SOCKADDR *)sender, &size_sin, NULL, NULL) != 0 || readed == 0)
+	{
 		return (-1);
+	}
 	return readed;
 }

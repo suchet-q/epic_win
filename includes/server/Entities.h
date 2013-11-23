@@ -10,7 +10,8 @@ enum			entityGlobalType
 	PLAYERMISSIL,
 	MOBB,
 	MOBBMISSIL,
-	DECOR
+	DECOR,
+	NOTHING
 };
 
 enum			entityType
@@ -47,18 +48,19 @@ enum			entityType
 class			Entity
 {
 protected:
-	bool		_colision;
   Coord<>		_intCoord;
   Coord<float>		_coord;
   Vector		_vecDir;
   entityType		_type;
   entityGlobalType	_globalType;
+  char			_ID;
 
 public:
   Entity();
   ~Entity();
-  void				setColision(bool);
-  bool				getColision() const;
+
+  char		       	getID() const;
+  void			setID(char);
   entityType		getType() const;
   Coord<>&		getCoord();
   Coord<float>&		getFloatCoord();

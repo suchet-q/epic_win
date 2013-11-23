@@ -16,6 +16,8 @@ Client::~Client(void)
 
 void		Client::menuResources()
 {
+	sf::Context context;
+
   this->_menu.initParser(this->_parser);
   this->_menu.loadResources(&this->_win);
   sf::Lock	lock(this->_mutex);
@@ -31,8 +33,8 @@ void		Client::update()
 {
 	this->loadingScreen();
 	try {
-		//this->_menu.exception();
-		//this->_game.exception();		A mettre avant laancement game
+		this->_menu.exception();
+		
 		if (!(this->_socket.connectTCP()))
 			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
 	}
@@ -58,6 +60,7 @@ void		Client::update()
 	this->_socket.setUDPPort(this->_menu.getUDPPort());
 	this->_clientID = this->_menu.getPlayerID();
 	try {
+		this->_game.exception();
 		this->_game.loop(this->_win, this->_parser, this->_socket);
 	}
 	catch (RuntimeException &e) {
@@ -120,7 +123,6 @@ void		Client::initializeThreads()
 	}
 	catch (RuntimeException &e) {
 		update.terminate();
-		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
 		std::cout << "Waiting Threads" << std::endl;
 	}
@@ -142,6 +144,7 @@ bool		Client::launch(std::string const &ip, int port)
 		return (false);
 	}
 	this->_socket.setValues(ip, port);
+	this->_err.setActive(false);
 	this->_win.setActive(false);
 	this->initializeThreads();
 	return (true);

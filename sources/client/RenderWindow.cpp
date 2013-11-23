@@ -73,18 +73,20 @@ void		RenderWindow::handleClosing()
     {
       sf::sleep(sf::seconds(0.1f));
       // usleep(1000000);
-      this->_mutex.lock();
-	while (this->_win->pollEvent(event))
+      MUT_LOCK;
+	  if (!(this->isRunning()))
+		  break;
+	while (this->_win->pollEvent(event) && this->isRunning())
 	{
 	  if (event.type == sf::Event::Closed)
 	    {
-	      this->_mutex.unlock();
+	      MUT_UNLOCK;
 	      throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 	    }
 	  else if (event.type == sf::Event::TextEntered)
 	    this->_events.push_back(event);
 	}
-      this->_mutex.unlock();
+      MUT_UNLOCK;
     }
 
 }

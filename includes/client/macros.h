@@ -33,11 +33,15 @@
 #ifdef _WIN32
 
 #define		THREADS_INITIALISATION		;
+#define		MUT_LOCK	;
+#define		MUT_UNLOCK	;
 
 #else
 
 /* #include	<X11/Xlib.h> */
 #define		THREADS_INITIALISATION	XInitThreads();
+#define		MUT_LOCK	this->_mutex.lock();
+#define		MUT_UNLOCK	this->_mutex.unlock();
 
 #endif
 

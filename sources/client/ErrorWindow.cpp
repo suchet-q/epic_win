@@ -36,6 +36,7 @@ void		ErrorWindow::initialize()
 void		ErrorWindow::displayError(const std::string &method, const std::string &error)
 {
 	this->_win->setVisible(true);
+	this->_win->setActive(true);
 	this->_win->setPosition(sf::Vector2i(735, 450));
 	this->_method.setText(method);
 	this->_method.setPosition(sf::Vector2f((450 - (this->_method.getRect().left + this->_method.getRect().width)) / 2, 15));

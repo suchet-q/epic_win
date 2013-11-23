@@ -140,7 +140,7 @@ bool	Drawer::SetImg()
     return (false);
   if (!this->_ShipImg->loadFromFile("./sprites/r-typesheet42.png"))
     return (false);
-	//this->_ShipImg->CreateMaskFromColor(sf::Color(0,0,0));
+	//this->_ShipImg->createMaskFromColor(sf::Color(0,0,0));
   if (!this->_LaserImg->loadFromFile("./sprites/r-typesheet2.png"))
     return (false);
   if (!this->_Decor1topImg->loadFromFile("./sprites/monster_revert.png"))
@@ -271,7 +271,7 @@ void	Drawer::CutImg()
 	this->_Ship1Anim[x].setScale(2.0f, 2.0f);
       this->_Ship1Anim[x].setTextureRect(sf::IntRect((166 / 5) * x,0,/*(166/5) * (x+1)*/ 166 / 5,86 / 5));
 	  this->_Ship2Anim[x].setScale(2.0f, 2.0f);
-      this->_Ship2Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, 86 / 5 ,/*(166/5) * (x+1)*/166 / 5, /*(86/5) * 2*/ ((86/5) * 2) - 5));
+      this->_Ship2Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, 86 / 5 ,/*(166/5) * (x+1)*/166 / 5, /*(86/5) * 2*/ 86/5));
 	  this->_Ship3Anim[x].setScale(2.0f, 2.0f);
       this->_Ship3Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, (86 / 5) * 2 ,/*(166/5) * (x+1)*/ 166 / 5 , /*(86/5) * 3*/ 86 / 5 ));
 	  this->_Ship4Anim[x].setScale(2.0f, 2.0f);

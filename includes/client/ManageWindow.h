@@ -11,7 +11,6 @@
 #include "balls.h"
 #include "entity.h"
 #include "ship.h"
-#include "Music.h"
 #include "alien.h"
 #include "dog.h"
 #include "jumper.h"

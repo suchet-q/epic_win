@@ -2,7 +2,7 @@
 
 Entity::Entity()
 {
-
+	_colision = false;
 }
 
 Entity::~Entity() {}
@@ -44,4 +44,14 @@ void			Entity::setType(entityType type) {
 void			Entity::setVecDir(float x, float y) {
 	_vecDir.setX(x);
 	_vecDir.setY(y);
+}
+
+void				Entity::setColision(bool col)
+{
+	this->_colision = col;
+}
+
+bool				Entity::getColision() const
+{
+	return (this->_colision);
 }

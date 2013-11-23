@@ -169,7 +169,8 @@ void			Game::initPlayersShip()
 	_resources.getShipList().back()->setType(static_cast<entityType>(type));
     _resources.getShipList().back()->setEntitiesPool(_resources.getEntitiesPool());
     _clientToShip[*it] = _resources.getShipList().back();
-    type++;
+	this->_entityToShip[this->_resources.getShipList().back()] = (*it);
+	type++;
   }
 /*	while (readyClients < this->_clients.size())
 	{

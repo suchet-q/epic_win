@@ -47,6 +47,7 @@ enum			entityType
 class			Entity
 {
 protected:
+	bool		_colision;
   Coord<>		_intCoord;
   Coord<float>		_coord;
   Vector		_vecDir;
@@ -56,7 +57,8 @@ protected:
 public:
   Entity();
   ~Entity();
-
+  void				setColision(bool);
+  bool				getColision() const;
   entityType		getType() const;
   Coord<>&		getCoord();
   Coord<float>&		getFloatCoord();

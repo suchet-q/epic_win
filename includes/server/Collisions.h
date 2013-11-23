@@ -7,6 +7,11 @@
 #include			"ShotMedium.h"
 #include			"ShotBig.h"
 #include			"ShotBiggest.h"
+#include			"ShotKikou.h"
+#include			"Clients.h"
+#include			"Game.h"
+
+class				Game;
 
 #define				SCREEN_WIDTH		(1024)
 #define				SCREEN_HEIGHT		(768)
@@ -22,11 +27,13 @@ class				Collision
 private:
   ResourcesGame*		_resources;
   std::array<entitiesColl, 8>	_entitiesCollisions;
-
+  std::map<Client *, t_rep_client>	*_mapClient;
+  std::map<Entity *, Client *>		*_entityToShip;
 public:
   Collision();
   ~Collision();
-
+  void				setMapClient(std::map<Client *, t_rep_client> *);
+  void				setEntityToShip(std::map<Entity *, Client *> *);
   void				setResources(ResourcesGame *resources);
   void				manageDepop();
   void				checkPlayerInScreen();

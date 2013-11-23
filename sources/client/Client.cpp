@@ -86,17 +86,17 @@ void		Client::loadingScreen()
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
 	menuResources.launch();
-	clock.restart();
 	
+	clock.restart();
 	while (this->_win.isRunning())
 	{
+		if (clock.getElapsedTime().asSeconds() >= 1.2f)
+			clock.restart();
+		tmp = clock.getElapsedTime().asSeconds();
 		this->_mutex.lock();
 		if (this->_finishedLoading)
 			break;
 		this->_mutex.unlock();
-		tmp = clock.getElapsedTime().asSeconds();
-		if (clock.getElapsedTime().asSeconds() >= 1.2)
-			clock.restart();
 		ss.str("");
 		ss << "Loading ";
 		while ((tmp -= 0.3f) >= 0.0f)
@@ -108,7 +108,6 @@ void		Client::loadingScreen()
 		 loading.update(0.15f, this->_win, 0);
 		 this->_win.refreshWindow();
 	}
-	std::cout << "-------------------------------" << std::endl;
 	this->_mutex.unlock();
 	gameResources.launch();
 }

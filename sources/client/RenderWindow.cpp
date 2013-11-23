@@ -83,7 +83,7 @@ void		RenderWindow::handleClosing()
   
   while (42)
     {
-      sf::sleep(sf::seconds(0.1f));
+      sf::sleep(sf::seconds(0.05f));
       MUT_LOCK;
 	  if (!(this->isRunning()))
 		  break;
@@ -95,7 +95,11 @@ void		RenderWindow::handleClosing()
 	      throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 	    }
 	  else if (event.type == sf::Event::TextEntered)
+	  {
+		this->_evtMutex.lock();
 	    this->_events.push_back(event);
+		this->_evtMutex.unlock();
+	  }
 	  else if (event.type == sf::Event::LostFocus)
 		this->_focused = false;
 	  else if (event.type == sf::Event::GainedFocus)
@@ -109,6 +113,7 @@ void		RenderWindow::handleClosing()
 void		RenderWindow::handleEvents()
 {
   sf::Lock lock(this->_mutex);
+  sf::Lock lock2(this->_evtMutex);
   std::string	str;
   unsigned int		maxSize;
   std::list<sf::Event>::iterator it;
@@ -123,7 +128,7 @@ void		RenderWindow::handleEvents()
 			{
 				if ((*it).text.unicode == '\b' && str.size() > 0)
 					str.erase(str.size() - 1, 1);
-				else if ((*it).text.unicode < 128 && str.size() < maxSize)
+				else if ((*it).text.unicode >= 33 && (*it).text.unicode <= 126 && str.size() < maxSize)
 					str += static_cast<char>((*it).text.unicode);
 			}
 			(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);

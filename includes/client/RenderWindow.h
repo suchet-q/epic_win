@@ -19,6 +19,7 @@ protected:
 	std::list<sf::Event>	_events;
 	bool				_focused;
 	sf::Mutex			_mutex;
+	sf::Mutex			_evtMutex;
 
 public:
 	RenderWindow(void);

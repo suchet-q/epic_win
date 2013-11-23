@@ -10,7 +10,8 @@ enum			entityGlobalType
 	PLAYERMISSIL,
 	MOBB,
 	MOBBMISSIL,
-	DECOR
+	DECOR,
+	NOTHING
 };
 
 enum			entityType
@@ -52,11 +53,14 @@ protected:
   Vector		_vecDir;
   entityType		_type;
   entityGlobalType	_globalType;
+  char			_ID;
 
 public:
   Entity();
   ~Entity();
 
+  char		       	getID() const;
+  void			setID(char);
   entityType		getType() const;
   Coord<>&		getCoord();
   Coord<float>&		getFloatCoord();

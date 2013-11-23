@@ -1285,20 +1285,21 @@ void		GameMenu::checkInputs(RenderWindow &win)
 
 void		GameMenu::update(RenderWindow &window)
 {
-	float	elapsed = this->_clock.getElapsedTime().asSeconds();
 	std::list<AWidget *>::iterator		it;
 	std::list<std::pair<WidgetSwitch *, WidgetSwitch *> >::iterator		it2;
 	std::list<WidgetText *>::iterator									it3;
 	std::list<WidgetSwitch *>::iterator									it4;
 	sf::FloatRect		rect;
-	
+	float	elapsed =													this->_clock.getElapsedTime().asSeconds();
+
 	this->rstClock();
 
 	(window.msgActive()) ? (rect = this->_inputMsg->getRect()) : (rect = this->_input->getRect());
 	this->_input->setText(window.getNickname());
 	this->_inputMsg->setText(window.getMsg());
 	this->_typingBar->setPosition(sf::Vector2f(rect.left + rect.width, rect.top));
-	this->checkInputs(window);
+	if (window.isFocused())
+		this->checkInputs(window);
 	
 	for (it = this->_widgets.begin(); it != this->_widgets.end(); ++it)
 		(*it)->update(elapsed, window, this->_sheetNb);

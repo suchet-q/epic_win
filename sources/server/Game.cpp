@@ -168,8 +168,10 @@ void			Game::initPlayersShip()
 	_resources.getShipList().back()->getFloatCoord().setY((768 - 100) / (_clients.size() + 1) * type);
 	_resources.getShipList().back()->setType(static_cast<entityType>(type));
     _resources.getShipList().back()->setEntitiesPool(_resources.getEntitiesPool());
-    _clientToShip[*it] = _resources.getShipList().back();
-    type++;
+	_resources.getEntityList().back()->setID(type); //temporaire: pour test
+    this->_entityToShip[this->_resources.getShipList().back()] = (*it);
+	_clientToShip[*it] = _resources.getShipList().back();
+    ++type;
   }
 /*	while (readyClients < this->_clients.size())
 	{
@@ -192,22 +194,22 @@ bool			Game::launchThread(void *arg) {
 
 void			Game::waitAllClients()
 {
-  unsigned char	readyClients = 0;
+	std::map<Client *, bool>		checked;
 
-  while (readyClients < this->_clients.size())
+	while (checked.size() < this->_clients.size())
     {
       for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
-	{
-	  this->lockClient();
-	  if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 /* need macro omg */)
-	    {
-	      memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
-	      ++readyClients;
-		  system("pause");
-	    }
-	  this->unlockClient();
-	}
-    }
+	   {
+		this->lockClient();
+		if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 && (int)(*it)->getFrameCMD().cmd.cmd[1] == (*it)->getID()/* need macro omg */)
+		 {
+			memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
+			checked[*it] = true;
+//			system("pause");
+		 }
+		this->unlockClient();
+	  }
+   }
 }
 
 int			Game::startGame(void *var)
@@ -291,7 +293,7 @@ void			Game::loop()
 				{
 					affServer.id_cmd = 10;
 					affServer.type = (*itEntity)->getType();
-					affServer.id_obj = 007/*mettre l id dans la class entity*/;
+					affServer.id_obj = (*itEntity)->getID();/*mettre l id dans la class entity*/;
 					affServer.x = tmp.getX();
 					affServer.y = tmp.getY();
 					memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
@@ -316,9 +318,10 @@ void			Game::loop()
 			  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
 			  (*itRep).second.size += sizeof(lifServer);
 
-				std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
-				this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
-					  (*itRep).second.size, &(*itRep).first->getUDPsin());
+				//std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
+				if (this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
+					(*itRep).second.size, &(*itRep).first->getUDPsin()) == -1)
+					std::cout << "OMG LE SEND TO QUI FAIL FUUUUUUUUUUUUUCK" << std::endl;
 				(*itRep).second.size = 0;
 		  }
 

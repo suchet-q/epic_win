@@ -1,5 +1,8 @@
 #include "Client.h"
 
+#ifndef _WIN32
+#include <X11/Xlib.h>
+#endif
 
 Client::Client(void)
 {
@@ -13,6 +16,8 @@ Client::~Client(void)
 
 void		Client::menuResources()
 {
+	sf::Context context;
+
   this->_menu.initParser(this->_parser);
   this->_menu.loadResources(&this->_win);
   sf::Lock	lock(this->_mutex);
@@ -26,17 +31,21 @@ void		Client::gameResources()
 
 void		Client::update()
 {
+	sf::Thread			gameResources(&Client::gameResources, this);
+
 	this->loadingScreen();
+	if (!(this->_win.isRunning()))
+		return;
+	gameResources.launch();
 	try {
-		//this->_menu.exception();
-		//this->_game.exception();		A mettre avant laancement game
+		this->_menu.exception();
 		if (!(this->_socket.connectTCP()))
 			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
 	}
 	catch (RuntimeException &e) {
-		
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		gameResources.wait();
 	}
 	this->_menu.rstClock();
 	while (this->_win.isRunning() && !(this->_menu.finished()))
@@ -55,11 +64,13 @@ void		Client::update()
 	this->_socket.setUDPPort(this->_menu.getUDPPort());
 	this->_clientID = this->_menu.getPlayerID();
 	try {
+		this->_game.exception();
 		this->_game.loop(this->_win, this->_parser, this->_socket);
 	}
 	catch (RuntimeException &e) {
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		gameResources.wait();
 	}
 	
 }
@@ -70,7 +81,6 @@ void		Client::loadingScreen()
 	std::stringstream	ss;
 	sf::Clock			clock;
 	float				tmp;
-	sf::Thread			gameResources(&Client::gameResources, this);
 	sf::Thread			menuResources(&Client::menuResources, this);
 	
 	this->_win.setActive(true);
@@ -81,16 +91,18 @@ void		Client::loadingScreen()
 	loading.setPosition(sf::Vector2f(400, 340));
 	menuResources.launch();
 	clock.restart();
-	
 	while (this->_win.isRunning())
 	{
+		if (clock.getElapsedTime().asSeconds() >= 1.2f)
+			clock.restart();
+		tmp = clock.getElapsedTime().asSeconds();
 		this->_mutex.lock();
 		if (this->_finishedLoading)
+		{
+			this->_mutex.unlock();
 			break;
+		}
 		this->_mutex.unlock();
-		tmp = clock.getElapsedTime().asSeconds();
-		if (clock.getElapsedTime().asSeconds() >= 1.2)
-			clock.restart();
 		ss.str("");
 		ss << "Loading ";
 		while ((tmp -= 0.3f) >= 0.0f)
@@ -102,9 +114,7 @@ void		Client::loadingScreen()
 		 loading.update(0.15f, this->_win, 0);
 		 this->_win.refreshWindow();
 	}
-	std::cout << "-------------------------------" << std::endl;
-	this->_mutex.unlock();
-	gameResources.launch();
+	menuResources.wait();
 }
 
 void		Client::initializeThreads()
@@ -116,16 +126,16 @@ void		Client::initializeThreads()
 	  	this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
-		update.terminate();
-		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		update.wait();
 		std::cout << "Waiting Threads" << std::endl;
 	}
 }
 
 bool		Client::launch(std::string const &ip, int port)
 {
-	THREADS_INIT;
+	THREADS_INITIALISATION;
+	// XInitThreads();
 	try { 
 		this->_err.initialize();
 	}
@@ -138,6 +148,7 @@ bool		Client::launch(std::string const &ip, int port)
 		return (false);
 	}
 	this->_socket.setValues(ip, port);
+	this->_err.setActive(false);
 	this->_win.setActive(false);
 	this->initializeThreads();
 	return (true);

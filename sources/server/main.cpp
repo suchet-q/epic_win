@@ -19,11 +19,13 @@ int		main(int ac, char **av)
 
   if (ac < 2)
     {
-      std::cerr << "[USAGE]: R-type [PORT]" << std::endl;
-      return (-1);
-    }
-  buffer.str(av[1]);
-  buffer >> port;
+	  port = 4242;
+	}
+  else
+  {
+	  buffer.str(av[1]);
+	  buffer >> port;
+  }
   if (!server.init(port)
 	  || !server.loop())
   {

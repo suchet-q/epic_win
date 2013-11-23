@@ -6,6 +6,7 @@ RenderWindow::RenderWindow(void)
 	this->_nickname = "unknown";
 	this->_getNick = false;
 	this->_getMsg = false;
+	this->_focused = true;
 }
 
 
@@ -13,10 +14,19 @@ RenderWindow::~RenderWindow(void)
 {
 }
 
+bool				RenderWindow::isFocused()
+{
+	return (this->_focused);
+}
 
 sf::RenderWindow*	RenderWindow::getWindow()
 {
 	return (this->_win);
+}
+
+sf::Mutex*			RenderWindow::getMutex()
+{
+	return (&this->_mutex);
 }
 
 void		RenderWindow::lock(bool lock)
@@ -57,6 +67,8 @@ bool		RenderWindow::openWindow(int x, int y, const std::string & name)
 
 void	RenderWindow::closeWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->_win != NULL && this->_win->isOpen())
 	{
 		this->_win->close();
@@ -71,19 +83,25 @@ void		RenderWindow::handleClosing()
   
   while (42)
     {
-		sf::sleep(sf::seconds(0.1f));
-		this->_mutex.lock();
-	while (this->_win->pollEvent(event))
+      sf::sleep(sf::seconds(0.1f));
+      MUT_LOCK;
+	  if (!(this->isRunning()))
+		  break;
+	while (this->_win->pollEvent(event) && this->isRunning())
 	{
 	  if (event.type == sf::Event::Closed)
 	    {
-	      this->_mutex.unlock();
+	      MUT_UNLOCK;
 	      throw RuntimeException("[RenderWindow::handleEvents]", "Closing Window. Bye Bye !");
 	    }
 	  else if (event.type == sf::Event::TextEntered)
 	    this->_events.push_back(event);
+	  else if (event.type == sf::Event::LostFocus)
+		this->_focused = false;
+	  else if (event.type == sf::Event::GainedFocus)
+		this->_focused = true;
 	}
-      this->_mutex.unlock();
+      MUT_UNLOCK;
     }
 
 }
@@ -113,29 +131,27 @@ void		RenderWindow::handleEvents()
 
 void		RenderWindow::clearWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->isRunning())
-	{
-	  sf::Lock	lock(this->_mutex);
 	  this->_win->clear();
-	}
 }
 
 void		RenderWindow::refreshWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->isRunning())
-	{
-	  sf::Lock	lock(this->_mutex);
 	  this->_win->display();
-	}
 }
 
 
 void		RenderWindow::drawSprite(sf::Sprite &sprite)
 {
-  if (this->isRunning()) {
-    sf::Lock	lock(this->_mutex);
-    this->_win->draw(sprite);
-  }
+	sf::Lock	lock(this->_mutex);
+	
+	if (this->isRunning()) 
+		this->_win->draw(sprite);
 }
 
 void					RenderWindow::clearMsg()
@@ -145,8 +161,10 @@ void					RenderWindow::clearMsg()
 
 void					RenderWindow::drawText(sf::Text &text)
 {
-  sf::Lock	lock(this->_mutex);
-  this->_win->draw(text);
+	sf::Lock	lock(this->_mutex);
+	
+	if (this->isRunning())
+		this->_win->draw(text);
 }
 
 std::string				RenderWindow::getNickname()

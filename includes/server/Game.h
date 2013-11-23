@@ -5,17 +5,19 @@
 # include			<list>
 # include			<map>
 
-# include			"ResourcesGame.h"
-# include			"Clients.h"
-# include			"MetaMutex.h"
-# include			"MetaSocket.h"
-# include			"MetaThreader.hpp"
-# include			"StructCommands.h"
-# include			"MetaClock.hpp"
-# include			"ResourcesChecker.h"
-# include			"LoadLib.hpp"
+#include			"ResourcesGame.h"
+#include			"Clients.h"
+#include			"MetaMutex.h"
+#include			"MetaSocket.h"
+#include			"MetaThreader.hpp"
+#include			"StructCommands.h"
+#include			"MetaClock.hpp"
+#include			"ResourcesChecker.h"
+#include			"LoadLib.hpp"
 
-# define			REFRESH_TIME	(33000)
+class		Collision;
+
+#define			REFRESH_TIME	(33000)
 
 class				Client;
 
@@ -50,6 +52,7 @@ private:
   int					_id;
   std::list<Client *>			_clients;
   std::map<Client *, Ship *>		_clientToShip;
+  std::map<Entity *, Client *>		_entityToShip;
   MetaMutex<>				_gameClient;
   MetaMutex<>				_gameSocket;
   MetaMutex<>				_gameAttribut;

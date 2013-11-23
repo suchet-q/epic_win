@@ -201,35 +201,35 @@ void	Drawer::CutImg()
   int x;
 
   for (x = 0; x < 8; ++x)
-    this->_XwingAnim[x].setTextureRect(sf::IntRect(265/8 * x, 0, 265/8*(x+1),67/2));
+    this->_XwingAnim[x].setTextureRect(sf::IntRect(265/8 * x, 0, /*265/8*(x+1)*/265/8,67/2));
 
   int j = 8;
-  this->_MissilAnim[0].setTextureRect(sf::IntRect(230, 372/3 - 9, 532/2, 372/3 + 10));
-  this->_MissilAnim[1].setTextureRect(sf::IntRect(230, 372/3 + 10, 532/2, 372/3 + 30));
-  this->_MissilAnim[2].setTextureRect(sf::IntRect(199, 372/3 + 30, 532/2, 372/3 + 44));
-  this->_MissilAnim[3].setTextureRect(sf::IntRect(185, 372/3 + 44, 532/2, 372/2));
+  this->_MissilAnim[0].setTextureRect(sf::IntRect(230, 372/3 - 9, /*532/2*/532 / 2 - 230, /*372/3 + 10*/19));
+  this->_MissilAnim[1].setTextureRect(sf::IntRect(230, 372/3 + 10, /*532/2*/ 532 / 2 - 230, /*372/3 + 30*/20));
+  this->_MissilAnim[2].setTextureRect(sf::IntRect(199, 372/3 + 30, /*532/2*/ 532 / 2 - 199, /*372/3 + 44*/14));
+  this->_MissilAnim[3].setTextureRect(sf::IntRect(185, 372/3 + 44, /*532/2*/ 532 / 2 - 185, /*372/2*/(372 / 2) - (372 / 3 + 44)));
 
   for (x = 0; x < 5; ++x)
-    this->_MetroidAnim[x].setTextureRect(sf::IntRect(326/5 * x, 0, 326/5*(x+1),66));
+    this->_MetroidAnim[x].setTextureRect(sf::IntRect(326/5 * x, 0, /*326/5*(x+1)*/326/5,66));
 
   for (x = 0; x < 8; ++x)
-    this->_LarveAnim[x].setTextureRect(sf::IntRect(522/8 * x, 0, 522/8*(x+1),132));
+    this->_LarveAnim[x].setTextureRect(sf::IntRect(522/8 * x, 0, /*522/8*(x+1)*/522/8,132));
 
   for (x = 0; x < 3; ++x)
-    this->_JumperAnim[x].setTextureRect(sf::IntRect(332/6 * x, 0, 332/6*(x+1),60));
+    this->_JumperAnim[x].setTextureRect(sf::IntRect(332/6 * x, 0, /*332/6*(x+1)*/332/6,60));
 
   j = 8;
   x = 0;
   while (j < 12)
     {
-      this->_FireballAnim[x].setTextureRect(sf::IntRect((400/24 + 1) * j, 0, (400/24 + 1)*(j+1),85/4));
+      this->_FireballAnim[x].setTextureRect(sf::IntRect((400/24 + 1) * j, 0, /*(400/24 + 1)*(j+1)*/(400/24 + 1),85/4));
       x++;
       j++;
     }
   j = 7;
   while (j < 12)
     {
-      this->_FireballAnim[x].setTextureRect(sf::IntRect((400/24) * j, 85/4, (400/24)*(j+1),85/2 - 10));
+      this->_FireballAnim[x].setTextureRect(sf::IntRect((400/24) * j, 85/4, /*(400/24)*(j+1)*/(400/24),/*85/2 - 10*/(85 / 2 - 10) - (85 / 4)));
       x++;
       j++;
     }
@@ -237,12 +237,12 @@ void	Drawer::CutImg()
   j = 2;
   while (x < 5)
     {
-      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/10 * x, 164/2 + 12, 652/10*(x+1),164));
+      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/10 * x, 164/2 + 12, /*652/10*(x+1)*/ 652 / 10, /*164*/ 164 - (164 / 2 + 12)));
       x++;
     }
   while (j < 5)
     {
-      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/10 * j, 164/6 + 12, 652/10*(j+1),164/2 + 10));
+      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/10 * j, 164/6 + 12, /*652/10*(j+1)*/ 652 / 10,/*164/2 + 10*/(164 / 2 + 10) - (164 / 6 + 12)));
       x++;
       j++;
     }
@@ -250,32 +250,32 @@ void	Drawer::CutImg()
   j = 4;
   while (j < 10)
     {
-      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/20 * j, 0, 652/20*(j+1),164/6 + 10));
+      this->_ExplosionAnim[x].setTextureRect(sf::IntRect(652/20 * j, 0, /*652/20*(j+1)*/ 652 / 20,164/6 + 10));
       j++;
       x++;
     }  
   for (x = 0; x < 8; ++x)
-    this->_DroneAnim[x].setTextureRect(sf::IntRect(533/16 * x, 0, 533/16*(x+1),36));
+    this->_DroneAnim[x].setTextureRect(sf::IntRect(533/16 * x, 0, /*533/16*(x+1)*/ 533 / 16,36));
 
   for (x = 0; x < 6; ++x)
-    this->_DogAnim[x].setTextureRect(sf::IntRect(398/12 * x, 0, 398/12*(x+1),100 / 3));
+    this->_DogAnim[x].setTextureRect(sf::IntRect(398/12 * x, 0, /*398/12*(x+1)*/ 398 / 12,100 / 3));
 
   for (x = 0; x < 12; ++x)
-    this->_BallsAnim[x].setTextureRect(sf::IntRect(208/12 * x, 0, 208/12*(x+1),18));
+    this->_BallsAnim[x].setTextureRect(sf::IntRect(208/12 * x, 0, /*208/12*(x+1)*/208 / 12,18));
 
   for (x = 0; x < 6; ++x)
-    this->_AlienAnim[x].setTextureRect(sf::IntRect(200/6 * x, 0, 200/6*(x+1),34));
+    this->_AlienAnim[x].setTextureRect(sf::IntRect(200/6 * x, 0, /*200/6*(x+1)*/ 200 / 6,34));
 
   for (x = 0; x < 5; ++x)
     {
 	this->_Ship1Anim[x].setScale(2.0f, 2.0f);
-      this->_Ship1Anim[x].setTextureRect(sf::IntRect((166 / 5) * x,0,(166/5) * (x+1),86 / 5));
+      this->_Ship1Anim[x].setTextureRect(sf::IntRect((166 / 5) * x,0,/*(166/5) * (x+1)*/ 166 / 5,86 / 5));
 	  this->_Ship2Anim[x].setScale(2.0f, 2.0f);
-      this->_Ship2Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, 86 / 5 ,(166/5) * (x+1), (86/5) * 2));
+      this->_Ship2Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, 86 / 5 ,/*(166/5) * (x+1)*/166 / 5, /*(86/5) * 2*/ ((86/5) * 2) - 5));
 	  this->_Ship3Anim[x].setScale(2.0f, 2.0f);
-      this->_Ship3Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, (86 / 5) * 2 ,(166/5) * (x+1), (86/5) * 3));
+      this->_Ship3Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, (86 / 5) * 2 ,/*(166/5) * (x+1)*/ 166 / 5 , /*(86/5) * 3*/ 86 / 5 ));
 	  this->_Ship4Anim[x].setScale(2.0f, 2.0f);
-      this->_Ship4Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, (86 / 5) * 3 ,(166/5) * (x+1), (86/5) * 4));
+      this->_Ship4Anim[x].setTextureRect(sf::IntRect((166 / 5) * x, (86 / 5) * 3 ,/*(166/5) * (x+1)*/ 166 / 5 , /*(86/5) * 4*/ 86 / 5));
     }
   this->_LaserAnim[0].setTextureRect(sf::IntRect(38,471,100,502));
   this->_LaserAnim[1].setTextureRect(sf::IntRect(104,471,168,502));
@@ -290,192 +290,192 @@ void	Drawer::CutImg()
 void	Drawer::drowLaser(int x, int y, int status)
 {
   this->_LaserAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_LaserAnim[status]);
-  ////this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowShip1(int x, int y, int status)
 {
   this->_Ship1Anim[status].setPosition(x, y);
-  ////this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_Ship1Anim[status]);
-  ////this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowShip2(int x, int y, int status)
 {
   this->_Ship2Anim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_Ship2Anim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowShip3(int x, int y, int status)
 {
   this->_Ship3Anim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_Ship3Anim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowShip4(int x, int y, int status)
 {
   this->_Ship4Anim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_Ship4Anim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDrone(int x, int y, int status)
 {
   this->_DroneAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DroneAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowExplosion(int x, int y, int status)
 {
   this->_ExplosionAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_ExplosionAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowAlien(int x, int y, int status)
 {
   this->_AlienAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_AlienAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowBalls(int x, int y, int status)
 {
   this->_BallsAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_BallsAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDog(int x, int y, int status)
 {
   this->_DogAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DogAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowJumper(int x, int y, int status)
 {
   this->_JumperAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_JumperAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowXwing(int x, int y, int status)
 {
   this->_XwingAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_XwingAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowMetroid(int x, int y, int status)
 {
   this->_MetroidAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_MetroidAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowLarve(int x, int y, int status)
 {
   this->_LarveAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_LarveAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowFireBall(int x, int y, int status)
 {
   this->_FireballAnim[status].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_FireballAnim[status]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDecor1Top(int x, int y, int status)
 {
   status = status;
   this->_DecorAnim[0].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[0]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDecor1Down(int x, int y, int status)
 {
   status = status;
   this->_DecorAnim[1].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[1]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDecor2Top(int x, int y, int status)
 {
   status = status;
   this->_DecorAnim[2].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[2]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowDecor2Down(int x, int y, int status)
 {
   status = status;
   this->_DecorAnim[3].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[3]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowMissil(int x, int y, int status)
 {
   status = status;
   this->_MissilAnim[0].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[0]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowMissil2(int x, int y, int status)
 {
   status = status;
   this->_MissilAnim[1].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[1]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowMissil3(int x, int y, int status)
 {
   status = status;
   this->_MissilAnim[2].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[2]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 void	Drawer::drowMissil4(int x, int y, int status)
 {
   status = status;
   this->_MissilAnim[3].setPosition(x, y);
-  //this->_Mutex->Lock();
+  this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[3]);
-  //this->_Mutex->Unlock();
+  this->_Mutex->unlock();
 }
 
 void	Drawer::drowSprite(int type, int x, int y, int status)

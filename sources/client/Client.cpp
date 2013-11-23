@@ -31,17 +31,21 @@ void		Client::gameResources()
 
 void		Client::update()
 {
+	sf::Thread			gameResources(&Client::gameResources, this);
+
 	this->loadingScreen();
+	if (!(this->_win.isRunning()))
+		return;
+	gameResources.launch();
 	try {
 		this->_menu.exception();
-		
 		if (!(this->_socket.connectTCP()))
 			throw RuntimeException("[Client::launch]", "Couldn't connect to server");  	
 	}
 	catch (RuntimeException &e) {
-		
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		gameResources.wait();
 	}
 	this->_menu.rstClock();
 	while (this->_win.isRunning() && !(this->_menu.finished()))
@@ -66,6 +70,7 @@ void		Client::update()
 	catch (RuntimeException &e) {
 		this->_err.displayError(e.method(), e.what());
 		this->_win.closeWindow();
+		gameResources.wait();
 	}
 	
 }
@@ -76,7 +81,6 @@ void		Client::loadingScreen()
 	std::stringstream	ss;
 	sf::Clock			clock;
 	float				tmp;
-	sf::Thread			gameResources(&Client::gameResources, this);
 	sf::Thread			menuResources(&Client::menuResources, this);
 	
 	this->_win.setActive(true);
@@ -86,7 +90,6 @@ void		Client::loadingScreen()
 	loading.addActualSheet(0);
 	loading.setPosition(sf::Vector2f(400, 340));
 	menuResources.launch();
-	
 	clock.restart();
 	while (this->_win.isRunning())
 	{
@@ -95,7 +98,10 @@ void		Client::loadingScreen()
 		tmp = clock.getElapsedTime().asSeconds();
 		this->_mutex.lock();
 		if (this->_finishedLoading)
+		{
+			this->_mutex.unlock();
 			break;
+		}
 		this->_mutex.unlock();
 		ss.str("");
 		ss << "Loading ";
@@ -108,8 +114,7 @@ void		Client::loadingScreen()
 		 loading.update(0.15f, this->_win, 0);
 		 this->_win.refreshWindow();
 	}
-	this->_mutex.unlock();
-	gameResources.launch();
+	menuResources.wait();
 }
 
 void		Client::initializeThreads()
@@ -122,6 +127,7 @@ void		Client::initializeThreads()
 	}
 	catch (RuntimeException &e) {
 		this->_win.closeWindow();
+		update.wait();
 		std::cout << "Waiting Threads" << std::endl;
 	}
 }

@@ -62,6 +62,8 @@ bool		RenderWindow::openWindow(int x, int y, const std::string & name)
 
 void	RenderWindow::closeWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->_win != NULL && this->_win->isOpen())
 	{
 		this->_win->close();
@@ -120,29 +122,27 @@ void		RenderWindow::handleEvents()
 
 void		RenderWindow::clearWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->isRunning())
-	{
-	  sf::Lock	lock(this->_mutex);
 	  this->_win->clear();
-	}
 }
 
 void		RenderWindow::refreshWindow()
 {
+	sf::Lock	lock(this->_mutex);
+
 	if (this->isRunning())
-	{
-	  sf::Lock	lock(this->_mutex);
 	  this->_win->display();
-	}
 }
 
 
 void		RenderWindow::drawSprite(sf::Sprite &sprite)
 {
-  if (this->isRunning()) {
-    sf::Lock	lock(this->_mutex);
-    this->_win->draw(sprite);
-  }
+	sf::Lock	lock(this->_mutex);
+	
+	if (this->isRunning()) 
+		this->_win->draw(sprite);
 }
 
 void					RenderWindow::clearMsg()
@@ -152,8 +152,10 @@ void					RenderWindow::clearMsg()
 
 void					RenderWindow::drawText(sf::Text &text)
 {
-  sf::Lock	lock(this->_mutex);
-  this->_win->draw(text);
+	sf::Lock	lock(this->_mutex);
+	
+	if (this->isRunning())
+		this->_win->draw(text);
 }
 
 std::string				RenderWindow::getNickname()

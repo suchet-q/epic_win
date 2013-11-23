@@ -1285,13 +1285,13 @@ void		GameMenu::checkInputs(RenderWindow &win)
 
 void		GameMenu::update(RenderWindow &window)
 {
-	float	elapsed = this->_clock.getElapsedTime().asSeconds();
 	std::list<AWidget *>::iterator		it;
 	std::list<std::pair<WidgetSwitch *, WidgetSwitch *> >::iterator		it2;
 	std::list<WidgetText *>::iterator									it3;
 	std::list<WidgetSwitch *>::iterator									it4;
 	sf::FloatRect		rect;
-	
+	float	elapsed =													this->_clock.getElapsedTime().asSeconds();
+
 	this->rstClock();
 
 	(window.msgActive()) ? (rect = this->_inputMsg->getRect()) : (rect = this->_input->getRect());

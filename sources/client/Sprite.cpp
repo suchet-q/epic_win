@@ -109,8 +109,7 @@ void			Sprite::loadAnimationsBackup()
 
 bool			Sprite::updateAnimation(float elapsed)
 {
-	int			x, y;
-	float		tmp;
+	float		tmp, x, y;
 
 	if (!(this->_animations.empty()))
 	{

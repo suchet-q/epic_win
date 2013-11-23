@@ -122,7 +122,6 @@ void		Client::initializeThreads()
 	  	this->_win.handleClosing();
 	}
 	catch (RuntimeException &e) {
-		update.terminate();
 		this->_win.closeWindow();
 		std::cout << "Waiting Threads" << std::endl;
 	}

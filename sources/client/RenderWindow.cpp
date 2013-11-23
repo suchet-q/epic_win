@@ -72,7 +72,6 @@ void		RenderWindow::handleClosing()
   while (42)
     {
       sf::sleep(sf::seconds(0.1f));
-      // usleep(1000000);
       MUT_LOCK;
 	  if (!(this->isRunning()))
 		  break;

@@ -114,19 +114,24 @@ void		RenderWindow::handleEvents()
   std::list<sf::Event>::iterator it;
 
   for (it = this->_events.begin(); it != this->_events.end(); ++it)
-    if (this->_getNick || this->_getMsg)
-      {
-	(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
-	(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
-	if ((*it).type == sf::Event::TextEntered)
-	  {
-	    if ((*it).text.unicode == '\b' && str.size() > 0)
-	      str.erase(str.size() - 1, 1);
-	    else if ((*it).text.unicode < 128 && str.size() < maxSize)
-	      str += static_cast<char>((*it).text.unicode);
-	  }
-	(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
-      }
+	{
+		if (this->_getNick || this->_getMsg)
+		 {
+			(this->_getNick) ? (str = this->_nickname) : (str = this->_msg);
+			(this->_getNick) ? (maxSize = 15) : (maxSize = 50);
+			if ((*it).type == sf::Event::TextEntered)
+			{
+				if ((*it).text.unicode == '\b' && str.size() > 0)
+					str.erase(str.size() - 1, 1);
+				else if ((*it).text.unicode < 128 && str.size() < maxSize)
+					str += static_cast<char>((*it).text.unicode);
+			}
+			(this->_getNick) ? (this->_nickname = str) : (this->_msg = str);
+		}
+		it = this->_events.erase(it);
+		if (it == this->_events.end())
+			break;
+  }
 }
 
 void		RenderWindow::clearWindow()

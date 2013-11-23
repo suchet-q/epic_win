@@ -1,5 +1,5 @@
 #include		"Collisions.h"
-
+/*
 Collision::Collision()
 {
   _entitiesCollisions[0] = &Collision::CollPlayerPlayer;
@@ -198,7 +198,7 @@ bool			Collision::CollMobbMobb(std::list<Entity *>::iterator& it_o,
   if ((*it_o)->getGlobalType() != MOBB || (*it_t)->getGlobalType() != MOBB)
     return false;
   /*ils se passe a traver*/
-  return true;
+/*  return true;
 }
 
 bool			Collision::CollPlayerMobb(std::list<Entity *>::iterator& it_o,
@@ -210,7 +210,7 @@ bool			Collision::CollPlayerMobb(std::list<Entity *>::iterator& it_o,
   it_o = this->_resources->getEntityList().erase(it_o);
   this->_deleteOne = true;
   /*event explosion*/
-  return true;
+ /* return true;
 }
 
 bool			Collision::CollMobbDecor(std::list<Entity *>::iterator& it_o,
@@ -222,7 +222,7 @@ bool			Collision::CollMobbDecor(std::list<Entity *>::iterator& it_o,
   it_o = this->_resources->getEntityList().erase(it_o);
   this->_deleteOne = true;
   /*event explosion*/
-  return true;
+ /* return true;
 }
 
 bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
@@ -243,7 +243,7 @@ bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
 		this->_deleteOne = true;
 	}
 	/*event explosion*/
-	return true;
+/*return true;
 }
 
 bool			Collision::CollMissilDecor(std::list<Entity *>::iterator& it_o,
@@ -316,4 +316,4 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
 		this->_deleteOne = true;
 	}
 	return true;
-}
+}*/

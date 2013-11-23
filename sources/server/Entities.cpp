@@ -2,11 +2,22 @@
 
 Entity::Entity()
 {
-	_colision = false;
+	static char id = 4;
+
+	this->_ID = id++;
 }
 
 Entity::~Entity() {}
 
+char			Entity::getID() const
+{
+	return this->_ID;
+}
+
+void			Entity::setID(char id)
+{
+	this->_ID = id;
+}
 
 entityType		Entity::getType() const {
   return _type;
@@ -44,14 +55,4 @@ void			Entity::setType(entityType type) {
 void			Entity::setVecDir(float x, float y) {
 	_vecDir.setX(x);
 	_vecDir.setY(y);
-}
-
-void				Entity::setColision(bool col)
-{
-	this->_colision = col;
-}
-
-bool				Entity::getColision() const
-{
-	return (this->_colision);
 }

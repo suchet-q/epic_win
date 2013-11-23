@@ -54,10 +54,14 @@ protected:
   Vector		_vecDir;
   entityType		_type;
   entityGlobalType	_globalType;
+  char				_ID;
 
 public:
   Entity();
   ~Entity();
+
+  char				getID() const;
+  void				setID(char);
   void				setColision(bool);
   bool				getColision() const;
   entityType		getType() const;

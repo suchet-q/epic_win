@@ -15,7 +15,14 @@ class SoundPool
 	SoundPool(void);
 	~SoundPool(void);
 
-	void									initialize();
+	bool									initialize();
+	sf::Music		_musicMenu;
+	sf::Music		_musicLvlOne;
+	/* sf::Music		_musicLoose; */
+	sf::SoundBuffer		_musicMort;
+	sf::Sound		_Dead;
+
+
 public:
 
 	static SoundPool *getInstance() {
@@ -34,4 +41,20 @@ public:
 	void		disableSound();
 	void		enableMusic();
 	void		disableMusic();
+
+	void		playDead(); 
+	void		pauseDead();
+	void		stopDead();
+	void		playMenu();
+	void		pauseMenu();
+	void		stopMenu();
+	void		playLvlOne();
+	void		pauseLvlOne();
+	void		stopLvlOne();
+	/* void		playLoose(); */
+	/* void		pauseLoose(); */
+	/* void		stopLoose(); */
+	void		loopMenu();
+	void		loopLvlOne();
+	/* void		loopLoose(); */
 };

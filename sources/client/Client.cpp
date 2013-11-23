@@ -26,7 +26,7 @@ void		Client::menuResources()
 
 void		Client::gameResources()
 {
-	this->_game.loadResources(&(this->_clientID));
+	this->_game.loadResources(&(this->_clientID), this->_win);
 }
 
 void		Client::update()

@@ -13,7 +13,7 @@ GameLoop::~GameLoop(void)
 {
 }
 
-int		GameLoop::loadResources(void *arg)
+int		GameLoop::loadResources(void *arg, RenderWindow& win)
 {
 	std::list<std::pair<sf::Vector2i, sf::Vector2i> >	subRects;
 	std::list<std::pair<sf::Vector2f, float> >			anims;
@@ -26,14 +26,18 @@ int		GameLoop::loadResources(void *arg)
 		pos.push_back(sf::Vector2f(1024, 0));
 		anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(-1024, 0), 15.0));
 		anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(-1024, 0), 30.0));
+		win.lock(true);
 		this->_back1.loadImage("Images/back1.jpg");
 		this->_back1.loadSprites(subRects);
+		win.lock(false);
 		this->_back1.setPosition(pos);
 		this->_back1.setAnimations(anims);
 		this->_back1.addActualSheet(0);
 
+		win.lock(true);
 		this->_back2.loadImage("Images/back2.png");
 		this->_back2.loadSprites(subRects);
+		win.lock(false);
 		this->_back2.setPosition(pos);
 		anims.clear();
 		anims.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(-1024, 0), 10.0));
@@ -41,15 +45,21 @@ int		GameLoop::loadResources(void *arg)
 		this->_back2.setAnimations(anims);
 		this->_back2.addActualSheet(0);
 
+		win.lock(true);
 		this->_life.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		win.lock(false);
 		this->_life.addActualSheet(0);
 		this->_life.setPosition(sf::Vector2f(10, 0));
 
+		win.lock(true);
 		this->_score.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		win.lock(false);
 		this->_score.addActualSheet(0);
 		this->_score.setPosition(sf::Vector2f(10, 730));
-
+		
+		win.lock(true);
 		this->_fps.setStyle(sf::Text::Bold, 28, "Images/charlie_dotted.ttf", 255, 255, 255);
+		win.lock(false);
 		this->_fps.addActualSheet(0);
 		this->_fps.setPosition(sf::Vector2f(900, 730));
 	}

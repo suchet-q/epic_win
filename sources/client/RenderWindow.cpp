@@ -6,6 +6,7 @@ RenderWindow::RenderWindow(void)
 	this->_nickname = "unknown";
 	this->_getNick = false;
 	this->_getMsg = false;
+	this->_focused = true;
 }
 
 
@@ -13,6 +14,10 @@ RenderWindow::~RenderWindow(void)
 {
 }
 
+bool				RenderWindow::isFocused()
+{
+	return (this->_focused);
+}
 
 sf::RenderWindow*	RenderWindow::getWindow()
 {
@@ -91,6 +96,10 @@ void		RenderWindow::handleClosing()
 	    }
 	  else if (event.type == sf::Event::TextEntered)
 	    this->_events.push_back(event);
+	  else if (event.type == sf::Event::LostFocus)
+		this->_focused = false;
+	  else if (event.type == sf::Event::GainedFocus)
+		this->_focused = true;
 	}
       MUT_UNLOCK;
     }

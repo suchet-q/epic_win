@@ -247,7 +247,8 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		win.refreshWindow();
 		if ((timer += elapsed) >= 0.05f)
 		{
-			this->handleInputs(parser);
+			if (win.isFocused())
+				this->handleInputs(parser);
 			timer = 0.0f;
 		}
 		sock.update(parser);

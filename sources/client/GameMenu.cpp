@@ -1298,7 +1298,8 @@ void		GameMenu::update(RenderWindow &window)
 	this->_input->setText(window.getNickname());
 	this->_inputMsg->setText(window.getMsg());
 	this->_typingBar->setPosition(sf::Vector2f(rect.left + rect.width, rect.top));
-	this->checkInputs(window);
+	if (window.isFocused())
+		this->checkInputs(window);
 	
 	for (it = this->_widgets.begin(); it != this->_widgets.end(); ++it)
 		(*it)->update(elapsed, window, this->_sheetNb);

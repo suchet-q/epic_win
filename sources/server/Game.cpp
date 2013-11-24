@@ -9,6 +9,8 @@ Game::Game(int id, std::list<Client *> &clients)
   this->_gameClient.initMutex();
   this->_gameSocket.initMutex();
   this->_isInit = false;
+  this->_exit = false;
+  this->_terminated = false;
 }
 
 Game::Game() {}
@@ -73,6 +75,21 @@ bool			Game::lockSocket() {
 
 bool			Game::unlockSocket() {
   return this->_gameSocket.Unlock();
+}
+
+bool			Game::getExit() const
+{
+	return this->_exit;
+}
+
+void			Game::setExit(bool exit)
+{
+	this->_exit = exit;
+}
+
+bool			Game::getTerminated() const
+{
+	return this->_terminated;
 }
 
 bool		Game::loadAllLib()
@@ -229,7 +246,9 @@ int			Game::startGame(void *var)
   /*identification verifier changer status dans infos client puis lancer la game*/
   /*appel de methode init etc... et la loop de la game*/
   std::cout << "c'est la fin de la game maggle" << std::endl;
-  while(true);
+  this->lockAttribut();
+  this->_terminated = true;
+  this->unlockAttribut();
   return (1);
 }
 
@@ -355,10 +374,10 @@ void			Game::loop()
 	std::list<t_spawn>::iterator	it_spawn;
 
 //  this->_resources.getEntityList().push_back(new PlayerShip);
-// this->_resources.getEntityList().back()->setGlobalType(PLAYER);
+//  this->_resources.getEntityList().back()->setGlobalType(PLAYER);
 //  this->_resources.getEntityList().back()->setType(PLAYER2);
 	this->_clock.start();
-	while (true)
+	while (true && !this->_exit)
 	{
 		it_spawn = this->_spawn.begin();
 		for (; it_spawn != this->_spawn.begin() && !stopSpawn; )

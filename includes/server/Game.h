@@ -51,10 +51,12 @@ struct				t_rep_client
 class				Game
 {
 private:
-	std::list<t_spawn>	_spawn;
-	int					_id;
+	std::list<t_spawn>			_spawn;
+	int							_id;
+	bool						_exit;
+	bool						_terminated;
 	std::list<Client *>			_clients;
-	std::map<Client *, Ship *>		_clientToShip;
+	std::map<Client *, Ship *>	_clientToShip;
 	std::map<Entity *, Client *>		_entityToShip;
 	MetaMutex<>				_gameClient;
 	MetaMutex<>				_gameSocket;
@@ -90,6 +92,10 @@ public:
 	bool				unlockSocket();
 	bool				lockAttribut();
 	bool				unlockAttribut();
+
+	bool				getExit() const;
+	void				setExit(bool);
+	bool				getTerminated() const;
 
 	bool				loadAllLib();
 

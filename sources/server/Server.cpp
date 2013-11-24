@@ -120,6 +120,15 @@ void			Server::checkDecoClient(std::list<Client *> &to_deco)
 			(*it)->getWriteBuffer()->clear();
 			(*it)->setStatus(TO_DECO);
 		}
+		else if ((*it)->getGame())
+		{
+			(**((*it)->getGame()))->setExit(true);
+			for (std::list<Client *>::iterator itClientGame = (**((*it)->getGame()))->getClients().begin(); itClientGame != (**((*it)->getGame()))->getClients().end(); ++itClientGame)
+			{
+				(*itClientGame)->setStatus(TO_DECO);
+				_idArray[(*itClientGame)->getID()] = false;
+			}
+		}
 		else
 			(*it)->setStatus(TO_DECO);
 		_idArray[(*it)->getID()] = false;
@@ -149,6 +158,16 @@ bool			Server::loop()
 		if (!to_deco.empty())
 		  {
 			this->checkDecoClient(to_deco);
+		  }
+		for (std::list<Game *>::iterator it = this->_resources.getGame().begin(); it != this->_resources.getGame().end();)
+		{
+			if ((*it)->getTerminated())
+			{
+				delete(*it);
+				it = this->_resources.getGame().erase(it); // TODO : delete la game;
+			}
+			else
+				++it;
 		}
 		for (std::list<Client *>::iterator it = this->_resources.getClients().begin(); it != this->_resources.getClients().end(); ++it)
 		{

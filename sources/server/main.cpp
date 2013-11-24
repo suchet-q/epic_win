@@ -20,7 +20,7 @@ int		main(int ac, char **av)
   if (ac < 2)
     {
 	  port = 4242;
-       }
+    }
   else
   {
 	  buffer.str(av[1]);

@@ -4,6 +4,7 @@
 
 PlayerShip::PlayerShip() : Ship()
 {
+	this->_shoot = false;
 	this->_globalType = PLAYER;
 }
 
@@ -13,6 +14,7 @@ void			PlayerShip::resetPos()
 {
 	Coord<>		tmp;
 
+	std::cout << "CACA PAR TERRE" << std::endl;
 	tmp.setX(static_cast<unsigned short>(_coord.getX()));
 	tmp.setY(static_cast<unsigned short>(_coord.getY()));
 	this->_coord.setX(static_cast<float>(_lastCoord.getX()));

@@ -23,6 +23,9 @@ bool			Map::parseMap(std::string const &filename)
   file.open(filename, std::ifstream::in);
   if (!file.good()) 
     return false;
+  if (file.peek() == std::ifstream::traits_type::eof())
+	  return true;
+
   int	letter;
   std::string	step2;
 

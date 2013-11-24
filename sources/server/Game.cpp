@@ -253,9 +253,13 @@ int			Game::startGame(void *var)
   /*identification verifier changer status dans infos client puis lancer la game*/
   /*appel de methode init etc... et la loop de la game*/
   std::cout << "c'est la fin de la game maggle" << std::endl;
+  this->lockClient();
   this->lockAttribut();
+  for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+	  (*it)->setGame(NULL);
   this->_terminated = true;
   this->unlockAttribut();
+  this->unlockClient();
   return (1);
 }
 
@@ -428,7 +432,7 @@ void			Game::loop()
 //  this->_resources.getEntityList().back()->setGlobalType(PLAYER);
 //  this->_resources.getEntityList().back()->setType(PLAYER2);
 	this->_clock.start();
-	while (true && !this->_exit)
+	while (true && !this->_exit && this->_resources.getShipList().size())
 	{	
 		stopSpawn = false;
 		//std::cout << this->_spawn.size() << "it spawn.time  = "<< this->_spawn.front().time <<std::endl;
@@ -475,15 +479,7 @@ void			Game::loop()
 				}
 			}
 		}
-		for (std::list<Entity * >::iterator caca = this->_resources.getEntityList().begin(); caca != this->_resources.getEntityList().end(); ++caca)
-		{
-			std::cout << "BEFORE entity x = " << (*caca)->getCoord().getX() << " y = " << (*caca)->getCoord().getY() << " globaltype = " << (*caca)->getGlobalType() << "type = " << (*caca)->getType() << std::endl;
-		}
 	  this->_collision.checkCollisions();
-	  for (std::list<Entity * >::iterator caca = this->_resources.getEntityList().begin(); caca != this->_resources.getEntityList().end(); ++caca)
-	  {
-		  std::cout << " AFTER entity x = " << (*caca)->getCoord().getX() << " y = " << (*caca)->getCoord().getY() << " globaltype = " << (*caca)->getGlobalType() << "type = " << (*caca)->getType() << std::endl;
-	  }
 	  if (nbUpdate)
 	  for (std::list<Ship *>::iterator itShip = _resources.getShipList().begin(); itShip != _resources.getShipList().end(); ++itShip)
 	  for (itRep = this->_repClient.begin(); itRep != this->_repClient.end(); ++itRep)

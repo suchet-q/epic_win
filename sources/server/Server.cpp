@@ -163,7 +163,6 @@ bool			Server::loop()
 		{
 			if ((*it)->getTerminated())
 			{
-				delete(*it);
 				it = this->_resources.getGame().erase(it); // TODO : delete la game;
 			}
 			else

@@ -28,13 +28,16 @@ private:
   std::array<entitiesColl, 7>		_entitiesCollisions;
   std::map<Client *, t_rep_client>	*_mapClient;
   std::map<Entity *, Client *>		*_entityToShip;
-  bool								_deletedOne;
-  bool								_deletedTwo;
+  std::list<std::list<Entity *>::iterator > _toDelete;
+  bool								_invert;
+
 
 public:
   Collision();
   ~Collision();
 
+  void				deleteList();
+  void				sendEventDeath(Entity *entity);
   void				setMapClient(std::map<Client *, t_rep_client> *);
   void				setEntityToShip(std::map<Entity *, Client *> *);
   void				setResources(ResourcesGame *resources);

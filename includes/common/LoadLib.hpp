@@ -42,7 +42,7 @@ class		LoadLib
  {
 	 U	*(*ptr)();
 
-	 ptr = static_cast<U *(*)()>(this->getLib("getInstance"));
+	 ptr = reinterpret_cast<U *(*)()>(this->getLib("getInstance"));
 	 return ptr();
  }
 };

@@ -7,6 +7,7 @@ GameLoop::GameLoop(void)
 	this->_exceptionOccured = false;
 	this->_vsyncDelay = 0.0f;
 	this->_vsyncFactor = 1.0f / 60.0f;
+	this->_last = INP_DOWN;
 }
 
 GameLoop::~GameLoop(void)
@@ -181,26 +182,54 @@ boost::any	GameLoop::aff(std::list<boost::any> &args)
 void		GameLoop::handleInputs(Parser &parser)
 {
 	unsigned short input = 0;
+	unsigned short last = this->_last;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
+		this->_timer.restart();
+		this->_last = INP_LEFT;
 		input += INP_LEFT;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
+		this->_timer.restart();
+		this->_last = INP_LEFT;
 		input += INP_RIGHT;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
+		this->_timer.restart();
+		this->_last = INP_LEFT;
 		input += INP_UP;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
+		this->_timer.restart();
+		this->_last = INP_LEFT;
 		input += INP_DOWN;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		input += INP_FIRE;
+		if (last != INP_FIRE)
+			this->_timer.restart();
+		this->_last = INP_FIRE;
+	}
+	else
+	{
+		if (last == INP_FIRE)
+		{
+			if (this->_timer.getElapsedTime().asSeconds() <= 0.15f)
+				input += INP_FIRE;
+			else if (this->_timer.getElapsedTime().asSeconds() <= 0.3f)
+				input += INP_LITTLE;
+			else if (this->_timer.getElapsedTime().asSeconds() <= 0.5f)
+				input += INP_MEDIUM;
+			else if (this->_timer.getElapsedTime().asSeconds() <= 0.8f)
+				input += INP_LARGE;
+			else if (this->_timer.getElapsedTime().asSeconds() <= 1.2f)
+				input += INP_LASER;
+		}
+		this->_last = INP_DOWN;
 	}
 	parser.addINP(*this->_idClient, input);
 }

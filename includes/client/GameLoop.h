@@ -26,6 +26,8 @@ class GameLoop
 	float				_vsyncFactor;
 	float				_vsyncDelay;
 	sf::Mutex			_resources;
+	unsigned short		_last;
+	sf::Clock			_timer;
 
 	void		drawHUB(RenderWindow &, float);
 	void		drawEntities(RenderWindow &, float);

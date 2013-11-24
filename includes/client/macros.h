@@ -29,6 +29,10 @@
 #define		INP_UP		4
 #define		INP_DOWN	8
 #define		INP_FIRE	16
+#define		INP_LITTLE	32
+#define		INP_MEDIUM	64
+#define		INP_LARGE	128
+#define		INP_LASER	256
 
 #ifdef _WIN32
 

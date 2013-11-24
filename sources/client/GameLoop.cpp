@@ -281,6 +281,8 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		clock.restart();
 	}
 	timer = 0.0f;
+	SoundPool::getInstance()->loopLvlOne();
+	SoundPool::getInstance()->playLvlOne();
 	while (win.isRunning())
 	{
 		win.clearWindow();
@@ -298,5 +300,6 @@ bool		GameLoop::loop(RenderWindow &win, Parser &parser, GameSocket &sock)
 		elapsed = clock.getElapsedTime().asSeconds();
 		clock.restart();
 	}
+	SoundPool::getInstance()->stopLvlOne();
 	return (true);
 }

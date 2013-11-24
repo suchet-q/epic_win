@@ -289,7 +289,7 @@ void	Drawer::CutImg()
 
 void	Drawer::drowLaser(int x, int y, int status)
 {
-  this->_LaserAnim[status].setPosition(x, y);
+  this->_LaserAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_LaserAnim[status]);
   this->_Mutex->unlock();
@@ -297,7 +297,7 @@ void	Drawer::drowLaser(int x, int y, int status)
 
 void	Drawer::drowShip1(int x, int y, int status)
 {
-  this->_Ship1Anim[status].setPosition(x, y);
+	this->_Ship1Anim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_Ship1Anim[status]);
   this->_Mutex->unlock();
@@ -305,7 +305,7 @@ void	Drawer::drowShip1(int x, int y, int status)
 
 void	Drawer::drowShip2(int x, int y, int status)
 {
-  this->_Ship2Anim[status].setPosition(x, y);
+	this->_Ship2Anim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_Ship2Anim[status]);
   this->_Mutex->unlock();
@@ -313,7 +313,7 @@ void	Drawer::drowShip2(int x, int y, int status)
 
 void	Drawer::drowShip3(int x, int y, int status)
 {
-  this->_Ship3Anim[status].setPosition(x, y);
+	this->_Ship3Anim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_Ship3Anim[status]);
   this->_Mutex->unlock();
@@ -321,7 +321,7 @@ void	Drawer::drowShip3(int x, int y, int status)
 
 void	Drawer::drowShip4(int x, int y, int status)
 {
-  this->_Ship4Anim[status].setPosition(x, y);
+	this->_Ship4Anim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_Ship4Anim[status]);
   this->_Mutex->unlock();
@@ -329,7 +329,7 @@ void	Drawer::drowShip4(int x, int y, int status)
 
 void	Drawer::drowDrone(int x, int y, int status)
 {
-  this->_DroneAnim[status].setPosition(x, y);
+	this->_DroneAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DroneAnim[status]);
   this->_Mutex->unlock();
@@ -337,7 +337,7 @@ void	Drawer::drowDrone(int x, int y, int status)
 
 void	Drawer::drowExplosion(int x, int y, int status)
 {
-  this->_ExplosionAnim[status].setPosition(x, y);
+	this->_ExplosionAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_ExplosionAnim[status]);
   this->_Mutex->unlock();
@@ -345,7 +345,7 @@ void	Drawer::drowExplosion(int x, int y, int status)
 
 void	Drawer::drowAlien(int x, int y, int status)
 {
-  this->_AlienAnim[status].setPosition(x, y);
+	this->_AlienAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_AlienAnim[status]);
   this->_Mutex->unlock();
@@ -353,7 +353,7 @@ void	Drawer::drowAlien(int x, int y, int status)
 
 void	Drawer::drowBalls(int x, int y, int status)
 {
-  this->_BallsAnim[status].setPosition(x, y);
+	this->_BallsAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_BallsAnim[status]);
   this->_Mutex->unlock();
@@ -361,7 +361,7 @@ void	Drawer::drowBalls(int x, int y, int status)
 
 void	Drawer::drowDog(int x, int y, int status)
 {
-  this->_DogAnim[status].setPosition(x, y);
+	this->_DogAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DogAnim[status]);
   this->_Mutex->unlock();
@@ -369,7 +369,7 @@ void	Drawer::drowDog(int x, int y, int status)
 
 void	Drawer::drowJumper(int x, int y, int status)
 {
-  this->_JumperAnim[status].setPosition(x, y);
+	this->_JumperAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_JumperAnim[status]);
   this->_Mutex->unlock();
@@ -377,7 +377,7 @@ void	Drawer::drowJumper(int x, int y, int status)
 
 void	Drawer::drowXwing(int x, int y, int status)
 {
-  this->_XwingAnim[status].setPosition(x, y);
+	this->_XwingAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_XwingAnim[status]);
   this->_Mutex->unlock();
@@ -385,7 +385,7 @@ void	Drawer::drowXwing(int x, int y, int status)
 
 void	Drawer::drowMetroid(int x, int y, int status)
 {
-  this->_MetroidAnim[status].setPosition(x, y);
+	this->_MetroidAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_MetroidAnim[status]);
   this->_Mutex->unlock();
@@ -393,7 +393,7 @@ void	Drawer::drowMetroid(int x, int y, int status)
 
 void	Drawer::drowLarve(int x, int y, int status)
 {
-  this->_LarveAnim[status].setPosition(x, y);
+	this->_LarveAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_LarveAnim[status]);
   this->_Mutex->unlock();
@@ -401,7 +401,7 @@ void	Drawer::drowLarve(int x, int y, int status)
 
 void	Drawer::drowFireBall(int x, int y, int status)
 {
-  this->_FireballAnim[status].setPosition(x, y);
+	this->_FireballAnim[status].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_FireballAnim[status]);
   this->_Mutex->unlock();
@@ -410,7 +410,7 @@ void	Drawer::drowFireBall(int x, int y, int status)
 void	Drawer::drowDecor1Top(int x, int y, int status)
 {
   status = status;
-  this->_DecorAnim[0].setPosition(x, y);
+  this->_DecorAnim[0].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[0]);
   this->_Mutex->unlock();
@@ -419,7 +419,7 @@ void	Drawer::drowDecor1Top(int x, int y, int status)
 void	Drawer::drowDecor1Down(int x, int y, int status)
 {
   status = status;
-  this->_DecorAnim[1].setPosition(x, y);
+  this->_DecorAnim[1].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[1]);
   this->_Mutex->unlock();
@@ -428,7 +428,7 @@ void	Drawer::drowDecor1Down(int x, int y, int status)
 void	Drawer::drowDecor2Top(int x, int y, int status)
 {
   status = status;
-  this->_DecorAnim[2].setPosition(x, y);
+  this->_DecorAnim[2].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[2]);
   this->_Mutex->unlock();
@@ -437,7 +437,7 @@ void	Drawer::drowDecor2Top(int x, int y, int status)
 void	Drawer::drowDecor2Down(int x, int y, int status)
 {
   status = status;
-  this->_DecorAnim[3].setPosition(x, y);
+  this->_DecorAnim[3].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_DecorAnim[3]);
   this->_Mutex->unlock();
@@ -446,7 +446,7 @@ void	Drawer::drowDecor2Down(int x, int y, int status)
 void	Drawer::drowMissil(int x, int y, int status)
 {
   status = status;
-  this->_MissilAnim[0].setPosition(x, y);
+  this->_MissilAnim[0].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[0]);
   this->_Mutex->unlock();
@@ -455,7 +455,7 @@ void	Drawer::drowMissil(int x, int y, int status)
 void	Drawer::drowMissil2(int x, int y, int status)
 {
   status = status;
-  this->_MissilAnim[1].setPosition(x, y);
+  this->_MissilAnim[1].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[1]);
   this->_Mutex->unlock();
@@ -464,7 +464,7 @@ void	Drawer::drowMissil2(int x, int y, int status)
 void	Drawer::drowMissil3(int x, int y, int status)
 {
   status = status;
-  this->_MissilAnim[2].setPosition(x, y);
+  this->_MissilAnim[2].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[2]);
   this->_Mutex->unlock();
@@ -472,7 +472,7 @@ void	Drawer::drowMissil3(int x, int y, int status)
 void	Drawer::drowMissil4(int x, int y, int status)
 {
   status = status;
-  this->_MissilAnim[3].setPosition(x, y);
+  this->_MissilAnim[3].setPosition(static_cast<float>(x), static_cast<float>(y));
   this->_Mutex->lock();
   this->Window->draw(this->_MissilAnim[3]);
   this->_Mutex->unlock();

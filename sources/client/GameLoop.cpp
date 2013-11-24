@@ -101,7 +101,7 @@ void		GameLoop::drawHUB(RenderWindow &win, float elapsed)
 
 void		GameLoop::drawEntities(RenderWindow &win, float elapsed)
 {
-	this->_manager->Update(elapsed);
+	this->_manager->Update();
 }
 
 void		GameLoop::drawBackground(RenderWindow &win, float elapsed)

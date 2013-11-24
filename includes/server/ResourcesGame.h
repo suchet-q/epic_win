@@ -12,6 +12,18 @@
 # include			"Shot.h"
 # include			"Pool.hpp"
 
+struct				t_rep_client
+{
+	char				buffer[8128];
+	unsigned int			size;
+	int				life;
+	int				weapon;
+	bool				bonus;
+	int				score;
+	int				hightScore;
+	int				status;
+};
+
 class				ResourcesGame
 {
 private:

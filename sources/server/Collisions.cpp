@@ -27,8 +27,9 @@ void			Collision::setEntityToShip(std::map<Entity *, Client *> *entityToShip) {
 
 void			Collision::checkCollisions()
 {
-  checkPlayerInScreen();
+ checkPlayerInScreen();
   checkEntitiesCollisions();
+  manageDepop();
 }
 
 void			Collision::deleteEntity(Entity *entity)
@@ -61,31 +62,34 @@ void			Collision::deleteEntity(Entity *entity)
 
 void			Collision::manageDepop()
 {
+  //	std::cout << "salope" << std::endl;
   for (std::list<Entity *>::iterator it = _resources->getEntityList().begin();
        it != _resources->getEntityList().end();) {
-    switch ((*it)->getGlobalType()) {
-    case MOBB:
-    case MOBBMISSIL:
-    case DECOR :
-      if ((*it)->getCoord().getX() < -OUT_SCREEN_SIZE) {
-	deleteEntity(*it);
-	it = _resources->getEntityList().erase(it);
-      }
-      else
-	++it;
-      break;
-    case PLAYERMISSIL :
-      if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
-	  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
-	_resources->getShipPool().freeInstance(*it);
-	it = _resources->getEntityList().erase(it);
-      }
-      else
-	++it;
-    default:
-      ++it;
-      break;
-    }
+	  switch ((*it)->getGlobalType()) {
+	  case MOBB:
+	  case MOBBMISSIL:
+	  case DECOR:
+		  if ((*it)->getCoord().getX() < -OUT_SCREEN_SIZE) {
+			  deleteEntity(*it);
+			  it = _resources->getEntityList().erase(it);
+		  }
+		  else
+			  ++it;
+		  break;
+	  case PLAYERMISSIL:
+		  std::cout << "Maggeeeeeeeeeeeeeeule tu vas detruire le missiiiiiiiiiiiiiiiiiiiiile" << std::endl;
+		  if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
+		  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
+			  _resources->getShipPool().freeInstance(*it);
+			  it = _resources->getEntityList().erase(it);
+		  }
+		  else
+			  ++it;
+		  break;
+	  default:
+		  ++it;
+		  break;
+	  }
   }
 }
 
@@ -93,14 +97,14 @@ void			Collision::checkPlayerInScreen()
 {
   for (std::list<Ship *>::iterator it = _resources->getShipList().begin();
        it != _resources->getShipList().end(); ++it) {
-    if ((*it)->getCoord().getX() < 0)
-      (*it)->getCoord().setX(0);
-    else if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x < SCREEN_WIDTH)
-      (*it)->getCoord().setX(SCREEN_WIDTH - _resources->getTabHitBox()[(*it)->getType()].x);
-    if ((*it)->getCoord().getY() < 0)
-      (*it)->getCoord().setY(0);
-    else if ((*it)->getCoord().getY() + _resources->getTabHitBox()[(*it)->getType()].y < SCREEN_HEIGHT)
-      (*it)->getCoord().setY(SCREEN_HEIGHT - _resources->getTabHitBox()[(*it)->getType()].y);
+	if ((*it)->getFloatCoord().getX() < 0.0f)
+	  (*it)->getFloatCoord().setX(0.0f);
+    else if ((*it)->getFloatCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x > SCREEN_WIDTH)
+      (*it)->getFloatCoord().setX(SCREEN_WIDTH - _resources->getTabHitBox()[(*it)->getType()].x);
+    if ((*it)->getFloatCoord().getY() < 0.0f)
+      (*it)->getFloatCoord().setY(0);
+    else if ((*it)->getFloatCoord().getY() + _resources->getTabHitBox()[(*it)->getType()].y > SCREEN_HEIGHT)
+      (*it)->getFloatCoord().setY(SCREEN_HEIGHT - _resources->getTabHitBox()[(*it)->getType()].y);
   }
 }
 
@@ -114,6 +118,7 @@ void			Collision::checkEntitiesCollisions()
   std::list<Entity *>::iterator it_buf;
   
 
+ // std::cout << std::endl;
   for (std::list<Entity *>::iterator it_o = _resources->getEntityList().begin();
        it_o != _resources->getEntityList().end();) {
     _deletedOne = false;
@@ -130,21 +135,33 @@ void			Collision::checkEntitiesCollisions()
 	  _deletedOne = false;
 	  _deletedTwo = false;
 
-	  size_a.set(_resources->getTabHitBox()[(*it_o)->getType()].x,
-		     _resources->getTabHitBox()[(*it_o)->getType()].y);
+	  if ((*it_o)->getGlobalType() == PLAYER)
+		  size_a.set(_resources->getTabHitBox()[PLAYER1].x,
+		  _resources->getTabHitBox()[PLAYER1].y);
+	  else
+		  size_a.set(_resources->getTabHitBox()[(*it_o)->getType()].x,
+		  _resources->getTabHitBox()[(*it_o)->getType()].y);
 
-	  size_b.set(_resources->getTabHitBox()[(*it_t)->getType()].x,
-		     _resources->getTabHitBox()[(*it_t)->getType()].y);
+	  if ((*it_t)->getGlobalType() == PLAYER)
+		  size_b.set(_resources->getTabHitBox()[PLAYER1].x,
+		  _resources->getTabHitBox()[PLAYER1].y);
+	  else
+		  size_b.set(_resources->getTabHitBox()[(*it_t)->getType()].x,
+		  _resources->getTabHitBox()[(*it_t)->getType()].y);
 
-	  if (a->getX() < b->getX()
-	      && a->getX() + size_a.getX() > b->getX()
-	      && a->getY() < b->getY()
-	      && a->getY() + size_a.getY() > b->getY())
-	    checkEntitiesCollisionsAdvenced(it_o, it_t);
-	  else if (b->getX() < a->getX()
-		   && b->getX() + size_b.getX() > a->getX()
-		   && b->getY() < a->getY()
-		   && b->getY() + size_b.getY() > a->getY()) {
+	  if (a->getX() <= b->getX()
+		  && a->getX() + size_a.getX() >= b->getX()
+		  && a->getY() <= b->getY()
+		  && a->getY() + size_a.getY() >= b->getY())
+	  {
+//		  std::cout << "colosion aaaaaaaaaa" << std::endl;
+		  checkEntitiesCollisionsAdvenced(it_o, it_t);
+	  }
+	  else if (b->getX() <= a->getX()
+		   && b->getX() + size_b.getX() >= a->getX()
+		   && b->getY() <= a->getY()
+		   && b->getY() + size_b.getY() >= a->getY()) {
+//		  std::cout << "colision BBBB" << std::endl;
 	    checkEntitiesCollisionsAdvenced(it_t, it_o);
 	    tmp = _deletedOne;
 	    _deletedOne = _deletedTwo;
@@ -167,22 +184,45 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator&
   Coord<>&		b = (*it_t)->getCoord();
   Coord<>		size_a;
   Coord<>		size_b;
-  char**		collisionTab_a = _resources->getTabHitBox()[(*it_o)->getType()].tab;
-  char**		collisionTab_b = _resources->getTabHitBox()[(*it_t)->getType()].tab;
+  char**		collisionTab_a;
+  char**		collisionTab_b;
+  bool			coll = false;
 
-  size_a.set(_resources->getTabHitBox()[(*it_o)->getType()].x,
-	     _resources->getTabHitBox()[(*it_o)->getType()].y);
+  if ((*it_o)->getGlobalType() == PLAYER)
+	  collisionTab_a = _resources->getTabHitBox()[PLAYER1].tab;
+  else
+	  collisionTab_a = _resources->getTabHitBox()[(*it_o)->getType()].tab;
+  if ((*it_t)->getGlobalType() == PLAYER)
+	  collisionTab_b = _resources->getTabHitBox()[PLAYER1].tab;
+  else
+	  collisionTab_b = _resources->getTabHitBox()[(*it_t)->getType()].tab;
 
-  size_b.set(_resources->getTabHitBox()[(*it_t)->getType()].x,
-	     _resources->getTabHitBox()[(*it_t)->getType()].y);
+  if ((*it_o)->getGlobalType() == PLAYER)
+	  size_a.set(_resources->getTabHitBox()[PLAYER1].x,
+		     _resources->getTabHitBox()[PLAYER1].y);
+  else
+	  size_a.set(_resources->getTabHitBox()[(*it_o)->getType()].x,
+	  _resources->getTabHitBox()[(*it_o)->getType()].y);
+  
+  if ((*it_t)->getGlobalType() == PLAYER)
+	  size_b.set(_resources->getTabHitBox()[PLAYER1].x,
+		     _resources->getTabHitBox()[PLAYER1].y);
+  else
+	  size_b.set(_resources->getTabHitBox()[(*it_t)->getType()].x,
+	  _resources->getTabHitBox()[(*it_t)->getType()].y);
 
-  for (unsigned short int y = 0; y < size_b.getY() && y + b.getY() - a.getY() < size_a.getY(); ++y)
-    for (unsigned short int x = 0; x < size_b.getX() && x + b.getX() - a.getX() < size_a.getX(); ++x)
-      if (collisionTab_a[y + b.getY() - a.getY()][x + b.getX() - a.getX()] && collisionTab_a[y][x])
-	collision(it_o, it_t);
+  
+  for (unsigned short int y = 0; y < size_b.getY() && y + b.getY() - a.getY() < size_a.getY() && !coll; ++y)
+  for (unsigned short int x = 0; x < size_b.getX() && x + b.getX() - a.getX() < size_a.getX() && !coll; ++x)
+  {
+	//  std::cout << "y = " << y << " x = " << x <<std::endl;
+	//  std::cout << "le y dans le tab = " << y + b.getY() - a.getY() << " le x dans le tab = " << x + b.getX() - a.getX() << std::endl;
+	  if (collisionTab_a[y + b.getY() - a.getY()][x + b.getX() - a.getX()] && collisionTab_a[y][x])
+		  coll = this->collision(it_o, it_t);
+  }
 }
 
-void			Collision::collision(std::list<Entity *>::iterator& it_o,
+bool			Collision::collision(std::list<Entity *>::iterator& it_o,
 					     std::list<Entity *>::iterator& it_t)
 {
   bool			collision = false;
@@ -197,6 +237,7 @@ void			Collision::collision(std::list<Entity *>::iterator& it_o,
     _deletedOne = _deletedTwo;
     _deletedTwo = tmp;
   }
+  return collision;
 }
 
 
@@ -206,8 +247,11 @@ bool			Collision::CollPlayerPlayer(std::list<Entity *>::iterator& it_o,
 {
   if ((*it_o)->getGlobalType() != PLAYER || (*it_t)->getGlobalType() != PLAYER)
     return false;
-  (*it_o)->getFloatCoord() = (dynamic_cast<Ship *>(*it_o))->getLastCoord();
-  (*it_t)->getFloatCoord() = (dynamic_cast<Ship *>(*it_t))->getLastCoord();
+//  (*it_o)->getFloatCoord() = (dynamic_cast<Ship *>(*it_o))->getLastCoord();
+//  (*it_t)->getFloatCoord() = (dynamic_cast<Ship *>(*it_t))->getLastCoord();
+
+  (dynamic_cast<PlayerShip *>(*it_o))->resetPos();
+  (dynamic_cast<PlayerShip *>(*it_t))->resetPos();
   return true;
 }
 
@@ -243,7 +287,7 @@ bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
 
   if ((*it_o)->getGlobalType() != PLAYER || (*it_t)->getGlobalType() != DECOR)
     return false;
-  tmp = (*this->_entityToShip)[(*it_o)];
+  /*tmp = (*this->_entityToShip)[(*it_o)];
   if ((*this->_mapClient)[tmp].life > 1)
     (*this->_mapClient)[tmp].life -= 1;
   else
@@ -252,7 +296,7 @@ bool			Collision::CollPlayerDecor(std::list<Entity *>::iterator& it_o,
       this->deleteEntity((*it_o));
       it_o = this->_resources->getEntityList().erase(it_o);
       this->_deletedOne = true;
-    }
+    }*/
   /*event explosion*/
   return true;
 }
@@ -311,7 +355,7 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
   if ((*it_o)->getGlobalType() != MOBBMISSIL || (*it_t)->getGlobalType() != PLAYER)
     return false;
 	
-  this->deleteEntity((*it_o));
+ /* this->deleteEntity((*it_o));
   it_o = this->_resources->getEntityList().erase(it_o);
   this->_deletedOne = true;
 
@@ -325,6 +369,6 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
       it_t = this->_resources->getEntityList().erase(it_t);
       this->_deletedTwo = true;
       this->_deletedOne = true;
-    }
+    }*/
   return true;
 }

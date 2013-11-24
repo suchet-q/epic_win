@@ -39,7 +39,8 @@ int			Game::getID() {
   return (this->_id);
 }
 
-ResourcesGame&		Game::getResources() {
+ResourcesGame&		Game::getResources()
+{
   return (this->_resources);
 }
 
@@ -51,7 +52,8 @@ void			Game::setID(int id) {
   this->_id = id;
 }
 
-void			Game::setResources(ResourcesGame const &resources) {
+void			Game::setResources(ResourcesGame const &resources)
+{
   this->_resources = resources;
 }
 
@@ -61,7 +63,8 @@ std::map<entityType, LoadLib<> *> Game::getInstanceGetter() const
 	return this->_instanceGetter;
 }
 
-bool			Game::lockClient() {
+bool			Game::lockClient()
+{
   return this->_gameClient.Lock();
 }
 
@@ -137,6 +140,8 @@ bool		Game::init()
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
+	this->_collision.setResources(&this->_resources);
+	this->_collision.setEntityToShip(&this->_entityToShip);
 	this->loadAllLib();
 	this->initBufClient();
 	this->initPlayersShip();
@@ -363,7 +368,6 @@ void			Game::loop()
 {
 	std::map<Client *, t_rep_client>::iterator	itRep;
 	std::list<Entity *>::iterator	itEntity;
-	Coord<>		tmp;
 	t_aff_server		affServer;
 	t_evt_server		evtServer;
 	t_scr_server		srcServer;
@@ -394,19 +398,16 @@ void			Game::loop()
 		nbUpdate = ellapsedTime / REFRESH_TIME;
 
 		this->manageClientsInputs();
+		
+		if (nbUpdate)
+		  for (std::list<Ship *>::iterator itShip = _resources.getShipList().begin(); itShip != _resources.getShipList().end(); ++itShip)
+			(*itShip)->update(this->_resources.getEntityList());
+		
 		itEntity = this->_resources.getEntityList().begin();
 		for (; itEntity != this->_resources.getEntityList().end(); ++itEntity)
+		if ((*itEntity)->getGlobalType() != PLAYER)
 		{
-			tmp = (*itEntity)->getCoord();
-			if (tmp.getX() < 0 || tmp.getX() > 1024)
-			{
-				itEntity = this->_resources.getEntityList().erase(itEntity);
-				if (itEntity == this->_resources.getEntityList().end())
-					break;
-				tmp = (*itEntity)->getCoord();
-			}
-
-			for (int i = 0; i < nbUpdate; ++i)
+			for (int i = 0; i < nbUpdate/*ellapsedTime / (REFRESH_TIME / 2)*/; ++i)
 				(*itEntity)->update(this->_resources.getEntityList());
 
 			if (nbUpdate)
@@ -417,13 +418,28 @@ void			Game::loop()
 					affServer.id_cmd = 10;
 					affServer.type = (*itEntity)->getType();
 					affServer.id_obj = (*itEntity)->getID();/*mettre l id dans la class entity*/;
-					affServer.x = tmp.getX();
-					affServer.y = tmp.getY();
+					affServer.x = (*itEntity)->getCoord().getX();
+					affServer.y = (*itEntity)->getCoord().getY();
 					memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
 					(*itRep).second.size += sizeof(affServer);
 				}
 			}
 		}
+
+	  this->_collision.checkCollisions();
+	  
+	  if (nbUpdate)
+	  for (std::list<Ship *>::iterator itShip = _resources.getShipList().begin(); itShip != _resources.getShipList().end(); ++itShip)
+	  for (itRep = this->_repClient.begin(); itRep != this->_repClient.end(); ++itRep)
+	  {
+		  affServer.id_cmd = 10;
+		  affServer.type = (*itShip)->getType();
+		  affServer.id_obj = (*itShip)->getID();/*mettre l id dans la class entity*/;
+		  affServer.x = (*itShip)->getCoord().getX();
+		  affServer.y = (*itShip)->getCoord().getY();
+		  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &affServer, sizeof(affServer));
+		  (*itRep).second.size += sizeof(affServer);
+	  }
 
 	  if (nbUpdate)
 	  {
@@ -441,19 +457,19 @@ void			Game::loop()
 			  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
 			  (*itRep).second.size += sizeof(lifServer);
 
-				//std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
-				if (this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
-					(*itRep).second.size, &(*itRep).first->getUDPsin()) == -1)
-					std::cout << "OMG LE SEND TO QUI FAIL FUUUUUUUUUUUUUCK" << std::endl;
-				(*itRep).second.size = 0;
+			  //std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
+			  if (this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
+				  (*itRep).second.size, &(*itRep).first->getUDPsin()) == -1)
+				  std::cout << "OMG LE SEND TO QUI FAIL FUUUUUUUUUUUUUCK" << std::endl;
+			  (*itRep).second.size = 0;
 		  }
 
-		}
-      
-	ellapsedTime %= REFRESH_TIME;
+	  }
 
-      /*check colision peut etre fait dans update entity (vie ou mort)*/
-      /*evtServer.id_cmd = 13; set levent (mort colision etc..) surment pas fait ici
-	evtServer.event = ;*/
+	  ellapsedTime %= REFRESH_TIME;
+
+	  /*check colision peut etre fait dans update entity (vie ou mort)*/
+	  /*evtServer.id_cmd = 13; set levent (mort colision etc..) surment pas fait ici
+	  evtServer.event = ;*/
 	}
 }

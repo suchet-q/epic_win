@@ -5,8 +5,7 @@
 #include			<list>
 #include			<map>
 
-#include			"ResourcesGame.h"
-#include			"Clients.h"
+#include			"Collisions.h"
 #include			"MetaMutex.h"
 #include			"MetaSocket.h"
 #include			"MetaThreader.hpp"
@@ -36,18 +35,6 @@ enum				StatusInGame
   DECO
 };
 
-struct				t_rep_client
-{
-  char				buffer[8128];
-  unsigned int			size;
-  int				life;
-  int				weapon;
-  bool				bonus;
-  int				score;
-  int				hightScore;
-  int				status;
-};
-
 class				Game
 {
 private:
@@ -68,6 +55,7 @@ private:
 	bool					_isInit;
 	std::map<Client *, t_rep_client>	_repClient;
 	std::map<entityType, LoadLib<> *> _instanceGetter;
+	Collision				_collision;
 
 public:
 	Game(int, std::list<Client *> &);

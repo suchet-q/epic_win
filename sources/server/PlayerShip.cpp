@@ -2,24 +2,52 @@
 
 #include <iostream>
 
-PlayerShip::PlayerShip() : Ship() {}
+PlayerShip::PlayerShip() : Ship()
+{
+	this->_globalType = PLAYER;
+}
 
 PlayerShip::~PlayerShip() {}
 
+void			PlayerShip::resetPos()
+{
+	Coord<>		tmp;
+
+	tmp.setX(static_cast<unsigned short>(_coord.getX()));
+	tmp.setY(static_cast<unsigned short>(_coord.getY()));
+	this->_coord.setX(static_cast<float>(_lastCoord.getX()));
+	this->_coord.setY(static_cast<float>(_lastCoord.getY()));
+	_lastCoord.setX(tmp.getX());
+	_lastCoord.setY(tmp.getY());
+}
+
 void			PlayerShip::shoot(std::list<Entity *> &entityList)
 {
-  entityList.push_back(_entitiesPool->getInstance<ShotSmall>(BASIC_SHOT));
-  entityList.back()->setVecDir(10, 0);
-  entityList.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
-  entityList.back()->getFloatCoord().setY(this->getFloatCoord().getY());
-  entityList.back()->setType((entityType)12);
+	Entity		*shot;
+
+	if ((shot = _entitiesPool->getInstance<ShotSmall>(BASIC_SHOT)) != NULL)
+	{
+		entityList.push_back(shot);
+		entityList.back()->setVecDir(10, 0);
+		entityList.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
+		entityList.back()->getFloatCoord().setY(this->getFloatCoord().getY());
+		entityList.back()->setType(BASIC_SHOT);
+	}
 }
 
 void			PlayerShip::update(std::list<Entity *> &entityList)
 {
+	Coord<>		tmp;
+
 	if (this->_input)
 		this->manageInput(this->_input);
+	tmp = getCoord();
 	_coord += _vecDir;
+	if (getCoord() != tmp)
+	{
+		_lastCoord.setX(tmp.getX());
+		_lastCoord.setY(tmp.getY());
+	}
 //	std::cout << "J'AVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANCE" << std::endl;
 	if (_shoot)
 		shoot(entityList);
@@ -31,9 +59,9 @@ void			PlayerShip::update(std::list<Entity *> &entityList)
 void			PlayerShip::manageInput(unsigned short input)
 {
 	//std::cout << "L'input = " << input << " la valeur de check input(RIGHT) est : " << CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) << std::endl;
-	_vecDir.setX(CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) * 8);
+	_vecDir.setX(CHECK_INPUT(input, static_cast<unsigned short>(RIGHT)) * 8.f);
 	_vecDir.setX(_vecDir.getX() - (CHECK_INPUT(input, static_cast<unsigned short>(LEFT)) * 8));
-	_vecDir.setY((CHECK_INPUT(input, static_cast<unsigned short>(DOWN)) * 8));
+	_vecDir.setY((CHECK_INPUT(input, static_cast<unsigned short>(DOWN)) * 8.f));
 	_vecDir.setY(_vecDir.getY() - (CHECK_INPUT(input, static_cast<unsigned short>(UP)) * 8));
 	if (CHECK_INPUT(input, static_cast<unsigned short>(SHOOT)))
 		_shoot = true;

@@ -71,4 +71,16 @@ public:
     *this = *this * coord;
     return *this;
   }
+  bool			operator==(Coord const &coord) {
+	  if (coord.getX() == this->_x
+		  && coord.getY() == this->_y)
+		  return true;
+	  return false;
+  }
+  bool			operator!=(Coord const &coord) {
+	  if (coord.getX() != this->_x
+		  && coord.getY() != this->_y)
+		  return false;
+	  return true;
+  }
 };

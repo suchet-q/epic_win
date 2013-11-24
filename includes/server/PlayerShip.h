@@ -14,6 +14,7 @@ class			PlayerShip : public Ship
 public:
 	PlayerShip();
 	~PlayerShip();
+	void		resetPos();
 	void		shoot(std::list<Entity *> &entityList);
 	void		update(std::list<Entity *> &);
 };

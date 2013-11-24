@@ -8,9 +8,8 @@
 #include			"ShotBig.h"
 #include			"ShotBiggest.h"
 #include			"ShotKikou.h"
-#include			"Clients.h"
-#include			"Game.h"
 
+class				Client;
 class				Game;
 
 #define				SCREEN_WIDTH		(1024)
@@ -25,9 +24,9 @@ typedef bool			(Collision::*entitiesColl)(std::list<Entity *>::iterator&,
 class				Collision
 {
 private:
-  ResourcesGame*					_resources;
-  std::array<entitiesColl, 8>		_entitiesCollisions;
-  std::map<Client *, t_rep_client>	*_mapClient;/*pas initialise*/
+  ResourcesGame*			_resources;
+  std::array<entitiesColl, 7>		_entitiesCollisions;
+  std::map<Client *, t_rep_client>	*_mapClient;
   std::map<Entity *, Client *>		*_entityToShip;
   bool					_deletedOne;
   bool					_deletedTwo;
@@ -46,7 +45,7 @@ public:
   void				checkEntitiesCollisions();
   void				checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator& it_o,
 								std::list<Entity *>::iterator& it_t);
-  void				collision(std::list<Entity *>::iterator& it_o,
+  bool				collision(std::list<Entity *>::iterator& it_o,
 					  std::list<Entity *>::iterator& it_t);
   
   bool				CollPlayerPlayer(std::list<Entity *>::iterator& it_o,
@@ -64,3 +63,5 @@ public:
   bool				CollMissilPlayer(std::list<Entity *>::iterator& it_o,
 						 std::list<Entity *>::iterator& it_t);
 };
+
+#include			"Clients.h"

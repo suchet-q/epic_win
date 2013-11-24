@@ -56,25 +56,25 @@ void			SocketLinux::setType(proto type)
 
 bool			SocketLinux::init(proto type)
 {
-  struct protoent*	proto;
+  struct protoent*	protos;
   int			optval = 1;
 
   if (type == UDP)
     {
-      if ((proto = getprotobyname("UDP")) == NULL)
+      if ((protos = getprotobyname("UDP")) == NULL)
 	return (false);
       std::cout << "Protocol etablished\nCreating the socket..." << std::endl;
 
-      if ((this->_socket = socket(AF_INET, SOCK_DGRAM, proto->p_proto)) == -1)
+      if ((this->_socket = socket(AF_INET, SOCK_DGRAM, protos->p_proto)) == -1)
 	return (false);
     }
   else if (type == TCP)
     {
-      if ((proto = getprotobyname("TCP")) == NULL)
+      if ((protos = getprotobyname("TCP")) == NULL)
 	return (false);
       std::cout << "Protocol etablished\nCreating the socket..." << std::endl;
 
-      if ((this->_socket = socket(AF_INET, SOCK_STREAM, proto->p_proto)) == -1)
+      if ((this->_socket = socket(AF_INET, SOCK_STREAM, protos->p_proto)) == -1)
 	return false;
     }
   else
@@ -101,7 +101,7 @@ bool			SocketLinux::Bind(char const *ip, unsigned int port)
   this->_sin.sin_port = htons(port);
 
   std::cout << "Binding socket..." << std::endl;
-  if (bind(this->_socket, reinterpret_cast<const struct sockaddr *>(&this->_sin), sizeof(this->_sin)) == -1)
+  if (bind(this->_socket, (const struct sockaddr *)(&this->_sin), sizeof(this->_sin)) == -1)
     {
       std::cout << "Bind failed" << std::endl;
       return false;
@@ -196,7 +196,7 @@ int		SocketLinux::sendTo(void const *to_send, int size, struct sockaddr_in *dest
     return (UNINITIALIZED_SOCKET);
 
   dest->sin_family = AF_INET;
-  sended = sendto(this->_socket, to_send, size, 0, reinterpret_cast<struct sockaddr *>(dest), sizeof(*dest));
+  sended = sendto(this->_socket, to_send, size, 0,(struct sockaddr *)(dest), sizeof(*dest));
   return (sended);
 }
 
@@ -209,7 +209,7 @@ int		SocketLinux::recvFrom(void *buff, int size, struct sockaddr_in *sender)
     return (UNINITIALIZED_SOCKET);
   
   size_sin = sizeof(*sender);
-  readed = recvfrom(this->_socket, buff, size, 0, reinterpret_cast<struct sockaddr *>(sender), &size_sin);
+  readed = recvfrom(this->_socket, buff, size, 0, (struct sockaddr *)(sender), &size_sin);
   return (readed);
 }
 

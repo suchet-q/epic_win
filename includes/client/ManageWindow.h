@@ -27,6 +27,7 @@
 #include "decor1down.h"
 #include "decor2top.h"
 #include "decor2down.h"
+#include "SoundPool.h"
 
 class Managewindow;
 

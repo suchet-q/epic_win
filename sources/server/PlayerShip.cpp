@@ -32,6 +32,7 @@ void			PlayerShip::shoot(std::list<Entity *> &entityList)
 		entityList.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
 		entityList.back()->getFloatCoord().setY(this->getFloatCoord().getY());
 		entityList.back()->setType(BASIC_SHOT);
+		entityList.back()->setGlobalType(PLAYERMISSIL);
 	}
 }
 

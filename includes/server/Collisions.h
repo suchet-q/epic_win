@@ -24,12 +24,12 @@ typedef bool			(Collision::*entitiesColl)(std::list<Entity *>::iterator&,
 class				Collision
 {
 private:
-  ResourcesGame*			_resources;
+  ResourcesGame*					_resources;
   std::array<entitiesColl, 7>		_entitiesCollisions;
   std::map<Client *, t_rep_client>	*_mapClient;
   std::map<Entity *, Client *>		*_entityToShip;
-  bool					_deletedOne;
-  bool					_deletedTwo;
+  bool								_deletedOne;
+  bool								_deletedTwo;
 
 public:
   Collision();

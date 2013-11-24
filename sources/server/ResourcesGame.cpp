@@ -52,9 +52,9 @@ bool			ResourcesGame::createPlayerShip()
 void			ResourcesGame::InitPool()
 {
   this->_entitiesPool.addPool<PlayerShip, 4>(PLAYERS);
-  this->_entitiesPool.addPool<ShotSmall, 64>(BASIC_SHOT);
-  this->_entitiesPool.addPool<ShotMedium, 64>(MEDIUM_SHOT);
-  this->_entitiesPool.addPool<ShotBig, 64>(BIG_SHOT);
-  this->_entitiesPool.addPool<ShotBiggest, 64>(BIGGEST_SHOT);
-  this->_entitiesPool.addPool<ShotEnemy, 64>(FIREBALL);
+  this->_entitiesPool.addPool<ShotSmall, 512>(BASIC_SHOT);
+  this->_entitiesPool.addPool<ShotMedium, 256>(MEDIUM_SHOT);
+  this->_entitiesPool.addPool<ShotBig, 256>(BIG_SHOT);
+  this->_entitiesPool.addPool<ShotBiggest, 256>(BIGGEST_SHOT);
+  this->_entitiesPool.addPool<ShotEnemy, 256>(FIREBALL);
 }

@@ -65,22 +65,23 @@ void			Collision::manageDepop()
   //	std::cout << "salope" << std::endl;
   for (std::list<Entity *>::iterator it = _resources->getEntityList().begin();
        it != _resources->getEntityList().end();) {
+//	  if ((*it)->getGlobalType() == PLAYERMISSIL)
+		  std::cout << (*it)->getGlobalType() << std::endl;
 	  switch ((*it)->getGlobalType()) {
 	  case MOBB:
 	  case MOBBMISSIL:
 	  case DECOR:
 		  if ((*it)->getCoord().getX() < -OUT_SCREEN_SIZE) {
-			  deleteEntity(*it);
+			  _resources->getShipPool().freeInstance(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else
 			  ++it;
 		  break;
 	  case PLAYERMISSIL:
-		  std::cout << "Maggeeeeeeeeeeeeeeule tu vas detruire le missiiiiiiiiiiiiiiiiiiiiile" << std::endl;
 		  if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
 		  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
-			  _resources->getShipPool().freeInstance(*it);
+			  deleteEntity(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else

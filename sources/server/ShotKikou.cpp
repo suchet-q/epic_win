@@ -2,7 +2,7 @@
 
 ShotKikou::ShotKikou()
 {
-	this->_life = 3;
+	this->_life = 1000000;
 	this->_entityType = KIKOU_SHOT;
 	this->_entityGlobalType = PLAYERMISSIL;
 }

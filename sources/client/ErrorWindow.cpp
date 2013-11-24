@@ -45,12 +45,12 @@ void		ErrorWindow::displayError(const std::string &method, const std::string &er
 
 	while (this->isRunning())
 	{
-		this->handleEvents();
 		this->clearWindow();
 		this->_msg.update(0.05f, (*this), 0);
 		this->_method.update(0.05f, (*this), 0);
 		this->_ok.update(0.05f, (*this), 0);
 		this->refreshWindow();
+		this->handleEvents();
 	}
 }
 

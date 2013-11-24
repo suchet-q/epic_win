@@ -326,11 +326,22 @@ bool			Collision::CollMissilDecor(std::list<Entity *>::iterator& it_o,
 bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
 						  std::list<Entity *>::iterator& it_t)
 {
+  t_aff_server		evtServer;
   Shot		*shot;
 
   if ((*it_o)->getGlobalType() != PLAYERMISSIL || (*it_t)->getGlobalType() != MOBB)
     return false;
-	
+
+  for (std::map<Client *, t_rep_client>::iterator itRep = this->_mapClient->begin(); itRep != this->_mapClient->end(); ++itRep)
+  {
+	  evtServer.id_cmd = 10;
+	  evtServer.id_obj = (*it_t)->getID();
+	  evtServer.type = 5;
+	  evtServer.x = (*it_t)->getCoord().getX();
+	  evtServer.y = (*it_t)->getCoord().getY();
+	  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &evtServer, sizeof(evtServer));
+	  (*itRep).second.size += sizeof(evtServer);
+  }
   this->deleteEntity((*it_t));
   it_t = this->_resources->getEntityList().erase(it_t);
   this->_deletedTwo = true;
@@ -341,6 +352,16 @@ bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
   else
     {
       shot->setLife(0);
+	  for (std::map<Client *, t_rep_client>::iterator itRep = this->_mapClient->begin(); itRep != this->_mapClient->end(); ++itRep)
+	  {
+		  evtServer.id_cmd = 10;
+		  evtServer.id_obj = (*it_o)->getID();
+		  evtServer.type = 5;
+		  evtServer.x = (*it_o)->getCoord().getX();
+		  evtServer.y = (*it_o)->getCoord().getY();
+		  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &evtServer, sizeof(evtServer));
+		  (*itRep).second.size += sizeof(evtServer);
+	  }
       this->deleteEntity((*it_o));
       it_o = this->_resources->getEntityList().erase(it_o);
       this->_deletedOne = true;

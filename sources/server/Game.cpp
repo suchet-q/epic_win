@@ -143,6 +143,7 @@ bool		Game::init()
 		(*it)->getWriteBuffer()->push_back(cmd);
 	this->_collision.setResources(&this->_resources);
 	this->_collision.setEntityToShip(&this->_entityToShip);
+	this->_collision.setMapClient(&this->_repClient);
 	this->loadAllLib();
 	this->initBufClient();
 	this->initPlayersShip();
@@ -416,7 +417,6 @@ void			Game::loop()
 	std::map<Client *, t_rep_client>::iterator	itRep;
 	std::list<Entity *>::iterator	itEntity;
 	t_aff_server		affServer;
-	t_evt_server		evtServer;
 	t_scr_server		srcServer;
 	t_lif_server		lifServer;
 	int			nbUpdate;

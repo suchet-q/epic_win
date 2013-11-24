@@ -3,6 +3,7 @@
 # include			<list>
 # include			<iostream>
 # include			<string>
+# include			<array>
 
 # include			"ResourcesChecker.h"
 # include			"EntitiesPoolContainer.hpp"
@@ -27,6 +28,7 @@ struct				t_rep_client
 class				ResourcesGame
 {
 private:
+	std::array<unsigned char, 255>	_idAvailable;
   EntitiesPoolContainer<>		_entitiesPool;
   ShipPoolContainer<>			_shipPool;
   std::list<Entity *>			_entityList;

@@ -15,6 +15,7 @@ template <typename T = Entity>
 class				EntitiesPoolContainer
 {
 private:
+	std::array<unsigned char, 255>		*_idAvailable;
   std::map<entityType, GenericIPool *>	_poolMap;
   std::map<entityType, unsigned int>	_poolSizeMap;
 
@@ -22,6 +23,11 @@ public:
   EntitiesPoolContainer() {}
 
   ~EntitiesPoolContainer() {}
+
+  void					setIdAvailable(std::array<unsigned char, 255> &idAvailable)
+  {
+	  this->_idAvailable = idAvailable;
+  }
 
   template <typename U, unsigned int SIZE>
   bool				addPool(entityType type)
@@ -39,6 +45,6 @@ public:
   
   template <typename U>
   void				freeInstance(T* instance) {
-    dynamic_cast<IPool<U>* >(_poolMap[instance->getType()])->freeInstance(dynamic_cast<U *>(instance));
+	  dynamic_cast<IPool<U>* >(_poolMap[(instance->getType() >= PLAYER1 && instance->getType() <= PLAYER4) ? PLAYERS : instance->getType()])->freeInstance(dynamic_cast<U *>(instance));
   }
 };

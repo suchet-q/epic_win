@@ -160,6 +160,7 @@ typedef struct			s_evt_server
 {
 	unsigned char		id_cmd;
 	unsigned char		event;
+	unsigned char		id;
 }						t_evt_server;
 
 typedef struct			s_inp_client

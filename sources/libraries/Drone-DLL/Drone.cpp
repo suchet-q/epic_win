@@ -42,7 +42,7 @@ void		Drone::update(std::list<Entity *> &entities)
 		for (i = 1; it != entities.end() && i == this->_nbPlayer; ++it)
 			++i;
 		Miss = (*it)->getFloatCoord() - this->getFloatCoord();
-		entities.push_back(_entitiesPool->getInstance<ShotEnemy >(FIREBALL));
+		entities.push_back(_entitiesPool->getInstance<ShotEnemy>(FIREBALL));
 		entities.back()->setVecDir(Miss.getX(), Miss.getY());
 		entities.back()->getVecDir().normalize();
 		entities.back()->setSpeed(this->_speed);

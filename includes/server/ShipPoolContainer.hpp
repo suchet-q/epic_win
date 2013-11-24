@@ -13,6 +13,7 @@ private:
   std::map<entityType, IPool<Entity *> *>	_poolMap;
   std::map<entityType, unsigned int>		_poolSizeMap;
   std::map<entityType, LoadLib<>* >*		_libMap;
+  std::array<unsigned char, 255>		*_idAvailable;
 
 public:
   ShipPoolContainer() {}
@@ -26,6 +27,11 @@ public:
 	  delete *((*it).second->getElem(i));
 	delete (*it).second;
       }
+  }
+
+  void				setIdAvailable(std::array<unsigned char, 255> &idAvailable)
+  {
+	  this->_idAvailable = idAvailable;
   }
 
   void				setLibMap(std::map<entityType, LoadLib<>* >& libMap) {

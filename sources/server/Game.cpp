@@ -287,7 +287,7 @@ void				Game::createEntity(t_spawn newEntity)
 	case DRONE:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
-		entity->setType(newEntity.type);
+		entity->setType(DRONE);
 		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
 		entity->setVecDir(0, 0);
 		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
@@ -431,7 +431,7 @@ void			Game::loop()
 	while (true && !this->_exit)
 	{	
 		stopSpawn = false;
-		std::cout << this->_spawn.size() << "it spawn.time  = "<< this->_spawn.front().time <<std::endl;
+		//std::cout << this->_spawn.size() << "it spawn.time  = "<< this->_spawn.front().time <<std::endl;
 		for (it_spawn = this->_spawn.begin(); !stopSpawn && it_spawn != this->_spawn.end();)
 		{
 			std::cout << "coucou lol" << std::endl;
@@ -446,6 +446,7 @@ void			Game::loop()
 		ellapsedTime += this->_clock.elapsedTime();
 		nbUpdate = ellapsedTime / REFRESH_TIME;
 
+		
 		this->manageClientsInputs();
 		
 		if (nbUpdate)
@@ -474,9 +475,15 @@ void			Game::loop()
 				}
 			}
 		}
-
+		for (std::list<Entity * >::iterator caca = this->_resources.getEntityList().begin(); caca != this->_resources.getEntityList().end(); ++caca)
+		{
+			std::cout << "BEFORE entity x = " << (*caca)->getCoord().getX() << " y = " << (*caca)->getCoord().getY() << " globaltype = " << (*caca)->getGlobalType() << "type = " << (*caca)->getType() << std::endl;
+		}
 	  this->_collision.checkCollisions();
-	  
+	  for (std::list<Entity * >::iterator caca = this->_resources.getEntityList().begin(); caca != this->_resources.getEntityList().end(); ++caca)
+	  {
+		  std::cout << " AFTER entity x = " << (*caca)->getCoord().getX() << " y = " << (*caca)->getCoord().getY() << " globaltype = " << (*caca)->getGlobalType() << "type = " << (*caca)->getType() << std::endl;
+	  }
 	  if (nbUpdate)
 	  for (std::list<Ship *>::iterator itShip = _resources.getShipList().begin(); itShip != _resources.getShipList().end(); ++itShip)
 	  for (itRep = this->_repClient.begin(); itRep != this->_repClient.end(); ++itRep)

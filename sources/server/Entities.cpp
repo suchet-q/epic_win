@@ -2,7 +2,7 @@
 
 Entity::Entity()
 {
-	static char id = 5;
+	static char id = 10;
 	this->_ID = id++;
 }
 

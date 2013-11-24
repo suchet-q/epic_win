@@ -70,7 +70,7 @@ void			Collision::manageDepop()
 	  case MOBBMISSIL:
 	  case DECOR:
 		  if ((*it)->getCoord().getX() < -OUT_SCREEN_SIZE) {
-			  deleteEntity(*it);
+			  _resources->getShipPool().freeInstance(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else
@@ -80,7 +80,7 @@ void			Collision::manageDepop()
 		  std::cout << "Maggeeeeeeeeeeeeeeule tu vas detruire le missiiiiiiiiiiiiiiiiiiiiile" << std::endl;
 		  if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
 		  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
-			  _resources->getShipPool().freeInstance(*it);
+			  deleteEntity(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else
@@ -221,16 +221,18 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator&
   caseTwo = ((b.getY() > a.getY()) ? (false) : (true));
   minX = b.getX() - a.getX();
   minY = (!caseTwo) ? (b.getY() - a.getY()) : (a.getY() - b.getY());
-  for (unsigned short int y = 0; y < size_b.getY() && y + minY < size_a.getY() && !coll; ++y)
-    for (unsigned short int x = 0; x < size_b.getX() && x + minX < size_a.getX() && !coll; ++x)
-      {
-	if (!caseTwo
-	    && collisionTab_a[y + minY][x + b.getX() - a.getX()] && collisionTab_b[y][x])
-	  coll = this->collision(it_o, it_t);
-	else if (caseTwo
-		 && collisionTab_a[y][x + b.getX() - a.getX()] && collisionTab_b[y + minY][x])
-	  coll = this->collision(it_o, it_t);
-      }
+  if (!caseTwo) {
+	  for (unsigned short int y = 0; y < size_b.getY() && y + minY < size_a.getY() && !coll; ++y)
+	  for (unsigned short int x = 0; x < size_b.getX() && x + minX < size_a.getX() && !coll; ++x)
+		  if (collisionTab_a[y + minY][x + minX] && collisionTab_b[y][x]);
+			coll = this->collision(it_o, it_t);
+  }
+//	else if (caseTwo) {
+//		for (unsigned short int y = 0; y < size_b.getY() && y < size_b.getY() - minY && !coll; ++y)
+//		for (unsigned short int x = 0; x < size_b.getX() && x + minX < size_a.getX() && !coll; ++x)
+//			if (collisionTab_a[y][x + minX] && collisionTab_b[y + minY][x])
+//				coll = this->collision(it_o, it_t);
+ //     }
 }
 
 bool			Collision::collision(std::list<Entity *>::iterator& it_o,
@@ -355,6 +357,9 @@ bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
       it_o = this->_resources->getEntityList().erase(it_o);
       this->_deletedOne = true;
     }
+  //it_o = it_t;
+  if (it_t != _resources->getEntityList().end())
+  ++it_t;
   return true;
 }
 

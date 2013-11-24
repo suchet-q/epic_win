@@ -18,6 +18,8 @@ private:
 	float	_xplayer;
 	float	_yplayer; 
 	Randum	_rand;
+	bool	_first;
+	float	_yStart;
 public:
 	Xwing();
 	~Xwing();

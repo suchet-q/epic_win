@@ -1,6 +1,13 @@
 #include "Metroid.h"
 
-Metroid::Metroid() {}
+Metroid::Metroid()
+{
+	this->_first = false;
+	this->_type = METROID;
+	this->_globalType = MOBB;
+	this->_speed = 5;
+	this->_shoot = 0;
+}
 
 Metroid::~Metroid() {}
 
@@ -10,10 +17,15 @@ void		Metroid::update(std::list<Entity *> &entities)
 	std::list<Entity *>::iterator	it = entities.begin();
 	int		i = 1;
 	this->_nbPlayer = 0;
-	float	xMiss;
-	float	yMiss;
+	Coord<float>	Miss;
 
+	if (this->_first == false)
+	{
+		this->_yStart = this->_coord.getY();
+		this->_first = true;
+	}
 	vecY = this->_sinus.getValue(this->_coord);
+	vecY += this->_yStart;
 	this->_vecDir.setX(-3);
 	if (this->_shoot == 120)
 	{
@@ -24,15 +36,23 @@ void		Metroid::update(std::list<Entity *> &entities)
 			++i;
 		}
 		this->_nbPlayer = this->_rand.getRand(this->_nbPlayer);
+		it = entities.begin();
 		for (i = 1; it != entities.end() && i == this->_nbPlayer; ++it)
 			++i;
-
-		xMiss = this->_xplayer - this->getCoord().getX();
-		yMiss = this->_yplayer - this->getCoord().getY();
+		Miss = (*it)->getFloatCoord() - this->getFloatCoord();
+		entities.push_back(_entitiesPool->getInstance<ShotEnemy >(FIREBALL));
+		entities.back()->setVecDir(Miss.getX(), Miss.getY());
+		entities.back()->getVecDir().normalize();
+		entities.back()->setSpeed(this->_speed);
+		entities.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
+		entities.back()->getFloatCoord().setY(this->getFloatCoord().getY());
+		entities.back()->setType(FIREBALL);
 		/*this->_vecDir.set(xMiss, yMiss)*/
 		/*this->_vecDir.normalize(-5)*/
 		this->_shoot = 0;
 	}
+	this->_coord += this->_vecDir;
+	this->_vecDir.set(0, 0);
 }
 
 extern "C"

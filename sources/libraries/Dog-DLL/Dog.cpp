@@ -1,6 +1,12 @@
 #include "Dog.h"
 
-Dog::Dog() {}
+Dog::Dog()
+{
+	this->_type = DOG;
+	this->_globalType = MOBB;
+	this->_speed = 5;
+	this->_shoot = 0;
+}
 
 Dog::~Dog() {}
 
@@ -11,8 +17,7 @@ void		Dog::update(std::list<Entity *> &entities)
 	int		i = 1;
 	this->_nbPlayer = 0;
 	bool	choice = false;
-	float	xMiss;
-	float	yMiss;
+	Coord<float>	Miss;
 
 	for (; it != entities.end() && i <= 4; ++it)
 	{
@@ -21,6 +26,7 @@ void		Dog::update(std::list<Entity *> &entities)
 		++i;
 	}
 	this->_nbPlayer = this->_rand.getRand(this->_nbPlayer);
+	it = entities.begin();
 	for (i = 1; it != entities.end() && i == this->_nbPlayer; ++it)
 		++i;
 
@@ -47,13 +53,20 @@ void		Dog::update(std::list<Entity *> &entities)
 	}
 	if (this->_shoot == 120)
 	{
-		xMiss = this->_xplayer - this->getCoord().getX();
-		yMiss = this->_yplayer - this->getCoord().getY();
+		Miss = (*it)->getFloatCoord() - this->getFloatCoord();
+		entities.push_back(_entitiesPool->getInstance<ShotEnemy >(FIREBALL));
+		entities.back()->setVecDir(Miss.getX(), Miss.getY());
+		entities.back()->getVecDir().normalize();
+		entities.back()->setSpeed(this->_speed);
+		entities.back()->getFloatCoord().setX(this->getFloatCoord().getX() + 10);
+		entities.back()->getFloatCoord().setY(this->getFloatCoord().getY());
+		entities.back()->setType(FIREBALL);
 		/*this->_vecDir.set(xMiss, yMiss)*/
 		/*this->_vecDir.normalize(-5)*/
 		this->_shoot = 0;
 	}
-
+	this->_coord += this->_vecDir;
+	this->_vecDir.set(0, 0);
 }
 
 extern "C"

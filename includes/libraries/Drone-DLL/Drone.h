@@ -18,6 +18,8 @@ private:
 	int		_shoot;
 	Sinus	_sinus;
 	Randum	_rand;
+	bool	_first;
+	float	_yStart;
 public:
 	Drone();
 	~Drone();

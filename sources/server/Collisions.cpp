@@ -248,7 +248,7 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator&
 	  _resources->getTabHitBox()[(*it_t)->getType()].y);
 
   
-  caseTwo = ((b.getY() > a.getY()) ? (false) : (true));
+  caseTwo = ((b.getY() >= a.getY()) ? (false) : (true));
   minX = b.getX() - a.getX();
   minY = (!caseTwo) ? (b.getY() - a.getY()) : (a.getY() - b.getY());
   if (!caseTwo) {

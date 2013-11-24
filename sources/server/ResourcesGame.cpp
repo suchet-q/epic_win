@@ -57,4 +57,11 @@ void			ResourcesGame::InitPool()
   this->_entitiesPool.addPool<ShotBig, 256>(BIG_SHOT);
   this->_entitiesPool.addPool<ShotBiggest, 256>(BIGGEST_SHOT);
   this->_entitiesPool.addPool<ShotEnemy, 256>(FIREBALL);
+
+  this->_shipPool.addPool<64>(DRONE);
+  this->_shipPool.addPool<64>(ALIEN);
+  this->_shipPool.addPool<64>(XWING);
+  this->_shipPool.addPool<64>(METROID);
+  this->_shipPool.addPool<64>(JUMPER);
+  this->_shipPool.addPool<64>(DOG);
 }

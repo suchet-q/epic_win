@@ -71,6 +71,7 @@ void			GameSocket::update(Parser &parser)
 	fd_set		writeFd;
 	std::pair<void *, int>	cmd;
 	std::pair<void *, int>	cmdUDP;
+	int			ret;
 	char		rec[512];
 
 	this->_select.fdZero(&readFd);
@@ -94,7 +95,9 @@ void			GameSocket::update(Parser &parser)
 	if (this->_select.fdIsset(this->_socket, &readFd))
 	  {
 	    memset(rec, 0, 512);
-	    parser.parse(&rec, this->_socket.Recv(rec, 512));
+		if ((ret = this->_socket.Recv(rec, 512)) <= 0)
+			throw RuntimeException("[GameSocket::update]", "Lost connection");
+	    parser.parse(&rec, ret);
 	  }
 	if (cmd.first != NULL && this->_select.fdIsset(this->_socket, &writeFd))
 	  this->_socket.Send(cmd.first, cmd.second);

@@ -62,6 +62,11 @@ void		Client::update()
 		catch (MinorException &e) {
 			this->_err.displayError(e.method(), e.what());
 		}
+		catch (RuntimeException &e) {
+		this->_err.displayError(e.method(), e.what());
+		this->_win.closeWindow();
+		gameResources.wait();
+		}
 	}
 	SoundPool::getInstance()->stopMenu();
 	this->_socket.setUDPPort(this->_menu.getUDPPort());

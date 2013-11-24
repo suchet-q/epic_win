@@ -276,7 +276,6 @@ void			Game::manageClientsInputs()
 	  (*it).first->getFrameCMD().cmd.size = 0;
   }
 }
-class Drone;
 void				Game::createEntity(t_spawn newEntity)
 {
 	Entity			*entity;
@@ -384,7 +383,7 @@ void			Game::loop()
 	while (true && !this->_exit)
 	{
 		it_spawn = this->_spawn.begin();
-		for (; it_spawn != this->_spawn.begin() && !stopSpawn; )
+		for (; it_spawn != this->_spawn.begin() && !stopSpawn;)
 		{
 			if ((*it_spawn).time >= ellapsedTime)
 			{

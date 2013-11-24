@@ -54,17 +54,21 @@ protected:
   entityType		_type;
   entityGlobalType	_globalType;
   char				_ID;
+  unsigned int		_speed;
 
 public:
   Entity();
   ~Entity();
 
+  unsigned int		getSpeed();
+  void				setSpeed(unsigned int);
   char		       	getID() const;
   void				setID(char);
   entityType		getType() const;
   Coord<>&			getCoord();
   Coord<float>&		getFloatCoord();
   entityGlobalType	getGlobalType() const;
+  Vector			&getVecDir();
   void			setGlobalType(entityGlobalType);
 
   void			setVecDir(float x, float y);

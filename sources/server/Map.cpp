@@ -1,43 +1,58 @@
 #include		"Map.h"
+#include		<iostream>
 
 Map::Map() {}
 
 Map::~Map() {}
 
 std::list<t_spawn>&	Map::getSpanList() {
-  return (_spawnList);
+  return (this->_spawnList);
 }
 
 bool			Map::parseMap(std::string const &filename)
 {
   std::ifstream		file;
-  std::istringstream	iss;
-  char			buffer[512];
+  std::stringstream	ss;
+  std::string	line;
   t_spawn		tmp;
+  std::string	step;
   int			value;
   int			i = 0;
+  entityType	entity;
 
-  file.open(filename);
+  file.open(filename, std::ifstream::in);
   if (!file.good()) 
     return false;
-  
-  while (!file.eof()) {
-    file.getline(buffer, 511, ' ');
-    iss.get(buffer, 512, '\0');
-    iss >> value;
-    switch (i) {
-    case 0 :
-      tmp.type = static_cast<entityType>(value);
-      break;
-    case 1 :
-      tmp.y = value;
-      break;
-    case 3 :
-      tmp.time = value;
-      _spawnList.push_back(tmp);
-      i = 0;
-      break;
-    }
+  int	letter;
+  std::string	step2;
+
+  while (!file.eof()) 
+  {
+	std::getline(file, line);
+
+	ss.str("");
+	ss.clear();
+	letter = line.find(' ');
+	step = line.substr(0, letter);
+	ss.str(step);
+	ss >> i;
+	tmp.type = static_cast<entityType>(i);
+
+	ss.str("");
+	ss.clear();
+	step2 = line.substr(letter + 1, line.size());
+	letter = step2.find(' ');
+	step = step2.substr(0, letter);
+	ss.str(step);
+	ss >> tmp.y;
+
+	ss.str("");
+	ss.clear();
+	letter += step2.find(' ');
+	step = line.substr(letter, line.size());
+	ss.str(step);
+	ss >> tmp.time;
+	this->_spawnList.push_back(tmp);
   } 
   return true;
 }

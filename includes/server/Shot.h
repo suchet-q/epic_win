@@ -6,6 +6,7 @@ class			Shot : public Entity
 {
 protected:
 	int			_life;
+
 public:
   Shot();
   ~Shot();

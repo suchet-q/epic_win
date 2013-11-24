@@ -13,7 +13,8 @@ float		Sinus::getValue(Coord<float> &coord)
 {
 	float result = 0;
 
-	result = sin(coord.getX());
-	result *= 50;
+	result = sin(coord.getX() / 50);
+	result += 1;
+	result *= 100;
 	return (result);
 }

@@ -1,8 +1,17 @@
 #include		"Entities.h"
 
-Entity::Entity() {}
+Entity::Entity()
+{
+	static char id = 5;
+	this->_ID = id++;
+}
 
 Entity::~Entity() {}
+
+Vector			&Entity::getVecDir()
+{
+	return (this->_vecDir);
+}
 
 char			Entity::getID() const {
   return this->_ID;
@@ -25,6 +34,15 @@ Coord<>&		Entity::getCoord()
 		? static_cast<unsigned short int>(_coord.getY()) + 1
 		: static_cast<unsigned short int>(_coord.getY()));
   return _intCoord;
+}
+
+
+unsigned int	Entity::getSpeed() {
+	return this->_speed;
+}
+
+void			Entity::setSpeed(unsigned int speed) {
+	this->_speed = speed;
 }
 
 entityGlobalType	Entity::getGlobalType() const

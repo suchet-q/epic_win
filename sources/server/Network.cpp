@@ -96,7 +96,6 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 	    (*it)->lockSocket();
 	    if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
 	      {
-		std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
 		this->recvFromUDP(*it);
 	      }
 	    (*it)->unlockSocket();
@@ -134,10 +133,8 @@ bool			Network::recvFromUDP(Game *game)
 	struct sockaddr_in	sin;
 	unsigned char		buff[512];
 
-	std::cout << "je vais read sur le udp maggle" << std::endl;
 	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
 	  {
-	    std::cout << "Le recvfrom a fail" << std::endl;
 	    return false;
 	  }
 	if (this->_buffer.size > 0)
@@ -184,14 +181,12 @@ bool			Network::recvCommandTCP(Client *client)
 
   if ((width = client->getSocket()->Recv(reinterpret_cast<void *>(tmp), 512)) <= 0)
     return (false);
-  std::cout << "width = " << width << std::endl;
   client->parseCommand(reinterpret_cast<void *>(tmp), static_cast<unsigned int>(width), _commandsSize);
   return (true);
 }
 
 bool			Network::sendCommandTCP(Client *client)
 {
-  std::cout << "Sending command" << std::endl;
   std::cout << client->getWriteBuffer()->size() << std::endl;
   if (client->getStatus() == TO_LEAVE)
 		client->setStatus(TO_DECO);

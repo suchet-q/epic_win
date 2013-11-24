@@ -137,7 +137,6 @@ bool		Game::init()
 	rep.port = ntohs(sin.sin_port);
 	memcpy(cmd.cmd, &rep, sizeof(rep));
 	cmd.size = sizeof(rep);
-	std::cout << "size de la reponse : " << sizeof(rep) << std::endl;
 	this->lockClient();
 	for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)\
 		(*it)->getWriteBuffer()->push_back(cmd);
@@ -171,7 +170,6 @@ void			Game::initBufClient()
 
 	memset(&tmp, 0, sizeof(t_rep_client));
 	tmp.size = 0;
-	std::cout << "la size elle est a 0 maggle" << std::endl;
 	tmp.life = 3;
 	tmp.weapon = MISSIL;
 	tmp.bonus = false;
@@ -244,19 +242,22 @@ void			Game::waitAllClients()
 
 int			Game::startGame(void *var)
 {
-  std::cout << "j'ai lance la game ma gueule" << std::endl;
+  std::cout << "Game launched\nInitializing" << std::endl;
   this->init();
-  std::cout << "J'attend tout les clients ma gueule" << std::endl;
+  std::cout << "Initialized\nWaiting Client..." << std::endl;
   this->waitAllClients();
-  std::cout << "Tout les clients sont présents ma gueue !" << std::endl;
+  std::cout << "Clients are ready, starting game" << std::endl;
   this->loop();
   /*identification verifier changer status dans infos client puis lancer la game*/
   /*appel de methode init etc... et la loop de la game*/
-  std::cout << "c'est la fin de la game maggle" << std::endl;
+  std::cout << "Game over" << std::endl;
   this->lockClient();
   this->lockAttribut();
   for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+  {
+	  (*it)->setStatus(TO_DECO);
 	  (*it)->setGame(NULL);
+  }
   this->_terminated = true;
   this->unlockAttribut();
   this->unlockClient();
@@ -274,7 +275,6 @@ void			Game::manageClientsInputs()
 		  memcpy(&cmd, (*it).first->getFrameCMD().cmd.cmd, sizeof(t_inp_client));
 		  if (cmd.id_cmd == 14) //TODO : MACRO
 		  {
-	//		  std::cout << "J'AI SET L'INPUT MAGGEEEEEEEEEEEEEEEEEEEUL" << std::endl;
 			  (*it).second->setInput(cmd.input);
 		  }
 
@@ -435,10 +435,8 @@ void			Game::loop()
 	while (true && !this->_exit && this->_resources.getShipList().size())
 	{	
 		stopSpawn = false;
-		//std::cout << this->_spawn.size() << "it spawn.time  = "<< this->_spawn.front().time <<std::endl;
 		for (it_spawn = this->_spawn.begin(); !stopSpawn && it_spawn != this->_spawn.end();)
 		{
-			std::cout << "coucou lol" << std::endl;
 			if ((*it_spawn).time <= this->_clock.elapsedTimeSinceStart())
 			{
 				this->createEntity((*it_spawn));
@@ -509,7 +507,6 @@ void			Game::loop()
 			  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &lifServer, sizeof(lifServer));
 			  (*itRep).second.size += sizeof(lifServer);
 
-			  //std::cout << "sending buffer of size " << (*itRep).second.size << " to client " << (*itRep).first->getID() << " on port " << ntohs((*itRep).first->getUDPsin().sin_port) << std::endl;
 			  if (this->_socketUDP.sendTo(static_cast<void *>((*itRep).second.buffer),
 				  (*itRep).second.size, &(*itRep).first->getUDPsin()) == -1)
 				  std::cout << "OMG LE SEND TO QUI FAIL FUUUUUUUUUUUUUCK" << std::endl;

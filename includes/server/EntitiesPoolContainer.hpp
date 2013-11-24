@@ -26,7 +26,7 @@ public:
 
   void					setIdAvailable(std::array<unsigned char, 255> &idAvailable)
   {
-	  this->_idAvailable = idAvailable;
+	  this->_idAvailable = &idAvailable;
   }
 
   template <typename U, unsigned int SIZE>
@@ -40,11 +40,24 @@ public:
 
   template <typename U>
   T*				getInstance(entityType type) {
-    return (dynamic_cast<IPool<U>* >(_poolMap[type]))->getInstance();
+	  bool					end = false;
+	  Entity				*instance = (dynamic_cast<IPool<U>* >(_poolMap[type]))->getInstance();
+	  for (int i = 1; !end && i < 255; ++i)
+	  {
+		  if ((*this->_idAvailable)[i])
+		  {
+			  end = true;
+			  instance->setID(i);
+			  (*this->_idAvailable)[i] = false;
+		  }
+	  }
+    return instance;
   }
   
   template <typename U>
   void				freeInstance(T* instance) {
+
+	  (*this->_idAvailable)[instance->getID()] = true;
 	  dynamic_cast<IPool<U>* >(_poolMap[(instance->getType() >= PLAYER1 && instance->getType() <= PLAYER4) ? PLAYERS : instance->getType()])->freeInstance(dynamic_cast<U *>(instance));
   }
 };

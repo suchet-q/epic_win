@@ -2,8 +2,6 @@
 
 Entity::Entity()
 {
-	static char id = 10;
-	this->_ID = id++;
 }
 
 Entity::~Entity() {}

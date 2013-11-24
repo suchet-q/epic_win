@@ -81,7 +81,6 @@ void		Client::parseCommand(void *buffer, unsigned int size, std::map<char, unsig
       {
 	memcpy(this->_buffer.cmd, &buff[i], cmdSize[buff[i]]);
 	this->_buffer.size = cmdSize[buff[i]];
-	std::cout << "je fou une commande dans le buffer read" << std::endl;
 	this->_readBuffer.push_back(this->_buffer);
 	i += cmdSize[buff[i]];
 	this->_buffer.size = 0;

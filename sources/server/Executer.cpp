@@ -48,7 +48,6 @@ bool			Executer::execNBP(Client *client, t_cmd const &command)
 	memcpy(cmd.cmd, &answer, sizeof(t_nbp_server));
 	cmd.size = sizeof(t_nbp_server);
 	client->getWriteBuffer()->push_back(cmd);
-	std::cout << " nbp" << std::endl;
 	return (true);
 }
 

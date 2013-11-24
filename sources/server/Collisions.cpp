@@ -116,7 +116,6 @@ void			Collision::manageDepop()
 			  ++it;
 		  break;
 	  case PLAYERMISSIL:
-		  std::cout << "Maggeeeeeeeeeeeeeeule tu vas detruire le missiiiiiiiiiiiiiiiiiiiiile" << std::endl;
 		  if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
 		  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
 			  this->sendEventDeath(*it);
@@ -406,11 +405,6 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
     return false;
 	
   this->_toDelete.push_back(it_o);
-  for (std::list<std::list<Entity *>::iterator>::iterator it = this->_toDelete.begin(); it != this->_toDelete.end(); ++it)
-  if (*it == it_o) {
-	  std::cout << "etron" << std::endl;
-	  system("pause");
-  }
 //	this->deleteEntity((*it_o));
 //	it_o = this->_resources->getEntityList().erase(it_o);
 //	this->_deletedOne = true;
@@ -422,11 +416,6 @@ bool			Collision::CollMissilPlayer(std::list<Entity *>::iterator& it_o,
 		{
 		(*this->_mapClient)[tmp].life = 0;
 		this->_toDelete.push_back(it_t);
-		for (std::list<std::list<Entity *>::iterator>::iterator it = this->_toDelete.begin(); it != this->_toDelete.end(); ++it)
-		if (*it == it_o) {
-			std::cout << "etron sur le sol" << std::endl;
-			system("pause");
-		}
 //		this->deleteEntity((*it_t));
 //		it_t = this->_resources->getEntityList().erase(it_t);
 //		this->_deletedTwo = true;

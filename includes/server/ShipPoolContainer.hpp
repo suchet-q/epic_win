@@ -31,7 +31,7 @@ public:
 
   void				setIdAvailable(std::array<unsigned char, 255> &idAvailable)
   {
-	  this->_idAvailable = idAvailable;
+	  this->_idAvailable = &idAvailable;
   }
 
   void				setLibMap(std::map<entityType, LoadLib<>* >& libMap) {
@@ -54,11 +54,26 @@ public:
     return true;
   }
 
-  T*				getInstance(entityType type) {
-    return *(_poolMap[type]->getInstance());
+  T*				getInstance(entityType type)
+  {
+	  bool					end = false;
+	  Entity				*instance = *(_poolMap[type]->getInstance());
+	  for (int i = 1; !end && i < 255; ++i)
+	  {
+		 if ((*this->_idAvailable)[i])
+		  {
+			 end = true;
+			  instance->setID(i);
+			  (*this->_idAvailable)[i] = false;
+		 }
+	  }
+    return (instance);
   }
   
   void				freeInstance(T* instance) {
-    _poolMap[instance->getType()]->freeInstance(&instance);
+	  bool					end = false;
+
+	  (*this->_idAvailable)[instance->getID()] = true;
+	 _poolMap[instance->getType()]->freeInstance(&instance);
   }
 };

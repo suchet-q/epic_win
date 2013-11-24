@@ -1,7 +1,12 @@
 #include		"ResourcesGame.h"
 
 
-ResourcesGame::ResourcesGame() {}
+ResourcesGame::ResourcesGame()
+{
+	this->_idAvailable[0] = 0;
+	for (unsigned int i = 1; i < 255; i++)
+		this->_idAvailable[i] = true;
+}
 
 ResourcesGame::~ResourcesGame() {}
 
@@ -51,6 +56,8 @@ bool			ResourcesGame::createPlayerShip()
 
 void			ResourcesGame::InitPool()
 {
+	this->_entitiesPool.setIdAvailable(this->_idAvailable);
+	this->_shipPool.setIdAvailable(this->_idAvailable);
   this->_entitiesPool.addPool<PlayerShip, 4>(PLAYERS);
   this->_entitiesPool.addPool<ShotSmall, 512>(BASIC_SHOT);
   this->_entitiesPool.addPool<ShotMedium, 256>(MEDIUM_SHOT);

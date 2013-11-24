@@ -66,7 +66,7 @@ void			Collision::manageDepop()
   for (std::list<Entity *>::iterator it = _resources->getEntityList().begin();
        it != _resources->getEntityList().end();) {
 //	  if ((*it)->getGlobalType() == PLAYERMISSIL)
-		  std::cout << (*it)->getGlobalType() << std::endl;
+	//	  std::cout << (*it)->getGlobalType() << std::endl;
 	  switch ((*it)->getGlobalType()) {
 	  case MOBB:
 	  case MOBBMISSIL:

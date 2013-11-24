@@ -115,6 +115,7 @@ bool		Game::loadAllLib()
 	this->_instanceGetter[METROID] = new LoadLib<>;
 	this->_instanceGetter[METROID]->loadLibrary("libMetroid");
 
+	this->_resources.getShipPool().setLibMap(this->_instanceGetter);
 	return true;
 }
 
@@ -285,78 +286,125 @@ void				Game::createEntity(t_spawn newEntity)
 	case DRONE:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
-		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case ALIEN:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case DOG:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case JUMPER:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case XWING:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case METROID:
 		entity = this->_resources.getShipPool().getInstance(newEntity.type);
 		entity->setGlobalType(MOBB);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+		entity->setVecDir(0, 0);
+		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
 		this->_resources.getEntityList().push_back(entity);
 		break;
 	case MONSTER:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
-		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+//		entity->setVecDir(-1, 0);
+//		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
+//		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case MONSTER_REVERT:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
-		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+//		entity->setVecDir(0, 0);
+//		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
+//		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case BIDULE:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
-		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+//		entity->setVecDir(0, 0);
+//		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
+//		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case BIDULE_REVERT:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
-		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		entity->setType(newEntity.type);
+		entity->getFloatCoord().set(1300, static_cast<float>(newEntity.y));;
+//		entity->setVecDir(0, 0);
+//		dynamic_cast<Ship *>(entity)->setEntitiesPool(this->_resources.getEntitiesPool());
+//		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case PLATFORM:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case PLATFORM_REVERT:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case PLATFORM2:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	case PLATFORM2_REVERT:
 		entity = this->_resources.getEntitiesPool().getInstance<Decor>(newEntity.type);
 		entity->setGlobalType(DECOR);
 		entity->setVecDir(1300, static_cast<float>(newEntity.y));
+		this->_resources.getEntityList().push_back(entity);
 		break;
 	default:
 		break;
@@ -373,7 +421,7 @@ void			Game::loop()
 	t_lif_server		lifServer;
 	int			nbUpdate;
 	unsigned long int	ellapsedTime = 0;
-	bool			stopSpawn = false;
+	bool			stopSpawn;
 	std::list<t_spawn>::iterator	it_spawn;
 
 //  this->_resources.getEntityList().push_back(new PlayerShip);
@@ -381,16 +429,18 @@ void			Game::loop()
 //  this->_resources.getEntityList().back()->setType(PLAYER2);
 	this->_clock.start();
 	while (true && !this->_exit)
-	{
-		it_spawn = this->_spawn.begin();
-		for (; it_spawn != this->_spawn.begin() && !stopSpawn;)
+	{	
+		stopSpawn = false;
+		std::cout << this->_spawn.size() << "it spawn.time  = "<< this->_spawn.front().time <<std::endl;
+		for (it_spawn = this->_spawn.begin(); !stopSpawn && it_spawn != this->_spawn.end();)
 		{
-			if ((*it_spawn).time >= ellapsedTime)
+			std::cout << "coucou lol" << std::endl;
+			if ((*it_spawn).time <= this->_clock.elapsedTimeSinceStart())
 			{
 				this->createEntity((*it_spawn));
 				it_spawn = this->_spawn.erase(it_spawn);
 			}
-			else if ((*it_spawn).time < ellapsedTime)
+			else if ((*it_spawn).time > this->_clock.elapsedTimeSinceStart())
 				stopSpawn = true;
 		}
 		ellapsedTime += this->_clock.elapsedTime();

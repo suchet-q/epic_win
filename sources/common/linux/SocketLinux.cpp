@@ -5,7 +5,7 @@
 // Login   <suchet_q@epitech.net>
 // 
 // Started on  Sat Oct 12 14:35:59 2013 quentin suchet
-// Last update Tue Nov 19 20:18:01 2013 quentin suchet
+// Last update Sun Nov 24 03:32:53 2013 geoffrey michelini
 //
 
 #include		<unistd.h>
@@ -196,7 +196,11 @@ int		SocketLinux::sendTo(void const *to_send, int size, struct sockaddr_in *dest
     return (UNINITIALIZED_SOCKET);
 
   dest->sin_family = AF_INET;
-  sended = sendto(this->_socket, to_send, size, 0,(struct sockaddr *)(dest), sizeof(*dest));
+  if ((sended = sendto(this->_socket, to_send, size, 0,(struct sockaddr *)(dest), sizeof(*dest))) <= 0)
+    {
+      std::cout << "Le send to a fail" << std::endl;
+    }
+  std::cout << "sended :" <<  sended << std::endl;
   return (sended);
 }
 
@@ -210,7 +214,6 @@ int		SocketLinux::recvFrom(void *buff, int size, struct sockaddr_in *sender)
   
   size_sin = sizeof(*sender);
   readed = recvfrom(this->_socket, buff, size, 0, (struct sockaddr *)(sender), &size_sin);
+  std::cout << "readed : " <<  readed << std::endl;
   return (readed);
 }
-
-

@@ -53,8 +53,9 @@ void			Network::initSelect(std::list<Client *> const &clientList, std::list<Game
 	  if ((*it)->getIsInit())
 	  {
 		 (*it)->lockSocket();
-	     _select.fdSet((*it)->getSocket(), &_fdRead);
-		 (*it)->unlockAttribut();
+		 _select.fdSet((*it)->getSocket(), &_fdRead);
+		 // (*it)->unlockAttribut();
+		 (*it)->unlockSocket();
 	  }
   }
 }
@@ -70,7 +71,6 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
 {
   if (_select.fdIsset(_socket, &_fdRead))
     *added = _socket.Accept();
-
   for (std::list<Client *>::iterator it = clientList.begin();
        it != clientList.end(); ++it) 
   {
@@ -93,16 +93,16 @@ bool			Network::manageSocket(std::list<Client *> &clientList, std::list<Game *> 
   {
 	  if ((*it)->getIsInit())
 	  {
-		  (*it)->lockSocket();
-		  if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
-		  {
-		//	  std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
-			  this->recvFromUDP(*it);
-		  }
-		  (*it)->unlockSocket();
+	    (*it)->lockSocket();
+	    if (this->_select.fdIsset((*it)->getSocket(), &_fdRead))
+	      {
+		std::cout << "je vais faire le fdIsset MAGGLE OMG OMG OMGGGGGGGGGGGGGGGG JE VAIS REAAAAAAAAAAAD" << std::endl;
+		this->recvFromUDP(*it);
+	      }
+	    (*it)->unlockSocket();
 	  }
   }
-
+ 
   return (true);
 }
 
@@ -134,9 +134,12 @@ bool			Network::recvFromUDP(Game *game)
 	struct sockaddr_in	sin;
 	unsigned char		buff[512];
 
-//	std::cout << "je vais read sur le udp maggle" << std::endl;
+	std::cout << "je vais read sur le udp maggle" << std::endl;
 	if ((size = game->getSocket().recvFrom(buff, 512, &sin)) <= 0)
-		return false;
+	  {
+	    std::cout << "Le recvfrom a fail" << std::endl;
+	    return false;
+	  }
 	if (this->_buffer.size > 0)
     {
       if (_commandsSize[this->_buffer.cmd[0]] - this->_buffer.size < size)
@@ -188,7 +191,7 @@ bool			Network::recvCommandTCP(Client *client)
 
 bool			Network::sendCommandTCP(Client *client)
 {
-	std::cout << "Sending command" << std::endl;
+  std::cout << "Sending command" << std::endl;
   std::cout << client->getWriteBuffer()->size() << std::endl;
   if (client->getStatus() == TO_LEAVE)
 		client->setStatus(TO_DECO);
@@ -198,5 +201,3 @@ bool			Network::sendCommandTCP(Client *client)
   client->getWriteBuffer()->pop_front();
   return true;
 }
-
-

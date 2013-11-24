@@ -201,21 +201,21 @@ bool			Game::launchThread(void *arg) {
 void			Game::waitAllClients()
 {
 	std::map<Client *, bool>		checked;
-
+	
 	while (checked.size() < this->_clients.size())
-    {
-      for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
-	   {
+	  {
+	    for (std::list<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+	      {
 		this->lockClient();
 		if ((*it)->getFrameCMD().cmd.size == 2 && (*it)->getFrameCMD().cmd.cmd[0] == 15 && (int)(*it)->getFrameCMD().cmd.cmd[1] == (*it)->getID()/* need macro omg */)
-		 {
-			memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
-			checked[*it] = true;
-//			system("pause");
-		 }
+		  {
+		    memcpy(&(*it)->getUDPsin(), &(*it)->getFrameCMD().sin, sizeof(struct sockaddr_in));
+		    checked[*it] = true;
+		    //			system("pause");
+		  }
 		this->unlockClient();
+	      }
 	  }
-   }
 }
 
 int			Game::startGame(void *var)

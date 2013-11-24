@@ -138,18 +138,16 @@ bool			Server::loop()
 		added = NULL;
 		this->_network.initSelect(this->_resources.getClients(), this->_resources.getGame());
 		if (this->_network.Select(500))
-		{
-			this->_network.manageSocket(this->_resources.getClients(), this->_resources.getGame(), to_deco, &added);
-		}
+		  this->_network.manageSocket(this->_resources.getClients(), this->_resources.getGame(), to_deco, &added);
 		else
-		{
-			std::cout << "eh oui maggle, le select capu" << std::endl;
-			error = true;
-		}
+		  {
+		    std::cout << "eh oui maggle, le select capu" << std::endl;
+		    error = true;
+		  }
 		if (added != NULL)
-			this->addClient(added);
+		  this->addClient(added);
 		if (!to_deco.empty())
-		{
+		  {
 			this->checkDecoClient(to_deco);
 		}
 		for (std::list<Client *>::iterator it = this->_resources.getClients().begin(); it != this->_resources.getClients().end(); ++it)

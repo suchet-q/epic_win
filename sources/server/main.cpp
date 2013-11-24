@@ -5,7 +5,7 @@
 // Login   <michel_b@epitech.net>
 // 
 // Started on  Tue Oct 29 21:28:45 2013 geoffrey michelini
-// Last update Sat Nov 16 22:21:56 2013 geoffrey michelini
+// Last update Sat Nov 23 23:19:02 2013 geoffrey michelini
 //
 
 #include	<sstream>
@@ -20,7 +20,7 @@ int		main(int ac, char **av)
   if (ac < 2)
     {
 	  port = 4242;
-	}
+       }
   else
   {
 	  buffer.str(av[1]);
@@ -29,8 +29,7 @@ int		main(int ac, char **av)
   if (!server.init(port)
 	  || !server.loop())
   {
-	  system("PAUSE");
-	  return (-1);
+	 return (-1);
   }
 	return (0);
 }

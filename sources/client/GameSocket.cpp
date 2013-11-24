@@ -39,10 +39,10 @@ bool			GameSocket::connectUDP()
 	{
 		this->_socketUDP.init(UDP);
 		std::cout << "UDP Port : " << this->_udpPort << std::endl;
-		if (this->_socketUDP.Bind(const_cast<char *>(this->_ip.c_str()), 0))
+		if (this->_socketUDP.Bind("127.0.0.1", 0))
 		{
 			this->_udpRunning = true;
-			this->_sin = this->_socketUDP.getServerSockaddr(const_cast<char *>(this->_ip.c_str()), this->_udpPort);
+			this->_sin = this->_socketUDP.getServerSockaddr(const_cast<char *>("127.0.0.1"/*this->_ip.c_str()*/), this->_udpPort);
 		}
 	}
 	return (this->_udpRunning);
@@ -77,31 +77,38 @@ void			GameSocket::update(Parser &parser)
 	this->_select.fdZero(&writeFd);
 	this->_select.fdSet(this->_socket, &readFd);
 	if (this->_udpRunning)
-		this->_select.fdSet(this->_socketUDP, &readFd);
-
+	  this->_select.fdSet(this->_socketUDP, &readFd);
+	
 	cmd = parser.getQueued();
 	cmdUDP = parser.getQueuedUDP();
+	if (cmdUDP.first != NULL && this->_udpRunning)
+	  {
+	    std::cout << "je set l'udp en ecriture" << std::endl;
+	    this->_select.fdSet(this->_socketUDP, &writeFd);
+	  }
+
 	if (cmd.first != NULL)
-		this->_select.fdSet(this->_socket, &writeFd);
+	  this->_select.fdSet(this->_socket, &writeFd);
 	if (!(this->_select.Select(&readFd, &writeFd, 1000)))
-		throw RuntimeException("[GameSocket::update]", "Select failed on socket");
+	  throw RuntimeException("[GameSocket::update]", "Select failed on socket");
 	if (this->_select.fdIsset(this->_socket, &readFd))
-	{
-		memset(rec, 0, 512);
-		parser.parse(&rec, this->_socket.Recv(rec, 512));
-	}
+	  {
+	    memset(rec, 0, 512);
+	    parser.parse(&rec, this->_socket.Recv(rec, 512));
+	  }
 	if (cmd.first != NULL && this->_select.fdIsset(this->_socket, &writeFd))
-		this->_socket.Send(cmd.first, cmd.second);
+	  this->_socket.Send(cmd.first, cmd.second);
 	if (this->_udpRunning && this->_select.fdIsset(this->_socketUDP, &readFd))
-	{
-		std::cout << "HEY JE SUIS DANS LE SELECT MAGGLE" << std::endl;
-		memset(rec, 0, 512);
-		parser.parse(&rec, this->_socketUDP.recvFrom(rec, 512, this->_sin));
-		parser.setStartUDP();
-	}
-	while (this->_udpRunning && cmdUDP.first != NULL)
-	{
-		this->_socketUDP.sendTo(cmdUDP.first, cmdUDP.second, this->_sin);
-		cmdUDP = parser.getQueuedUDP();
-	}
+	  {
+	    std::cout << "HEY JE SUIS DANS LE SELECT MAGGLE" << std::endl;
+	    memset(rec, 0, 512);
+	    parser.parse(&rec, this->_socketUDP.recvFrom(rec, 512, this->_sin));
+	    parser.setStartUDP();
+	  }
+	while (this->_udpRunning && cmdUDP.first != NULL && this->_select.fdIsset(this->_socketUDP, &writeFd))
+	  {
+	    this->_socketUDP.sendTo(cmdUDP.first, cmdUDP.second, this->_sin);
+	    cmdUDP = parser.getQueuedUDP();
+	    std::cout << "Je suis dans la boucle" << std::endl;
+	  }
 }

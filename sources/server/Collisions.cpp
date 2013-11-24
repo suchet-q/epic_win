@@ -65,23 +65,22 @@ void			Collision::manageDepop()
   //	std::cout << "salope" << std::endl;
   for (std::list<Entity *>::iterator it = _resources->getEntityList().begin();
        it != _resources->getEntityList().end();) {
-//	  if ((*it)->getGlobalType() == PLAYERMISSIL)
-	//	  std::cout << (*it)->getGlobalType() << std::endl;
 	  switch ((*it)->getGlobalType()) {
 	  case MOBB:
 	  case MOBBMISSIL:
 	  case DECOR:
 		  if ((*it)->getCoord().getX() < -OUT_SCREEN_SIZE) {
-			  _resources->getShipPool().freeInstance(*it);
+			  deleteEntity(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else
 			  ++it;
 		  break;
 	  case PLAYERMISSIL:
+		  std::cout << "Maggeeeeeeeeeeeeeeule tu vas detruire le missiiiiiiiiiiiiiiiiiiiiile" << std::endl;
 		  if ((*it)->getCoord().getX() + _resources->getTabHitBox()[(*it)->getType()].x
 		  > SCREEN_WIDTH + OUT_SCREEN_SIZE) {
-			  deleteEntity(*it);
+			  _resources->getShipPool().freeInstance(*it);
 			  it = _resources->getEntityList().erase(it);
 		  }
 		  else
@@ -149,25 +148,28 @@ void			Collision::checkEntitiesCollisions()
 	  else
 		  size_b.set(_resources->getTabHitBox()[(*it_t)->getType()].x,
 		  _resources->getTabHitBox()[(*it_t)->getType()].y);
-
-	  if (a->getX() <= b->getX()
-		  && a->getX() + size_a.getX() >= b->getX()
-		  && a->getY() <= b->getY()
-		  && a->getY() + size_a.getY() >= b->getY())
-	  {
-//		  std::cout << "colosion aaaaaaaaaa" << std::endl;
-		  checkEntitiesCollisionsAdvenced(it_o, it_t);
-	  }
-	  else if (b->getX() <= a->getX()
-		   && b->getX() + size_b.getX() >= a->getX()
-		   && b->getY() <= a->getY()
-		   && b->getY() + size_b.getY() >= a->getY()) {
-//		  std::cout << "colision BBBB" << std::endl;
-	    checkEntitiesCollisionsAdvenced(it_t, it_o);
-	    tmp = _deletedOne;
-	    _deletedOne = _deletedTwo;
-	    _deletedTwo = tmp;
-	  }
+	  
+	  if ((a->getX() <= b->getX()
+	       && a->getX() + size_a.getX() >= b->getX())
+	      && ((a->getY() <= b->getY()
+		   && a->getY() + size_a.getY() >= b->getY())
+		  || (a->getY() >= b->getY()
+		      && a->getY() + size_a.getY() >= b->getY() + size_b.getY()
+		      && a->getY() <= b->getY() + size_b.getY())))
+	    checkEntitiesCollisionsAdvenced(it_o, it_t);
+	  else if ((b->getX() <= a->getX()
+		    && b->getX() + size_b.getX() >= a->getX())
+		   && ((b->getY() <= a->getY()
+			&& b->getY() + size_b.getY() >= a->getY())
+		       || (b->getY() >= a->getY()
+			   && b->getY() + size_b.getY() >= a->getY() + size_a.getY()
+			   && b->getY() <= a->getY() + size_a.getY())))
+	    {
+	      checkEntitiesCollisionsAdvenced(it_t, it_o);
+	      tmp = _deletedOne;
+	      _deletedOne = _deletedTwo;
+	      _deletedTwo = tmp;
+	    }
 	  if (!_deletedTwo)
 	    ++it_t;
 	  if (it_o == _resources->getEntityList().end())
@@ -185,9 +187,12 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator&
   Coord<>&		b = (*it_t)->getCoord();
   Coord<>		size_a;
   Coord<>		size_b;
+  unsigned short int	minX;
+  unsigned short int	minY;
   char**		collisionTab_a;
   char**		collisionTab_b;
   bool			coll = false;
+  bool			caseTwo = false;
 
   if ((*it_o)->getGlobalType() == PLAYER)
 	  collisionTab_a = _resources->getTabHitBox()[PLAYER1].tab;
@@ -213,14 +218,19 @@ void			Collision::checkEntitiesCollisionsAdvenced(std::list<Entity *>::iterator&
 	  _resources->getTabHitBox()[(*it_t)->getType()].y);
 
   
-  for (unsigned short int y = 0; y < size_b.getY() && y + b.getY() - a.getY() < size_a.getY() && !coll; ++y)
-  for (unsigned short int x = 0; x < size_b.getX() && x + b.getX() - a.getX() < size_a.getX() && !coll; ++x)
-  {
-	//  std::cout << "y = " << y << " x = " << x <<std::endl;
-	//  std::cout << "le y dans le tab = " << y + b.getY() - a.getY() << " le x dans le tab = " << x + b.getX() - a.getX() << std::endl;
-	  if (collisionTab_a[y + b.getY() - a.getY()][x + b.getX() - a.getX()] && collisionTab_a[y][x])
-		  coll = this->collision(it_o, it_t);
-  }
+  caseTwo = ((b.getY() > a.getY()) ? (false) : (true));
+  minX = b.getX() - a.getX();
+  minY = (!caseTwo) ? (b.getY() - a.getY()) : (a.getY() - b.getY());
+  for (unsigned short int y = 0; y < size_b.getY() && y + minY < size_a.getY() && !coll; ++y)
+    for (unsigned short int x = 0; x < size_b.getX() && x + minX < size_a.getX() && !coll; ++x)
+      {
+	if (!caseTwo
+	    && collisionTab_a[y + minY][x + b.getX() - a.getX()] && collisionTab_b[y][x])
+	  coll = this->collision(it_o, it_t);
+	else if (caseTwo
+		 && collisionTab_a[y][x + b.getX() - a.getX()] && collisionTab_b[y + minY][x])
+	  coll = this->collision(it_o, it_t);
+      }
 }
 
 bool			Collision::collision(std::list<Entity *>::iterator& it_o,
@@ -326,22 +336,11 @@ bool			Collision::CollMissilDecor(std::list<Entity *>::iterator& it_o,
 bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
 						  std::list<Entity *>::iterator& it_t)
 {
-  t_aff_server		evtServer;
   Shot		*shot;
 
   if ((*it_o)->getGlobalType() != PLAYERMISSIL || (*it_t)->getGlobalType() != MOBB)
     return false;
-
-  for (std::map<Client *, t_rep_client>::iterator itRep = this->_mapClient->begin(); itRep != this->_mapClient->end(); ++itRep)
-  {
-	  evtServer.id_cmd = 10;
-	  evtServer.id_obj = (*it_t)->getID();
-	  evtServer.type = 5;
-	  evtServer.x = (*it_t)->getCoord().getX();
-	  evtServer.y = (*it_t)->getCoord().getY();
-	  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &evtServer, sizeof(evtServer));
-	  (*itRep).second.size += sizeof(evtServer);
-  }
+	
   this->deleteEntity((*it_t));
   it_t = this->_resources->getEntityList().erase(it_t);
   this->_deletedTwo = true;
@@ -352,16 +351,6 @@ bool			Collision::CollMissilMobb(std::list<Entity *>::iterator& it_o,
   else
     {
       shot->setLife(0);
-	  for (std::map<Client *, t_rep_client>::iterator itRep = this->_mapClient->begin(); itRep != this->_mapClient->end(); ++itRep)
-	  {
-		  evtServer.id_cmd = 10;
-		  evtServer.id_obj = (*it_o)->getID();
-		  evtServer.type = 5;
-		  evtServer.x = (*it_o)->getCoord().getX();
-		  evtServer.y = (*it_o)->getCoord().getY();
-		  memcpy(&(*itRep).second.buffer[(*itRep).second.size], &evtServer, sizeof(evtServer));
-		  (*itRep).second.size += sizeof(evtServer);
-	  }
       this->deleteEntity((*it_o));
       it_o = this->_resources->getEntityList().erase(it_o);
       this->_deletedOne = true;

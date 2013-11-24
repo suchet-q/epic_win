@@ -101,7 +101,7 @@ void		GameLoop::drawHUB(RenderWindow &win, float elapsed)
 
 void		GameLoop::drawEntities(RenderWindow &win, float elapsed)
 {
-	this->_manager->Update();
+	this->_manager->Update(elapsed);
 }
 
 void		GameLoop::drawBackground(RenderWindow &win, float elapsed)
@@ -180,26 +180,29 @@ boost::any	GameLoop::aff(std::list<boost::any> &args)
 
 void		GameLoop::handleInputs(Parser &parser)
 {
+	unsigned short input = 0;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		parser.addINP(*this->_idClient, INP_LEFT);
+		input += INP_LEFT;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		parser.addINP(*this->_idClient, INP_RIGHT);
+		input += INP_RIGHT;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		parser.addINP(*this->_idClient, INP_UP);
+		input += INP_UP;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		parser.addINP(*this->_idClient, INP_DOWN);
+		input += INP_DOWN;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		parser.addINP(*this->_idClient, INP_FIRE);
+		input += INP_FIRE;
 	}
+	parser.addINP(*this->_idClient, input);
 }
 
 boost::any	GameLoop::life(std::list<boost::any> &args)
